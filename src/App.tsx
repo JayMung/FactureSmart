@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/components/auth/AuthProvider";
 import { PageProvider } from "@/contexts/PageContext";
-import ProtectedRouteEnhanced from "@/components/auth/ProtectedRouteEnhanced";
+import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import { useComptabiliteAI } from '@/hooks/useComptabiliteAI';
 
 // Agent IA Comptabilite - runs silently inside providers
@@ -28,44 +28,37 @@ const PageLoader = () => (
 
 // Auth pages (small, loaded early)
 import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Onboarding from "./pages/Onboarding";
+import SetupWizard from "./pages/SetupWizard";
 import ResetPassword from "./pages/ResetPassword";
 import NotFound from "./pages/NotFound";
 
 // Lazy-loaded pages
-const IndexProtected = lazy(() => import("./pages/Index-Protected"));
-const ClientsProtected = lazy(() => import("./pages/Clients-Protected"));
-const TransactionsProtected = lazy(() => import("./pages/Transactions-Protected"));
-const FacturesProtected = lazy(() => import("./pages/Factures-Protected"));
+const Index = lazy(() => import("./pages/Index-Protected"));
+const Clients = lazy(() => import("./pages/Clients-Protected"));
+const Transactions = lazy(() => import("./pages/Transactions-Protected"));
+const Factures = lazy(() => import("./pages/Factures-Protected"));
 const FacturesCreate = lazy(() => import("./pages/Factures-Create"));
 const FacturesView = lazy(() => import("./pages/Factures-View"));
 const FacturesPreview = lazy(() => import("./pages/Factures-Preview"));
 
-const SettingsWithPermissions = lazy(() => import("./pages/Settings-Permissions"));
-const ActivityLogs = lazy(() => import("./pages/ActivityLogs"));
-const SecurityDashboard = lazy(() => import("./pages/SecurityDashboard"));
-const SecurityAudit = lazy(() => import("./pages/SecurityAudit"));
-const PermissionDiagnosticPage = lazy(() => import("./pages/Permission-Diagnostic"));
-const ComptesFinancesProtected = lazy(() => import("./pages/Comptes-Finances-Protected"));
-const CategoriesFinances = lazy(() => import("./pages/Categories-Finances"));
-const ApiKeys = lazy(() => import("./pages/ApiKeys"));
-const Webhooks = lazy(() => import("./pages/Webhooks"));
-const StatistiquesProtected = lazy(() => import("./pages/Statistiques-Protected"));
+const Settings = lazy(() => import("./pages/Settings"));
 
 const POSCaisse = lazy(() => import("./pages/POS-Caisse"));
 const Declarants = lazy(() => import("./pages/Declarants"));
-const Rapports = lazy(() => import("./pages/Rapports"));
 const AdminSetup = lazy(() => import("./pages/AdminSetup"));
 const AdminInvitation = lazy(() => import("./pages/AdminInvitation"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      refetchOnWindowFocus: false, // Désactiver le refetch automatique au focus
-      refetchOnMount: false, // Désactiver le refetch automatique au mount
-      refetchOnReconnect: false, // Désactiver le refetch automatique à la reconnexion
-      staleTime: 5 * 60 * 1000, // 5 minutes - les données sont considérées fraîches pendant 5 min
-      retry: 1, // Réessayer seulement 1 fois en cas d'erreur
-      retryDelay: 1000, // Attendre 1 seconde avant de réessayer
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      staleTime: 5 * 60 * 1000,
+      retry: 1,
+      retryDelay: 1000,
     },
   },
 });
@@ -85,112 +78,65 @@ const App = () => (
                   <Route path="/admin-setup" element={<AdminSetup />} />
                 )}
                 <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/onboarding" element={<Onboarding />} />
+                <Route path="/setup" element={<SetupWizard />} />
                 <Route path="/reset-password" element={<ResetPassword />} />
                 <Route path="/admin-invitation" element={<AdminInvitation />} />
-                <Route path="/security_audit" element={<SecurityAudit />} />
                 <Route path="/" element={
-                  <ProtectedRouteEnhanced>
-                    <IndexProtected />
-                  </ProtectedRouteEnhanced>
+                  <ProtectedRoute>
+                    <Index />
+                  </ProtectedRoute>
                 } />
                 <Route path="/pos" element={
-                  <ProtectedRouteEnhanced>
+                  <ProtectedRoute>
                     <POSCaisse />
-                  </ProtectedRouteEnhanced>
+                  </ProtectedRoute>
                 } />
                 <Route path="/declarants" element={
-                  <ProtectedRouteEnhanced>
+                  <ProtectedRoute allowedRoles={['admin', 'comptable']}>
                     <Declarants />
-                  </ProtectedRouteEnhanced>
+                  </ProtectedRoute>
                 } />
                 <Route path="/clients" element={
-                  <ProtectedRouteEnhanced>
-                    <ClientsProtected />
-                  </ProtectedRouteEnhanced>
+                  <ProtectedRoute>
+                    <Clients />
+                  </ProtectedRoute>
                 } />
                 <Route path="/transactions" element={
-                  <ProtectedRouteEnhanced requiredModule="finances">
-                    <TransactionsProtected />
-                  </ProtectedRouteEnhanced>
+                  <ProtectedRoute allowedRoles={['admin', 'comptable']}>
+                    <Transactions />
+                  </ProtectedRoute>
                 } />
                 <Route path="/factures" element={
-                  <ProtectedRouteEnhanced>
-                    <FacturesProtected />
-                  </ProtectedRouteEnhanced>
+                  <ProtectedRoute>
+                    <Factures />
+                  </ProtectedRoute>
                 } />
                 <Route path="/factures/new" element={
-                  <ProtectedRouteEnhanced>
+                  <ProtectedRoute>
                     <FacturesCreate />
-                  </ProtectedRouteEnhanced>
+                  </ProtectedRoute>
                 } />
                 <Route path="/factures/edit/:id" element={
-                  <ProtectedRouteEnhanced>
+                  <ProtectedRoute>
                     <FacturesCreate />
-                  </ProtectedRouteEnhanced>
+                  </ProtectedRoute>
                 } />
                 <Route path="/factures/view/:id" element={
-                  <ProtectedRouteEnhanced>
+                  <ProtectedRoute>
                     <FacturesView />
-                  </ProtectedRouteEnhanced>
+                  </ProtectedRoute>
                 } />
                 <Route path="/factures/preview/:id" element={
-                  <ProtectedRouteEnhanced>
+                  <ProtectedRoute>
                     <FacturesPreview />
-                  </ProtectedRouteEnhanced>
+                  </ProtectedRoute>
                 } />
-
                 <Route path="/settings" element={
-                  <ProtectedRouteEnhanced>
-                    <SettingsWithPermissions />
-                  </ProtectedRouteEnhanced>
-                } />
-                <Route path="/api-keys" element={
-                  <ProtectedRouteEnhanced>
-                    <ApiKeys />
-                  </ProtectedRouteEnhanced>
-                } />
-                <Route path="/webhooks" element={
-                  <ProtectedRouteEnhanced>
-                    <Webhooks />
-                  </ProtectedRouteEnhanced>
-                } />
-                <Route path="/activity-logs" element={
-                  <ProtectedRouteEnhanced adminOnly={false}>
-                    <ActivityLogs />
-                  </ProtectedRouteEnhanced>
-                } />
-                <Route path="/security-dashboard" element={
-                  <ProtectedRouteEnhanced>
-                    <SecurityDashboard />
-                  </ProtectedRouteEnhanced>
-                } />
-                <Route path="/comptes" element={
-                  <ProtectedRouteEnhanced requiredModule="finances">
-                    <ComptesFinancesProtected />
-                  </ProtectedRouteEnhanced>
-                } />
-                <Route path="/finances/categories" element={
-                  <ProtectedRouteEnhanced requiredModule="finances">
-                    <CategoriesFinances />
-                  </ProtectedRouteEnhanced>
-                } />
-                <Route path="/finances/statistiques" element={
-                  <ProtectedRouteEnhanced requiredModule="finances">
-                    <StatistiquesProtected />
-                  </ProtectedRouteEnhanced>
-                } />
-                <Route path="/rapports" element={
-                  <ProtectedRouteEnhanced>
-                    <Rapports />
-                  </ProtectedRouteEnhanced>
-                } />
-                {/* Routes redirigées vers /transactions (pages fusionnées) */}
-                <Route path="/operations-financieres" element={<Navigate to="/transactions" replace />} />
-                <Route path="/finances/encaissements" element={<Navigate to="/transactions" replace />} />
-                <Route path="/permission-diagnostic" element={
-                  <ProtectedRouteEnhanced>
-                    <PermissionDiagnosticPage />
-                  </ProtectedRouteEnhanced>
+                  <ProtectedRoute allowedRoles={['admin']}>
+                    <Settings />
+                  </ProtectedRoute>
                 } />
                 <Route path="*" element={<NotFound />} />
               </Routes>
