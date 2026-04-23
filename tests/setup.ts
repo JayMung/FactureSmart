@@ -4,17 +4,30 @@ import { vi } from 'vitest'
 // Mock Supabase pour les tests
 vi.mock('@/integrations/supabase/client', () => ({
   supabase: {
-    from: vi.fn(() => ({
-      insert: vi.fn(() => ({ data: null, error: null })),
-      select: vi.fn(() => ({ data: [], error: null })),
-      delete: vi.fn(() => ({ error: null })),
-      update: vi.fn(() => ({ data: null, error: null })),
-      eq: vi.fn(() => ({ data: null, error: null })),
-      gte: vi.fn(() => ({ data: null, error: null })),
-      lte: vi.fn(() => ({ data: null, error: null })),
-      order: vi.fn(() => ({ data: null, error: null })),
-      limit: vi.fn(() => ({ data: null, error: null })),
-    })),
+    from: vi.fn(() => {
+      // result = objet de base retourné par TOUTE la chaîne de query building
+      // IL a toutes les méthodes car chaque étape retourne ce même objet
+      const result: any = {
+        data: null,
+        error: null,
+        then: (onFulfilled: any, onRejected: any) =>
+          Promise.resolve({ data: null, error: null }).then(onFulfilled, onRejected),
+      };
+      // Chaque méthode CRUD retourne result (qui a toutes les méthodes de chainage)
+      const crud = () => result;
+      // Toutes les méthodes de query building + CRUD sont sur result
+      result.eq = crud;
+      result.gte = crud;
+      result.lte = crud;
+      result.order = crud;
+      result.limit = crud;
+      result.single = crud;
+      result.insert = crud;
+      result.select = crud;
+      result.update = crud;
+      result.delete = crud;
+      return result;
+    }),
     rpc: vi.fn(() => ({ data: null, error: null })),
   }
 }))

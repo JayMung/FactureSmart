@@ -62,7 +62,8 @@ const Login = () => {
 
       if (error) {
         await logLoginFailed(email, error.message);
-        throw new Error('Email ou mot de passe incorrect');
+        console.error('Supabase login error:', error);
+        throw new Error(error.message || 'Email ou mot de passe incorrect');
       }
 
       if (data.session && data.user) {

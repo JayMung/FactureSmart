@@ -8,9 +8,10 @@ import {
   Users,
   Receipt,
   Settings,
-  Package,
+
   FileText,
   LayoutDashboard,
+  Building2,
   LogOut,
   ChevronLeft,
   Menu,
@@ -20,8 +21,7 @@ import {
   Bell,
   Shield,
   BarChart3,
-  Ship,
-  Plane,
+
   Tag,
   ChevronDown,
   ChevronRight
@@ -42,7 +42,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   const { user } = useAuth();
   const { getAccessibleModules, checkPermission, isAdmin } = usePermissions();
-  const [colisMenuOpen, setColisMenuOpen] = useState(false);
+
 
   // Garder le menu Finances ouvert si on est sur une page de finances
   const isOnFinancesPage = currentPath?.startsWith('/finances') ||
@@ -93,31 +93,21 @@ const Sidebar: React.FC<SidebarProps> = ({
         path: '/factures',
         module: 'factures'
       },
-    ];
-
-  // Sous-menus pour Colis
-  const colisSubMenuItems: Array<{
-    icon: any;
-    label: string;
-    path: string;
-    module: string;
-    disabled?: boolean;
-  }> = [
       {
-        icon: Plane,
-        label: 'Colis Aériens',
-        path: '/colis/aeriens',
-        module: 'colis'
+        icon: LayoutDashboard,
+        label: 'POS Caisse',
+        path: '/pos',
+        module: null
       },
       {
-        icon: Ship,
-        label: 'Colis Maritimes',
-        path: '/colis/maritime',
-        module: 'colis'
-      }
+        icon: Building2,
+        label: 'Déclarants DGI',
+        path: '/declarants',
+        module: null
+      },
     ];
 
-  // Sous-menus pour Finances (simplifié après fusion)
+  // Sous-menus pour Finances
   const financesSubMenuItems: Array<{
     icon: any;
     label: string;
@@ -272,48 +262,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             </li>
           )}
 
-          {/* Menu Colis avec sous-menus */}
-          <li>
-            <button
-              className={cn(
-                "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200",
-                currentPath?.startsWith('/colis')
-                  ? "bg-white/15 text-white"
-                  : "text-white/80 hover:bg-white/10 hover:text-white"
-              )}
-              onClick={() => setColisMenuOpen(!colisMenuOpen)}
-            >
-              <Package className="h-5 w-5 flex-shrink-0" />
-              <span className="flex-1 text-left truncate">Colis</span>
-              {colisMenuOpen ? (
-                <ChevronDown className="h-4 w-4 flex-shrink-0 opacity-60" />
-              ) : (
-                <ChevronRight className="h-4 w-4 flex-shrink-0 opacity-60" />
-              )}
-            </button>
 
-            {/* Sous-menus Colis */}
-            {colisMenuOpen && (
-              <ul className="mt-1 ml-3 pl-3 border-l-2 border-white/10 space-y-0.5">
-                {colisSubMenuItems.filter(subItem => !subItem.disabled).map((subItem) => (
-                  <li key={subItem.path}>
-                    <Link
-                      to={subItem.path}
-                      className={cn(
-                        "flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-all duration-200",
-                        currentPath === subItem.path
-                          ? "bg-white text-emerald-700 font-medium shadow-md"
-                          : "text-white/70 hover:bg-white/10 hover:text-white"
-                      )}
-                    >
-                      <subItem.icon className="h-4 w-4 flex-shrink-0" />
-                      <span className="truncate">{subItem.label}</span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </li>
         </ul>
       </nav>
 

@@ -28,7 +28,7 @@ interface ClientComboboxProps {
 }
 
 export function ClientCombobox({
-  clients,
+  clients = [],
   value,
   onValueChange,
   placeholder = "Sélectionner un client...",
@@ -39,14 +39,15 @@ export function ClientCombobox({
   const [open, setOpen] = React.useState(false);
   const [searchQuery, setSearchQuery] = React.useState("");
 
-  const selectedClient = clients.find((client) => client.id === value);
+  const safeClients: Client[] = clients ?? [];
+  const selectedClient = safeClients.find((client) => client.id === value);
 
   // Filtrer les clients en fonction de la recherche
   const filteredClients = React.useMemo(() => {
-    if (!searchQuery) return clients;
+    if (!searchQuery) return safeClients;
     
     const query = searchQuery.toLowerCase();
-    return clients.filter((client) => {
+    return safeClients.filter((client) => {
       const searchableText = [
         client.nom,
         client.telephone,

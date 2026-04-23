@@ -39,8 +39,7 @@ const FacturesProtected = lazy(() => import("./pages/Factures-Protected"));
 const FacturesCreate = lazy(() => import("./pages/Factures-Create"));
 const FacturesView = lazy(() => import("./pages/Factures-View"));
 const FacturesPreview = lazy(() => import("./pages/Factures-Preview"));
-const ColisAeriens = lazy(() => import("./pages/Colis-Aeriens"));
-const ColisAeriensCreate = lazy(() => import("./pages/Colis-Aeriens-Create"));
+
 const SettingsWithPermissions = lazy(() => import("./pages/Settings-Permissions"));
 const ActivityLogs = lazy(() => import("./pages/ActivityLogs"));
 const SecurityDashboard = lazy(() => import("./pages/SecurityDashboard"));
@@ -51,7 +50,9 @@ const CategoriesFinances = lazy(() => import("./pages/Categories-Finances"));
 const ApiKeys = lazy(() => import("./pages/ApiKeys"));
 const Webhooks = lazy(() => import("./pages/Webhooks"));
 const StatistiquesProtected = lazy(() => import("./pages/Statistiques-Protected"));
-const ColisMaritimePage = lazy(() => import('./pages/Colis-Maritime'));
+
+const POSCaisse = lazy(() => import("./pages/POS-Caisse"));
+const Declarants = lazy(() => import("./pages/Declarants"));
 const Rapports = lazy(() => import("./pages/Rapports"));
 const AdminSetup = lazy(() => import("./pages/AdminSetup"));
 const AdminInvitation = lazy(() => import("./pages/AdminInvitation"));
@@ -92,6 +93,16 @@ const App = () => (
                     <IndexProtected />
                   </ProtectedRouteEnhanced>
                 } />
+                <Route path="/pos" element={
+                  <ProtectedRouteEnhanced>
+                    <POSCaisse />
+                  </ProtectedRouteEnhanced>
+                } />
+                <Route path="/declarants" element={
+                  <ProtectedRouteEnhanced>
+                    <Declarants />
+                  </ProtectedRouteEnhanced>
+                } />
                 <Route path="/clients" element={
                   <ProtectedRouteEnhanced>
                     <ClientsProtected />
@@ -127,26 +138,7 @@ const App = () => (
                     <FacturesPreview />
                   </ProtectedRouteEnhanced>
                 } />
-                <Route path="/colis/aeriens" element={
-                  <ProtectedRouteEnhanced>
-                    <ColisAeriens />
-                  </ProtectedRouteEnhanced>
-                } />
-                <Route path="/colis/aeriens/nouveau" element={
-                  <ProtectedRouteEnhanced>
-                    <ColisAeriensCreate />
-                  </ProtectedRouteEnhanced>
-                } />
-                <Route path="/colis/aeriens/:id/modifier" element={
-                  <ProtectedRouteEnhanced>
-                    <ColisAeriensCreate />
-                  </ProtectedRouteEnhanced>
-                } />
-                <Route path="/colis/maritime" element={
-                  <ProtectedRouteEnhanced>
-                    <ColisMaritimePage />
-                  </ProtectedRouteEnhanced>
-                } />
+
                 <Route path="/settings" element={
                   <ProtectedRouteEnhanced>
                     <SettingsWithPermissions />
