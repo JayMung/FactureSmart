@@ -1,8 +1,8 @@
-# Design System — FactureSmart
+# Design System — FactureX
 
 ## 🎨 Vue d'ensemble
 
-Design System pour **FactureSmart** — SaaS de facturation électronique conforme DGI / RDC.
+Design System pour **FactureX** — SaaS de facturation électronique conforme DGI / RDC.
 Design moderne, épuré, professionnel, responsive (desktop + mobile).
 
 ---
