@@ -45,6 +45,8 @@ const Factures = lazy(() => import("./pages/Factures-Protected"));
 const FacturesCreate = lazy(() => import("./pages/Factures-Create"));
 const FacturesView = lazy(() => import("./pages/Factures-View"));
 const FacturesPreview = lazy(() => import("./pages/Factures-Preview"));
+const DgiStatus = lazy(() => import("./pages/DgiStatus"));
+const Devis = lazy(() => import("./pages/Devis"));
 
 const Settings = lazy(() => import("./pages/Settings"));
 
@@ -151,6 +153,18 @@ const App = () => (
                     <FacturesPreview />
                   </ProtectedRoute>
                 } />
+                <Route path="/devis" element={
+                  <ProtectedRoute>
+                    <Devis />
+                  </ProtectedRoute>
+                } />
+
+                <Route path="/factures/:id/dgi-status" element={
+                  <ProtectedRoute>
+                    <DgiStatus />
+                  </ProtectedRoute>
+                } />
+
                 <Route path="/settings" element={
                   <ProtectedRoute allowedRoles={['admin']}>
                     <Settings />
