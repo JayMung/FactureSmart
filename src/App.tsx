@@ -46,6 +46,8 @@ const FacturesCreate = lazy(() => import("./pages/Factures-Create"));
 const FacturesView = lazy(() => import("./pages/Factures-View"));
 const FacturesPreview = lazy(() => import("./pages/Factures-Preview"));
 const DgiStatus = lazy(() => import("./pages/DgiStatus"));
+const InvoiceDetailFull = lazy(() => import("./pages/InvoiceDetailFull"));
+const InvoiceHistory = lazy(() => import("./pages/InvoiceHistory"));
 const Devis = lazy(() => import("./pages/Devis"));
 
 const Settings = lazy(() => import("./pages/Settings"));
@@ -162,6 +164,18 @@ const App = () => (
                 <Route path="/factures/:id/dgi-status" element={
                   <ProtectedRoute>
                     <DgiStatus />
+                  </ProtectedRoute>
+                } />
+
+                <Route path="/factures/:id/detail" element={
+                  <ProtectedRoute>
+                    <InvoiceDetailFull />
+                  </ProtectedRoute>
+                } />
+
+                <Route path="/factures/:id/history" element={
+                  <ProtectedRoute>
+                    <InvoiceHistory />
                   </ProtectedRoute>
                 } />
 
