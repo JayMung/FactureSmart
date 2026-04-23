@@ -13,8 +13,8 @@
         extend: {
           fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
           colors: {
-            primary: { 50: '#eff6ff', 100: '#dbeafe', 200: '#bfdbfe', 300: '#93c5fd', 400: '#60a5fa', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8', 800: '#1e40af', 900: '#1e3a8a' },
-            fx: { blue: '#0056D6', 'blue-dark': '#00419E', 'blue-light': '#E8F0FE', gray: '#F8FAFC', 'gray-100': '#F1F5F9', 'gray-200': '#E2E8F0', 'gray-300': '#CBD5E1', 'gray-500': '#64748B', 'gray-700': '#334155', 'gray-900': '#0F172A', success: '#10B981', warning: '#F59E0B', danger: '#EF4444' }
+            primary: { 50: '#f0fdf4', 100: '#dcfce7', 200: '#bbf7d0', 300: '#86efac', 400: '#4ade80', 500: '#22c55e', 600: '#16a34a', 700: '#15803d', 800: '#166534', 900: '#14532d' },
+            fx: { blue: '#10B981', 'blue-dark': '#15803d', 'blue-light': '#E8F0FE', gray: '#F8FAFC', 'gray-100': '#F1F5F9', 'gray-200': '#E2E8F0', 'gray-300': '#CBD5E1', 'gray-500': '#64748B', 'gray-700': '#334155', 'gray-900': '#0F172A', success: '#10B981', warning: '#F59E0B', danger: '#EF4444' }
           }
         }
       }
@@ -24,8 +24,8 @@
     body { font-family: 'Inter', system-ui, sans-serif; }
     .rdc-bg { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='133' viewBox='0 0 200 133'%3E%3Crect width='66' height='44' fill='%230056D6' fill-opacity='0.03'/%3E%3Crect y='44' width='66' height='45' fill='%23FFD100' fill-opacity='0.03'/%3E%3Crect y='89' width='66' height='44' fill='%230056D6' fill-opacity='0.03'/%3E%3Crect x='66' width='68' height='133' fill='%230056D6' fill-opacity='0.03'/%3E%3Ccircle cx='100' cy='66' r='16' fill='none' stroke='%230056D6' stroke-opacity='0.05' stroke-width='2'/%3E%3Ccircle cx='100' cy='66' r='8' fill='%23FFD100' fill-opacity='0.04'/%3E%3C/svg%3E"); background-size: 200px 133px; }
     .sidebar-item:hover { background: #E8F0FE; }
-    .sidebar-item.active { background: #E8F0FE; color: #0056D6; }
-    .sidebar-item.active .sidebar-icon { color: #0056D6; }
+    .sidebar-item.active { background: #E8F0FE; color: #10B981; }
+    .sidebar-item.active .sidebar-icon { color: #10B981; }
     .stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,86,214,0.12); }
     .card-hover { transition: all 0.2s ease; }
     .card-hover:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
@@ -41,7 +41,7 @@
     <!-- Logo -->
     <div class="px-6 py-5 border-b border-gray-100">
       <div class="flex items-center gap-3">
-        <div class="w-9 h-9 bg-primary-600 rounded-xl flex items-center justify-center flex-shrink-0">
+        <div class="w-9 h-9 bg-green-600 rounded-xl flex items-center justify-center flex-shrink-0">
           <i class="ri-file-paper-2-line text-white text-base"></i>
         </div>
         <div>
@@ -93,15 +93,15 @@
       <a href="#" class="sidebar-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">
         <i class="ri-notification-3-line sidebar-icon text-lg text-gray-500"></i>
         Notifications
-        <span class="ml-auto bg-primary-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">3</span>
+        <span class="ml-auto bg-green-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">3</span>
       </a>
     </nav>
 
     <!-- User profile -->
     <div class="border-t border-gray-100 p-4">
       <div class="flex items-center gap-3">
-        <div class="w-9 h-9 bg-primary-100 rounded-full flex items-center justify-center flex-shrink-0">
-          <span class="text-primary-700 text-sm font-bold">JP</span>
+        <div class="w-9 h-9 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+          <span class="text-green-700 text-sm font-bold">JP</span>
         </div>
         <div class="flex-1 min-w-0">
           <p class="text-sm font-semibold text-gray-900 truncate">Jean Pambu</p>
@@ -126,9 +126,9 @@
       <div class="flex items-center gap-3">
         <div class="relative">
           <i class="ri-notification-3-line absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg"></i>
-          <input type="text" placeholder="Rechercher..." class="pl-9 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-100 focus:border-primary-300 w-56">
+          <input type="text" placeholder="Rechercher..." class="pl-9 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-100 focus:border-green-300 w-56">
         </div>
-        <button class="w-9 h-9 flex items-center justify-center bg-primary-600 text-white rounded-xl hover:bg-primary-700 transition-colors shadow-sm">
+        <button class="w-9 h-9 flex items-center justify-center bg-green-600 text-white rounded-xl hover:bg-green-700 transition-colors shadow-sm">
           <i class="ri-add-line text-lg"></i>
         </button>
         <div class="w-9 h-9 bg-gray-100 rounded-xl flex items-center justify-center">
@@ -147,7 +147,7 @@
           <p class="text-sm text-gray-500 mt-0.5">Vue d'ensemble de votre activité fiscale</p>
         </div>
         <div class="flex items-center gap-3">
-          <select class="px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-100">
+          <select class="px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-100">
             <option>Janvier — Avril 2026</option>
             <option>Janvier — Décembre 2025</option>
           </select>
@@ -155,7 +155,7 @@
             <i class="ri-download-line text-gray-500"></i>
             Exporter
           </button>
-          <button class="flex items-center gap-2 px-5 py-2.5 bg-primary-600 text-white rounded-xl text-sm font-semibold hover:bg-primary-700 transition-colors shadow-sm">
+          <button class="flex items-center gap-2 px-5 py-2.5 bg-green-600 text-white rounded-xl text-sm font-semibold hover:bg-green-700 transition-colors shadow-sm">
             <i class="ri-add-line"></i>
             Nouvelle facture
           </button>
@@ -167,8 +167,8 @@
         <!-- Factures émises -->
         <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm stat-card transition-all duration-200 cursor-pointer">
           <div class="flex items-center justify-between mb-4">
-            <div class="w-11 h-11 rounded-xl bg-primary-100 flex items-center justify-center">
-              <i class="ri-file-list-3-line text-primary-600 text-lg"></i>
+            <div class="w-11 h-11 rounded-xl bg-green-100 flex items-center justify-center">
+              <i class="ri-file-list-3-line text-green-600 text-lg"></i>
             </div>
             <span class="text-xs font-medium text-green-600 bg-green-50 px-2 py-1 rounded-full">
               <i class="ri-arrow-up-s-line align-middle"></i>+12%
@@ -234,83 +234,83 @@
               <p class="text-xs text-gray-400 mt-0.5">Évolution sur 12 mois</p>
             </div>
             <div class="flex items-center gap-2 text-xs">
-              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-primary-600"></span> Émises</span>
+              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-green-600"></span> Émises</span>
               <span class="flex items-center gap-1.5 ml-2"><span class="w-2.5 h-2.5 rounded-sm bg-green-500"></span> Validées</span>
             </div>
           </div>
           <!-- Simple bar chart -->
           <div class="flex items-end gap-3 h-44">
             <div class="flex-1 flex flex-col items-center gap-1">
-              <div class="w-full bg-primary-100 rounded-t-lg chart-bar relative" style="height:35%">
-                <div class="absolute inset-0 bg-primary-600 rounded-t-lg opacity-80" style="height:55%"></div>
+              <div class="w-full bg-green-100 rounded-t-lg chart-bar relative" style="height:35%">
+                <div class="absolute inset-0 bg-green-600 rounded-t-lg opacity-80" style="height:55%"></div>
               </div>
               <span class="text-[10px] text-gray-400 font-medium">Mai</span>
             </div>
             <div class="flex-1 flex flex-col items-center gap-1">
-              <div class="w-full bg-primary-100 rounded-t-lg chart-bar relative" style="height:45%">
-                <div class="absolute inset-0 bg-primary-600 rounded-t-lg opacity-80" style="height:65%"></div>
+              <div class="w-full bg-green-100 rounded-t-lg chart-bar relative" style="height:45%">
+                <div class="absolute inset-0 bg-green-600 rounded-t-lg opacity-80" style="height:65%"></div>
               </div>
               <span class="text-[10px] text-gray-400 font-medium">Juin</span>
             </div>
             <div class="flex-1 flex flex-col items-center gap-1">
-              <div class="w-full bg-primary-100 rounded-t-lg chart-bar relative" style="height:55%">
-                <div class="absolute inset-0 bg-primary-600 rounded-t-lg opacity-80" style="height:72%"></div>
+              <div class="w-full bg-green-100 rounded-t-lg chart-bar relative" style="height:55%">
+                <div class="absolute inset-0 bg-green-600 rounded-t-lg opacity-80" style="height:72%"></div>
               </div>
               <span class="text-[10px] text-gray-400 font-medium">Juil</span>
             </div>
             <div class="flex-1 flex flex-col items-center gap-1">
-              <div class="w-full bg-primary-100 rounded-t-lg chart-bar relative" style="height:48%">
-                <div class="absolute inset-0 bg-primary-600 rounded-t-lg opacity-80" style="height:60%"></div>
+              <div class="w-full bg-green-100 rounded-t-lg chart-bar relative" style="height:48%">
+                <div class="absolute inset-0 bg-green-600 rounded-t-lg opacity-80" style="height:60%"></div>
               </div>
               <span class="text-[10px] text-gray-400 font-medium">Août</span>
             </div>
             <div class="flex-1 flex flex-col items-center gap-1">
-              <div class="w-full bg-primary-100 rounded-t-lg chart-bar relative" style="height:60%">
-                <div class="absolute inset-0 bg-primary-600 rounded-t-lg opacity-80" style="height:78%"></div>
+              <div class="w-full bg-green-100 rounded-t-lg chart-bar relative" style="height:60%">
+                <div class="absolute inset-0 bg-green-600 rounded-t-lg opacity-80" style="height:78%"></div>
               </div>
               <span class="text-[10px] text-gray-400 font-medium">Sep</span>
             </div>
             <div class="flex-1 flex flex-col items-center gap-1">
-              <div class="w-full bg-primary-100 rounded-t-lg chart-bar relative" style="height:70%">
-                <div class="absolute inset-0 bg-primary-600 rounded-t-lg opacity-80" style="height:88%"></div>
+              <div class="w-full bg-green-100 rounded-t-lg chart-bar relative" style="height:70%">
+                <div class="absolute inset-0 bg-green-600 rounded-t-lg opacity-80" style="height:88%"></div>
               </div>
               <span class="text-[10px] text-gray-400 font-medium">Oct</span>
             </div>
             <div class="flex-1 flex flex-col items-center gap-1">
-              <div class="w-full bg-primary-100 rounded-t-lg chart-bar relative" style="height:82%">
-                <div class="absolute inset-0 bg-primary-600 rounded-t-lg opacity-80" style="height:100%"></div>
+              <div class="w-full bg-green-100 rounded-t-lg chart-bar relative" style="height:82%">
+                <div class="absolute inset-0 bg-green-600 rounded-t-lg opacity-80" style="height:100%"></div>
               </div>
               <span class="text-[10px] text-gray-400 font-medium">Nov</span>
             </div>
             <div class="flex-1 flex flex-col items-center gap-1">
-              <div class="w-full bg-primary-100 rounded-t-lg chart-bar relative" style="height:88%">
-                <div class="absolute inset-0 bg-primary-600 rounded-t-lg opacity-80" style="height:95%"></div>
+              <div class="w-full bg-green-100 rounded-t-lg chart-bar relative" style="height:88%">
+                <div class="absolute inset-0 bg-green-600 rounded-t-lg opacity-80" style="height:95%"></div>
               </div>
               <span class="text-[10px] text-gray-400 font-medium">Déc</span>
             </div>
             <div class="flex-1 flex flex-col items-center gap-1">
-              <div class="w-full bg-primary-100 rounded-t-lg chart-bar relative" style="height:72%">
-                <div class="absolute inset-0 bg-primary-600 rounded-t-lg opacity-80" style="height:82%"></div>
+              <div class="w-full bg-green-100 rounded-t-lg chart-bar relative" style="height:72%">
+                <div class="absolute inset-0 bg-green-600 rounded-t-lg opacity-80" style="height:82%"></div>
               </div>
               <span class="text-[10px] text-gray-400 font-medium">Jan</span>
             </div>
             <div class="flex-1 flex flex-col items-center gap-1">
-              <div class="w-full bg-primary-100 rounded-t-lg chart-bar relative" style="height:90%">
-                <div class="absolute inset-0 bg-primary-600 rounded-t-lg opacity-80" style="height:96%"></div>
+              <div class="w-full bg-green-100 rounded-t-lg chart-bar relative" style="height:90%">
+                <div class="absolute inset-0 bg-green-600 rounded-t-lg opacity-80" style="height:96%"></div>
               </div>
               <span class="text-[10px] text-gray-400 font-medium">Fév</span>
             </div>
             <div class="flex-1 flex flex-col items-center gap-1">
-              <div class="w-full bg-primary-100 rounded-t-lg chart-bar relative" style="height:95%">
-                <div class="absolute inset-0 bg-primary-600 rounded-t-lg opacity-80" style="height:98%"></div>
+              <div class="w-full bg-green-100 rounded-t-lg chart-bar relative" style="height:95%">
+                <div class="absolute inset-0 bg-green-600 rounded-t-lg opacity-80" style="height:98%"></div>
               </div>
               <span class="text-[10px] text-gray-400 font-medium">Mar</span>
             </div>
             <div class="flex-1 flex flex-col items-center gap-1">
-              <div class="w-full bg-primary-600 rounded-t-lg chart-bar" style="height:100%">
+              <div class="w-full bg-green-600 rounded-t-lg chart-bar" style="height:100%">
                 <div class="w-full bg-green-500 rounded-t-lg opacity-90" style="height:85%"></div>
               </div>
-              <span class="text-[10px] text-primary-700 font-semibold">Avr</span>
+              <span class="text-[10px] text-green-700 font-semibold">Avr</span>
             </div>
           </div>
         </div>
@@ -355,8 +355,8 @@
               <span class="ml-auto text-base font-bold text-red-600">0</span>
             </div>
           </div>
-          <div class="mt-5 p-3 bg-primary-50 rounded-xl border border-primary-100">
-            <p class="text-xs text-primary-700 font-medium flex items-center gap-1.5">
+          <div class="mt-5 p-3 bg-green-50 rounded-xl border border-green-100">
+            <p class="text-xs text-green-700 font-medium flex items-center gap-1.5">
               <i class="ri-information-line"></i>
               Dernière sync DGI : il y a 2 min
             </p>
@@ -371,7 +371,7 @@
             <h3 class="text-base font-semibold text-gray-900">Dernières factures</h3>
             <p class="text-xs text-gray-400 mt-0.5">5 factures les plus récentes</p>
           </div>
-          <a href="#" class="text-sm font-medium text-primary-600 hover:text-primary-700 flex items-center gap-1">
+          <a href="#" class="text-sm font-medium text-green-600 hover:text-green-700 flex items-center gap-1">
             Voir tout <i class="ri-arrow-right-s-line"></i>
           </a>
         </div>
@@ -390,7 +390,7 @@
           <tbody class="divide-y divide-gray-50">
             <tr class="hover:bg-gray-50 transition-colors card-hover">
               <td class="py-3.5">
-                <span class="text-sm font-semibold text-primary-700">#FX-2026-0142</span>
+                <span class="text-sm font-semibold text-green-700">FAC-2026-0142</span>
               </td>
               <td class="py-3.5"><span class="text-sm text-gray-600">22 Avr 2026</span></td>
               <td class="py-3.5">
@@ -409,17 +409,17 @@
               </td>
               <td class="py-3.5 text-center">
                 <div class="flex items-center justify-center gap-1">
-                  <button class="w-7 h-7 rounded-lg bg-gray-100 hover:bg-primary-50 text-gray-500 hover:text-primary-600 flex items-center justify-center transition-colors" title="Voir">
+                  <button class="w-7 h-7 rounded-lg bg-gray-100 hover:bg-green-50 text-gray-500 hover:text-green-600 flex items-center justify-center transition-colors" title="Voir">
                     <i class="ri-eye-line text-sm"></i>
                   </button>
-                  <button class="w-7 h-7 rounded-lg bg-gray-100 hover:bg-primary-50 text-gray-500 hover:text-primary-600 flex items-center justify-center transition-colors" title="Télécharger PDF">
+                  <button class="w-7 h-7 rounded-lg bg-gray-100 hover:bg-green-50 text-gray-500 hover:text-green-600 flex items-center justify-center transition-colors" title="Télécharger PDF">
                     <i class="ri-download-line text-sm"></i>
                   </button>
                 </div>
               </td>
             </tr>
             <tr class="hover:bg-gray-50 transition-colors card-hover">
-              <td class="py-3.5"><span class="text-sm font-semibold text-primary-700">#FX-2026-0141</span></td>
+              <td class="py-3.5"><span class="text-sm font-semibold text-green-700">FAC-2026-0141</span></td>
               <td class="py-3.5"><span class="text-sm text-gray-600">21 Avr 2026</span></td>
               <td class="py-3.5">
                 <div class="flex items-center gap-2.5">
@@ -437,13 +437,13 @@
               </td>
               <td class="py-3.5 text-center">
                 <div class="flex items-center justify-center gap-1">
-                  <button class="w-7 h-7 rounded-lg bg-gray-100 hover:bg-primary-50 text-gray-500 hover:text-primary-600 flex items-center justify-center transition-colors"><i class="ri-eye-line text-sm"></i></button>
-                  <button class="w-7 h-7 rounded-lg bg-gray-100 hover:bg-primary-50 text-gray-500 hover:text-primary-600 flex items-center justify-center transition-colors"><i class="ri-download-line text-sm"></i></button>
+                  <button class="w-7 h-7 rounded-lg bg-gray-100 hover:bg-green-50 text-gray-500 hover:text-green-600 flex items-center justify-center transition-colors"><i class="ri-eye-line text-sm"></i></button>
+                  <button class="w-7 h-7 rounded-lg bg-gray-100 hover:bg-green-50 text-gray-500 hover:text-green-600 flex items-center justify-center transition-colors"><i class="ri-download-line text-sm"></i></button>
                 </div>
               </td>
             </tr>
             <tr class="hover:bg-gray-50 transition-colors card-hover">
-              <td class="py-3.5"><span class="text-sm font-semibold text-primary-700">#FX-2026-0140</span></td>
+              <td class="py-3.5"><span class="text-sm font-semibold text-green-700">FAC-2026-0140</span></td>
               <td class="py-3.5"><span class="text-sm text-gray-600">20 Avr 2026</span></td>
               <td class="py-3.5">
                 <div class="flex items-center gap-2.5">
@@ -461,13 +461,13 @@
               </td>
               <td class="py-3.5 text-center">
                 <div class="flex items-center justify-center gap-1">
-                  <button class="w-7 h-7 rounded-lg bg-gray-100 hover:bg-primary-50 text-gray-500 hover:text-primary-600 flex items-center justify-center transition-colors"><i class="ri-eye-line text-sm"></i></button>
-                  <button class="w-7 h-7 rounded-lg bg-gray-100 hover:bg-primary-50 text-gray-500 hover:text-primary-600 flex items-center justify-center transition-colors"><i class="ri-download-line text-sm"></i></button>
+                  <button class="w-7 h-7 rounded-lg bg-gray-100 hover:bg-green-50 text-gray-500 hover:text-green-600 flex items-center justify-center transition-colors"><i class="ri-eye-line text-sm"></i></button>
+                  <button class="w-7 h-7 rounded-lg bg-gray-100 hover:bg-green-50 text-gray-500 hover:text-green-600 flex items-center justify-center transition-colors"><i class="ri-download-line text-sm"></i></button>
                 </div>
               </td>
             </tr>
             <tr class="hover:bg-gray-50 transition-colors card-hover">
-              <td class="py-3.5"><span class="text-sm font-semibold text-primary-700">#FX-2026-0139</span></td>
+              <td class="py-3.5"><span class="text-sm font-semibold text-green-700">FAC-2026-0139</span></td>
               <td class="py-3.5"><span class="text-sm text-gray-600">19 Avr 2026</span></td>
               <td class="py-3.5">
                 <div class="flex items-center gap-2.5">
@@ -485,13 +485,13 @@
               </td>
               <td class="py-3.5 text-center">
                 <div class="flex items-center justify-center gap-1">
-                  <button class="w-7 h-7 rounded-lg bg-gray-100 hover:bg-primary-50 text-gray-500 hover:text-primary-600 flex items-center justify-center transition-colors"><i class="ri-eye-line text-sm"></i></button>
+                  <button class="w-7 h-7 rounded-lg bg-gray-100 hover:bg-green-50 text-gray-500 hover:text-green-600 flex items-center justify-center transition-colors"><i class="ri-eye-line text-sm"></i></button>
                   <button class="w-7 h-7 rounded-lg bg-gray-100 hover:bg-orange-50 text-orange-500 hover:text-orange-600 flex items-center justify-center transition-colors" title="Corriger"><i class="ri-edit-line text-sm"></i></button>
                 </div>
               </td>
             </tr>
             <tr class="hover:bg-gray-50 transition-colors card-hover">
-              <td class="py-3.5"><span class="text-sm font-semibold text-primary-700">#FX-2026-0138</span></td>
+              <td class="py-3.5"><span class="text-sm font-semibold text-green-700">FAC-2026-0138</span></td>
               <td class="py-3.5"><span class="text-sm text-gray-600">18 Avr 2026</span></td>
               <td class="py-3.5">
                 <div class="flex items-center gap-2.5">
@@ -509,8 +509,8 @@
               </td>
               <td class="py-3.5 text-center">
                 <div class="flex items-center justify-center gap-1">
-                  <button class="w-7 h-7 rounded-lg bg-gray-100 hover:bg-primary-50 text-gray-500 hover:text-primary-600 flex items-center justify-center transition-colors"><i class="ri-eye-line text-sm"></i></button>
-                  <button class="w-7 h-7 rounded-lg bg-gray-100 hover:bg-primary-50 text-gray-500 hover:text-primary-600 flex items-center justify-center transition-colors"><i class="ri-download-line text-sm"></i></button>
+                  <button class="w-7 h-7 rounded-lg bg-gray-100 hover:bg-green-50 text-gray-500 hover:text-green-600 flex items-center justify-center transition-colors"><i class="ri-eye-line text-sm"></i></button>
+                  <button class="w-7 h-7 rounded-lg bg-gray-100 hover:bg-green-50 text-gray-500 hover:text-green-600 flex items-center justify-center transition-colors"><i class="ri-download-line text-sm"></i></button>
                 </div>
               </td>
             </tr>

@@ -12,7 +12,7 @@
       theme: {
         extend: {
           fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] },
-          colors: { fx: { blue: '#0056D6' } }
+          colors: { fx: { blue: '#10B981' } }
         }
       }
     }
@@ -41,13 +41,13 @@
       <!-- Printer settings -->
       <div class="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm fade-up">
         <h2 class="text-base font-bold text-gray-900 mb-4 flex items-center gap-2">
-          <i class="ri-printer-line text-primary-600 text-lg"></i> Paramètres imprimante
+          <i class="ri-printer-line text-green-600 text-lg"></i> Paramètres imprimante
         </h2>
         <div class="space-y-4">
           <div>
             <label class="text-xs font-semibold text-gray-500 block mb-1.5">Type de ticket</label>
             <div class="flex gap-2">
-              <button class="flex-1 py-2.5 border-2 border-primary-300 bg-primary-50 text-primary-700 rounded-xl text-sm font-semibold">Ticket 80mm</button>
+              <button class="flex-1 py-2.5 border-2 border-green-300 bg-green-50 text-green-700 rounded-xl text-sm font-semibold">Ticket 80mm</button>
               <button class="flex-1 py-2.5 border border-gray-200 text-gray-600 rounded-xl text-sm font-medium hover:bg-gray-50">A4</button>
             </div>
           </div>
@@ -66,7 +66,7 @@
             <label class="text-xs font-semibold text-gray-500 block mb-1.5">Format QR Code</label>
             <div class="flex gap-2">
               <button class="flex-1 py-2 border border-gray-200 text-gray-600 rounded-xl text-xs font-medium hover:bg-gray-50">Petit</button>
-              <button class="flex-1 py-2 border-2 border-primary-300 bg-primary-50 text-primary-700 rounded-xl text-xs font-semibold">Moyen</button>
+              <button class="flex-1 py-2 border-2 border-green-300 bg-green-50 text-green-700 rounded-xl text-xs font-semibold">Moyen</button>
               <button class="flex-1 py-2 border border-gray-200 text-gray-600 rounded-xl text-xs font-medium hover:bg-gray-50">Grand</button>
             </div>
           </div>
@@ -83,8 +83,8 @@
         </h2>
         <div class="mb-4">
           <label class="text-xs font-semibold text-gray-500 block mb-1.5">Sélectionner client</label>
-          <div class="flex items-center gap-2 p-3 bg-gray-50 rounded-xl border border-gray-100 cursor-pointer hover:border-primary-200 transition-colors">
-            <div class="w-7 h-7 bg-primary-100 rounded-lg flex items-center justify-center"><i class="ri-user-line text-primary-600 text-xs"></i></div>
+          <div class="flex items-center gap-2 p-3 bg-gray-50 rounded-xl border border-gray-100 cursor-pointer hover:border-green-200 transition-colors">
+            <div class="w-7 h-7 bg-green-100 rounded-lg flex items-center justify-center"><i class="ri-user-line text-green-600 text-xs"></i></div>
             <div class="flex-1">
               <p class="text-sm font-medium text-gray-700">Client anonyme</p>
             </div>
@@ -102,7 +102,7 @@
           <div class="flex justify-between text-xs text-gray-500"><span>TVA (18%)</span><span>CDF 27 000</span></div>
           <div class="flex justify-between text-sm font-bold text-gray-900 pt-1.5 border-t border-gray-100"><span>TOTAL</span><span>CDF 177 000</span></div>
         </div>
-        <button class="w-full py-3 bg-primary-600 text-white rounded-xl text-sm font-bold shadow-sm hover:bg-primary-700 transition-colors flex items-center justify-center gap-2">
+        <button class="w-full py-3 bg-green-600 text-white rounded-xl text-sm font-bold shadow-sm hover:bg-green-700 transition-colors flex items-center justify-center gap-2">
           <i class="ri-bill-line"></i> IMPRIMER TICKET
         </button>
       </div>
@@ -112,7 +112,7 @@
     <div class="mt-8">
       <div class="flex items-center justify-between mb-4">
         <h2 class="text-base font-bold text-gray-900">Aperçu ticket 80mm</h2>
-        <button class="px-4 py-2 bg-primary-600 text-white rounded-xl text-xs font-semibold hover:bg-primary-700 shadow-sm no-print flex items-center gap-2">
+        <button class="px-4 py-2 bg-green-600 text-white rounded-xl text-xs font-semibold hover:bg-green-700 shadow-sm no-print flex items-center gap-2">
           <i class="ri-printer-line"></i> Imprimer
         </button>
       </div>
@@ -130,7 +130,7 @@
 
           <div class="border-t border-b border-dashed border-gray-300 py-2 mb-3 text-center">
             <p class="text-[8px] text-gray-600">TICKET DE CAISSE</p>
-            <p class="text-[9px] font-bold text-gray-900">#T-2026-0488</p>
+            <p class="text-[9px] font-bold text-gray-900">FAC-0488</p>
             <p class="text-[8px] text-gray-500">23/04/2026 14:32</p>
           </div>
 
@@ -202,7 +202,7 @@
 
           <!-- Footer -->
           <div class="text-center border-t border-dashed border-gray-300 pt-2">
-            <p class="text-[7px] text-gray-400">Code: T-2026-0488-DGI</p>
+            <p class="text-[7px] text-gray-400">Code: FAC-2026-0488</p>
             <p class="text-[7px] text-gray-400 mt-0.5">Merci de votre visite !</p>
           </div>
         </div>

@@ -13,8 +13,8 @@
         extend: {
           fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
           colors: {
-            primary: { 600: '#2563eb', 700: '#1d4ed8' },
-            fx: { blue: '#0056D6' }
+            primary: { 600: '#16a34a', 700: '#15803d' },
+            fx: { blue: '#10B981' }
           }
         }
       }
@@ -22,7 +22,7 @@
   </script>
   <style>
     body { font-family: 'Inter', system-ui, sans-serif; }
-    .notif-unread { border-left: 3px solid #0056D6; background: #eff6ff; }
+    .notif-unread { border-left: 3px solid #10B981; background: #f0fdf4; }
     .slide-in { animation: slideIn 0.3s ease-out; }
     @keyframes slideIn { from { opacity: 0; transform: translateX(-12px); } to { opacity: 1; transform: translateX(0); } }
   </style>
@@ -33,7 +33,7 @@
   <aside class="w-64 bg-white border-r border-gray-200 flex flex-col fixed h-full z-20">
     <div class="px-6 py-5 border-b border-gray-100">
       <div class="flex items-center gap-3">
-        <div class="w-9 h-9 bg-primary-600 rounded-xl flex items-center justify-center flex-shrink-0">
+        <div class="w-9 h-9 bg-green-600 rounded-xl flex items-center justify-center flex-shrink-0">
           <i class="ri-file-paper-2-line text-white text-base"></i>
         </div>
         <div>
@@ -62,8 +62,8 @@
     </nav>
     <div class="border-t border-gray-100 p-4">
       <div class="flex items-center gap-3">
-        <div class="w-9 h-9 bg-primary-100 rounded-full flex items-center justify-center flex-shrink-0">
-          <span class="text-primary-700 text-sm font-bold">JP</span>
+        <div class="w-9 h-9 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+          <span class="text-green-700 text-sm font-bold">JP</span>
         </div>
         <div class="flex-1 min-w-0">
           <p class="text-sm font-semibold text-gray-900 truncate">Jean Pambu</p>
@@ -81,7 +81,7 @@
         <p class="text-sm text-gray-500">5 non lues — 23 Avril 2026</p>
       </div>
       <div class="flex items-center gap-3">
-        <button class="text-xs font-medium text-primary-600 hover:text-primary-700 border border-primary-200 px-3 py-1.5 rounded-lg hover:bg-primary-50 transition-colors">
+        <button class="text-xs font-medium text-green-600 hover:text-green-700 border border-green-200 px-3 py-1.5 rounded-lg hover:bg-green-50 transition-colors">
           Tout marquer comme lu
         </button>
       </div>
@@ -104,13 +104,13 @@
                   <p class="text-sm font-bold text-gray-900">Facture validée par la DGI</p>
                   <span class="text-[10px] text-gray-400">il y a 2 min</span>
                 </div>
-                <p class="text-xs text-gray-500 mb-2">La facture <span class="font-semibold text-gray-700">#FX-2026-0142</span> destinée à Congo Freight SPRL a été validée. Code d'authentification reçu.</p>
+                <p class="text-xs text-gray-500 mb-2">La facture <span class="font-semibold text-gray-700">FAC-2026-0142</span> destinée à Congo Freight SPRL a été validée. Code d'authentification reçu.</p>
                 <div class="flex items-center gap-2">
-                  <span class="text-[10px] font-mono text-green-700 bg-green-50 border border-green-200 px-2 py-0.5 rounded-full">DGI-2026-0422-00142-AUTH</span>
-                  <button class="text-[10px] font-medium text-primary-600 hover:text-primary-700">Voir la facture →</button>
+                  <span class="text-[10px] font-mono text-green-700 bg-green-50 border border-green-200 px-2 py-0.5 rounded-full">FAC-2026-0142-AUTH</span>
+                  <button class="text-[10px] font-medium text-green-600 hover:text-green-700">Voir la facture →</button>
                 </div>
               </div>
-              <div class="w-2 h-2 bg-primary-600 rounded-full flex-shrink-0 mt-2"></div>
+              <div class="w-2 h-2 bg-green-600 rounded-full flex-shrink-0 mt-2"></div>
             </div>
           </div>
 
@@ -125,12 +125,12 @@
                   <p class="text-sm font-bold text-gray-900">Facture rejetée par la DGI</p>
                   <span class="text-[10px] text-gray-400">il y a 1h</span>
                 </div>
-                <p class="text-xs text-gray-500 mb-2">La facture <span class="font-semibold text-gray-700">#FX-2026-0139</span> pour Africaplast Industries a été rejetée. Motif : montant HT incoherent avec les lignes.</p>
+                <p class="text-xs text-gray-500 mb-2">La facture <span class="font-semibold text-gray-700">FAC-2026-0139</span> pour Africaplast Industries a été rejetée. Motif : montant HT incoherent avec les lignes.</p>
                 <div class="flex items-center gap-2">
                   <button class="text-[10px] font-medium text-red-600 hover:text-red-700 border border-red-200 px-2 py-1 rounded-lg hover:bg-red-50">Corriger →</button>
                 </div>
               </div>
-              <div class="w-2 h-2 bg-primary-600 rounded-full flex-shrink-0 mt-2"></div>
+              <div class="w-2 h-2 bg-green-600 rounded-full flex-shrink-0 mt-2"></div>
             </div>
           </div>
 
@@ -145,20 +145,20 @@
                   <p class="text-sm font-bold text-gray-900">Rappel : facture en attente depuis 7 jours</p>
                   <span class="text-[10px] text-gray-400">il y a 3h</span>
                 </div>
-                <p class="text-xs text-gray-500 mb-2">La facture <span class="font-semibold text-gray-700">#FX-2026-0141</span> (CDF 12.4M) pour Minexco SARL est toujours en attente de validation DGI.</p>
+                <p class="text-xs text-gray-500 mb-2">La facture <span class="font-semibold text-gray-700">FAC-2026-0141</span> (CDF 12.4M) pour Minexco SARL est toujours en attente de validation DGI.</p>
                 <div class="flex items-center gap-2">
-                  <button class="text-[10px] font-medium text-primary-600 hover:text-primary-700">Suivre →</button>
+                  <button class="text-[10px] font-medium text-green-600 hover:text-green-700">Suivre →</button>
                 </div>
               </div>
-              <div class="w-2 h-2 bg-primary-600 rounded-full flex-shrink-0 mt-2"></div>
+              <div class="w-2 h-2 bg-green-600 rounded-full flex-shrink-0 mt-2"></div>
             </div>
           </div>
 
           <!-- Read: New user -->
           <div class="slide-in bg-white rounded-2xl border border-gray-100 p-4 shadow-sm" style="animation-delay:0.15s">
             <div class="flex items-start gap-4">
-              <div class="w-11 h-11 bg-primary-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                <i class="ri-user-add-line text-primary-600 text-lg"></i>
+              <div class="w-11 h-11 bg-green-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                <i class="ri-user-add-line text-green-600 text-lg"></i>
               </div>
               <div class="flex-1">
                 <div class="flex items-center justify-between mb-1">
@@ -174,7 +174,7 @@
           <div class="slide-in bg-white rounded-2xl border border-gray-100 p-4 shadow-sm" style="animation-delay:0.2s">
             <div class="flex items-start gap-4">
               <div class="w-11 h-11 bg-blue-50 rounded-xl flex items-center justify-center flex-shrink-0">
-                <i class="ri-bar-chart-box-line text-primary-600 text-lg"></i>
+                <i class="ri-bar-chart-box-line text-green-600 text-lg"></i>
               </div>
               <div class="flex-1">
                 <div class="flex items-center justify-between mb-1">
@@ -182,7 +182,7 @@
                   <span class="text-[10px] text-gray-400">Hier</span>
                 </div>
                 <p class="text-xs text-gray-500">Votre rapport fiscal de la semaine est disponible : 38 factures émises, CDF 42.3M de CA.</p>
-                <button class="text-[10px] font-medium text-primary-600 hover:text-primary-700 mt-1">Voir le rapport →</button>
+                <button class="text-[10px] font-medium text-green-600 hover:text-green-700 mt-1">Voir le rapport →</button>
               </div>
             </div>
           </div>
@@ -221,7 +221,7 @@
               </div>
               <div class="flex gap-3">
                 <div class="flex flex-col items-center">
-                  <div class="w-2 h-2 bg-primary-500 rounded-full mt-1.5"></div>
+                  <div class="w-2 h-2 bg-green-500 rounded-full mt-1.5"></div>
                   <div class="w-px h-10 bg-gray-200"></div>
                 </div>
                 <div>
@@ -251,7 +251,7 @@
               </div>
               <div class="flex gap-3">
                 <div class="flex flex-col items-center">
-                  <div class="w-2 h-2 bg-primary-300 rounded-full mt-1.5"></div>
+                  <div class="w-2 h-2 bg-green-300 rounded-full mt-1.5"></div>
                   <div class="w-px h-10 bg-gray-200"></div>
                 </div>
                 <div>

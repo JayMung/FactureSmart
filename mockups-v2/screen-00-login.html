@@ -17,13 +17,13 @@
           },
           colors: {
             primary: {
-              50: '#eff6ff', 100: '#dbeafe', 200: '#bfdbfe', 300: '#93c5fd',
-              400: '#60a5fa', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8',
-              800: '#1e40af', 900: '#1e3a8a',
+              50: '#f0fdf4', 100: '#dcfce7', 200: '#bbf7d0', 300: '#86efac',
+              400: '#4ade80', 500: '#22c55e', 600: '#16a34a', 700: '#15803d',
+              800: '#166534', 900: '#14532d',
             },
             fx: {
-              blue: '#0056D6',
-              'blue-dark': '#00419E',
+              blue: '#10B981',
+              'blue-dark': '#15803d',
               'blue-light': '#E8F0FE',
               gray: '#F8FAFC',
               'gray-100': '#F1F5F9',
@@ -44,13 +44,13 @@
   <style>
     body { font-family: 'Inter', system-ui, sans-serif; }
     .bg-dots { background-image: radial-gradient(circle, rgba(0,86,214,0.07) 1.5px, transparent 1.5px); background-size: 24px 24px; }
-    .gradient-login { background: linear-gradient(135deg, #0056D6 0%, #1d4ed8 50%, #2563eb 100%); }
-    .gradient-login-hero { background: linear-gradient(145deg, #00419E 0%, #0056D6 40%, #1d4ed8 100%); }
+    .gradient-login { background: linear-gradient(135deg, #10B981 0%, #15803d 50%, #16a34a 100%); }
+    .gradient-login-hero { background: linear-gradient(145deg, #15803d 0%, #10B981 40%, #15803d 100%); }
     .glass-card { backdrop-filter: blur(16px); background: rgba(255,255,255,0.92); border: 1px solid rgba(0,86,214,0.12); }
-    .input-focus:focus { box-shadow: 0 0 0 3px rgba(0,86,214,0.15); border-color: #0056D6; }
-    .btn-primary { background: linear-gradient(135deg, #0056D6 0%, #1d4ed8 100%); }
-    .btn-primary:hover { background: linear-gradient(135deg, #00419E 0%, #0056D6 100%); }
-    .btn-primary:active { background: linear-gradient(135deg, #003380 0%, #00419E 100%); }
+    .input-focus:focus { box-shadow: 0 0 0 3px rgba(0,86,214,0.15); border-color: #10B981; }
+    .btn-primary { background: linear-gradient(135deg, #10B981 0%, #15803d 100%); }
+    .btn-primary:hover { background: linear-gradient(135deg, #15803d 0%, #10B981 100%); }
+    .btn-primary:active { background: linear-gradient(135deg, #003380 0%, #15803d 100%); }
     .floating { animation: float 6s ease-in-out infinite; }
     @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
     .card-enter { animation: card-enter 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
@@ -59,7 +59,7 @@
     @keyframes slide-up { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
     .rdc-watermark { opacity: 0.04; }
     .toggle-bg { transition: background-color 0.2s ease; }
-    .toggle-bg.on { background-color: #0056D6; }
+    .toggle-bg.on { background-color: #10B981; }
     .toggle-bg.off { background-color: #CBD5E1; }
   </style>
 </head>
@@ -103,34 +103,34 @@
         <div class="space-y-5">
           <h1 class="text-4xl xl:text-5xl font-extrabold text-white leading-tight">
             La facturation<br>
-            <span class="text-primary-200">en toute conformité</span>
+            <span class="text-green-200">en toute conformité</span>
           </h1>
-          <p class="text-primary-100 text-lg max-w-md leading-relaxed">
+          <p class="text-green-100 text-lg max-w-md leading-relaxed">
             Gérez vos factures électroniques, transmettez-les à la DGI et suivez votre activité fiscale en toute simplicité.
           </p>
         </div>
 
         <!-- Feature list -->
         <div class="space-y-3">
-          <div class="flex items-center gap-3 text-primary-100">
+          <div class="flex items-center gap-3 text-green-100">
             <div class="w-7 h-7 rounded-lg bg-white/15 flex items-center justify-center flex-shrink-0">
               <i class="ri-shield-check-line text-white text-sm"></i>
             </div>
             <span class="text-sm font-medium">Conforme à la réglementation DGI / RDC</span>
           </div>
-          <div class="flex items-center gap-3 text-primary-100">
+          <div class="flex items-center gap-3 text-green-100">
             <div class="w-7 h-7 rounded-lg bg-white/15 flex items-center justify-center flex-shrink-0">
               <i class="ri-qr-code-line text-white text-sm"></i>
             </div>
             <span class="text-sm font-medium">QR Code et signature numérique sur chaque facture</span>
           </div>
-          <div class="flex items-center gap-3 text-primary-100">
+          <div class="flex items-center gap-3 text-green-100">
             <div class="w-7 h-7 rounded-lg bg-white/15 flex items-center justify-center flex-shrink-0">
               <i class="ri-global-line text-white text-sm"></i>
             </div>
             <span class="text-sm font-medium">Transmission en temps réel à la DGI</span>
           </div>
-          <div class="flex items-center gap-3 text-primary-100">
+          <div class="flex items-center gap-3 text-green-100">
             <div class="w-7 h-7 rounded-lg bg-white/15 flex items-center justify-center flex-shrink-0">
               <i class="ri-bar-chart-box-line text-white text-sm"></i>
             </div>
@@ -140,7 +140,7 @@
       </div>
 
       <!-- Footer -->
-      <div class="flex items-center justify-between text-primary-200 text-xs">
+      <div class="flex items-center justify-between text-green-200 text-xs">
         <span>© 2026 FactureX — Solution officielle DGI</span>
         <span class="flex items-center gap-1"><i class="ri-shield-fill text-xs"></i> Certifié DGI</span>
       </div>
@@ -153,17 +153,17 @@
 
       <!-- Mobile logo -->
       <div class="lg:hidden flex items-center gap-3 mb-8">
-        <div class="w-10 h-10 bg-primary-600 rounded-xl flex items-center justify-center">
+        <div class="w-10 h-10 bg-green-600 rounded-xl flex items-center justify-center">
           <i class="ri-file-paper-2-line text-white text-lg"></i>
         </div>
         <span class="text-gray-900 text-xl font-bold">FactureX</span>
       </div>
 
-      <div class="glass-card rounded-2xl shadow-xl shadow-primary-900/10 p-8 sm:p-10 card-enter">
+      <div class="glass-card rounded-2xl shadow-xl shadow-green-900/10 p-8 sm:p-10 card-enter">
 
         <!-- Tab switcher -->
         <div class="flex gap-1 p-1 bg-gray-100 rounded-xl mb-8">
-          <button id="tab-login" class="flex-1 py-2.5 text-sm font-semibold rounded-lg bg-white text-primary-700 shadow-sm transition-all duration-200">
+          <button id="tab-login" class="flex-1 py-2.5 text-sm font-semibold rounded-lg bg-white text-green-700 shadow-sm transition-all duration-200">
             Se connecter
           </button>
           <button id="tab-register" class="flex-1 py-2.5 text-sm font-semibold rounded-lg text-gray-500 hover:text-gray-700 transition-colors">
@@ -210,10 +210,10 @@
               </div>
               <span class="text-xs text-gray-500">Se souvenir de moi</span>
             </label>
-            <a href="#" class="text-xs font-medium text-primary-600 hover:text-primary-700">Mot de passe oublié ?</a>
+            <a href="#" class="text-xs font-medium text-green-600 hover:text-green-700">Mot de passe oublié ?</a>
           </div>
 
-          <button class="w-full btn-primary text-white font-semibold py-3 rounded-xl text-sm shadow-lg shadow-primary-700/25 hover:shadow-xl hover:shadow-primary-700/30 transition-all duration-200 flex items-center justify-center gap-2 mt-2">
+          <button class="w-full btn-primary text-white font-semibold py-3 rounded-xl text-sm shadow-lg shadow-green-700/25 hover:shadow-xl hover:shadow-green-700/30 transition-all duration-200 flex items-center justify-center gap-2 mt-2">
             <i class="ri-login-box-line"></i>
             Se connecter
           </button>
@@ -225,7 +225,7 @@
           </div>
 
           <button class="w-full bg-white border border-gray-200 text-gray-700 font-medium py-3 rounded-xl text-sm hover:bg-gray-50 transition-colors flex items-center justify-center gap-2">
-            <i class="ri-government-line text-primary-600"></i>
+            <i class="ri-government-line text-green-600"></i>
             Connexion avec ITIE RDC
           </button>
         </div>
@@ -285,11 +285,11 @@
           </div>
 
           <div class="flex items-start gap-2">
-            <input type="checkbox" class="mt-0.5 rounded border-gray-300 text-primary-600 focus:ring-primary-500" checked>
-            <span class="text-xs text-gray-500">J'accepte les <a href="#" class="text-primary-600">Conditions d'utilisation</a> et la <a href="#" class="text-primary-600">Politique de confidentialité</a></span>
+            <input type="checkbox" class="mt-0.5 rounded border-gray-300 text-green-600 focus:ring-green-500" checked>
+            <span class="text-xs text-gray-500">J'accepte les <a href="#" class="text-green-600">Conditions d'utilisation</a> et la <a href="#" class="text-green-600">Politique de confidentialité</a></span>
           </div>
 
-          <button class="w-full btn-primary text-white font-semibold py-3 rounded-xl text-sm shadow-lg shadow-primary-700/25 hover:shadow-xl hover:shadow-primary-700/30 transition-all duration-200 flex items-center justify-center gap-2">
+          <button class="w-full btn-primary text-white font-semibold py-3 rounded-xl text-sm shadow-lg shadow-green-700/25 hover:shadow-xl hover:shadow-green-700/30 transition-all duration-200 flex items-center justify-center gap-2">
             <i class="ri-user-add-line"></i>
             Créer mon compte
           </button>
@@ -309,7 +309,7 @@
             Google
           </button>
           <button class="flex items-center justify-center gap-2 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-600 hover:bg-gray-50 transition-colors">
-            <i class="ri-government-line text-primary-600"></i>
+            <i class="ri-government-line text-green-600"></i>
             INSS
           </button>
         </div>
@@ -318,8 +318,8 @@
       <!-- Footer note -->
       <p class="text-center text-xs text-gray-400 mt-6">
         En vous connectant, vous acceptez les
-        <a href="#" class="text-primary-600">Conditions d'utilisation</a>
-        et la <a href="#" class="text-primary-600">Politique de confidentialité</a> de FactureX.
+        <a href="#" class="text-green-600">Conditions d'utilisation</a>
+        et la <a href="#" class="text-green-600">Politique de confidentialité</a> de FactureX.
       </p>
     </div>
   </div>
@@ -331,7 +331,7 @@
     const formRegister = document.getElementById('form-register');
 
     function switchTab(active, inactive, showEl, hideEl) {
-      active.className = 'flex-1 py-2.5 text-sm font-semibold rounded-lg bg-white text-primary-700 shadow-sm transition-all duration-200';
+      active.className = 'flex-1 py-2.5 text-sm font-semibold rounded-lg bg-white text-green-700 shadow-sm transition-all duration-200';
       inactive.className = 'flex-1 py-2.5 text-sm font-semibold rounded-lg text-gray-500 hover:text-gray-700 transition-colors';
       showEl.classList.remove('hidden');
       hideEl.classList.add('hidden');

@@ -10,7 +10,7 @@ Design moderne, épuré, professionnel, responsive (desktop + mobile).
 ## 🎯 Principes de design
 
 1. **Clarté** — Interface épurée, informations hiérarchisées
-2. **Confiance** — Bleu corporate #0056D6 inspire confiance et professionnalisme
+2. **Confiance** — Bleu corporate #10B981 inspire confiance et professionnalisme
 3. **Conformité** — Touches RDC (drapeau, carte) discrètes mais présente
 4. **Performance** — Feedback immédiat, États de chargement, messages clairs
 
@@ -21,7 +21,7 @@ Design moderne, épuré, professionnel, responsive (desktop + mobile).
 ### Couleurs primaires
 | Nom | Hex | Usage |
 |-----|-----|-------|
-| Primary 700 | `#0056D6` | Boutons primaires, liens, accents |
+| Primary 700 | `#10B981` | Boutons primaires, liens, accents |
 | Primary 600 | `#2563EB` | Hover states, éléments actifs |
 | Primary 800 | `#1E40AF` | Texte sur fond clair, headers |
 | Primary 100 | `#DBEAFE` | Backgrounds, badges légère |
@@ -51,7 +51,7 @@ Design moderne, épuré, professionnel, responsive (desktop + mobile).
 ### DRC Touch
 | Nom | Hex | Usage |
 |-----|-----|-------|
-| DRC Blue | `#0056D6` | Bandes du drapeau RDC |
+| DRC Blue | `#10B981` | Bandes du drapeau RDC |
 | DRC Yellow | `#FFD100` | Bande centrale du drapeau RDC |
 
 **Usage DRC** : Watermark très léger (opacity 3-4%) du drapeau RDC en fond du dashboard.
@@ -103,8 +103,8 @@ Système basé sur **4px grid** :
 ### Boutons
 
 **Primaire**
-- Background: `linear-gradient(135deg, #0056D6 0%, #1d4ed8 100%)`
-- Hover: `linear-gradient(135deg, #00419E 0%, #0056D6 100%)`
+- Background: `linear-gradient(135deg, #10B981 0%, #1d4ed8 100%)`
+- Hover: `linear-gradient(135deg, #00419E 0%, #10B981 100%)`
 - Text: Blanc, font-weight 600, text-sm
 - Border-radius: 12px (rounded-xl)
 - Padding: py-2.5 px-5
