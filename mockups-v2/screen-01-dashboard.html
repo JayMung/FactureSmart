@@ -22,11 +22,12 @@
   </script>
   <style>
     body { font-family: 'Inter', system-ui, sans-serif; }
-    .rdc-bg { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='133' viewBox='0 0 200 133'%3E%3Crect width='66' height='44' fill='%230056D6' fill-opacity='0.03'/%3E%3Crect y='44' width='66' height='45' fill='%23FFD100' fill-opacity='0.03'/%3E%3Crect y='89' width='66' height='44' fill='%230056D6' fill-opacity='0.03'/%3E%3Crect x='66' width='68' height='133' fill='%230056D6' fill-opacity='0.03'/%3E%3Ccircle cx='100' cy='66' r='16' fill='none' stroke='%230056D6' stroke-opacity='0.05' stroke-width='2'/%3E%3Ccircle cx='100' cy='66' r='8' fill='%23FFD100' fill-opacity='0.04'/%3E%3C/svg%3E"); background-size: 200px 133px; }
-    .sidebar-item:hover { background: #E8F0FE; }
-    .sidebar-item.active { background: #E8F0FE; color: #10B981; }
+    /* Touche RDC — motif géométrique inspiré du kente/tchokwko en filigrane */
+    .rdc-bg { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Crect width='40' height='40' fill='%2310B981' fill-opacity='0.025'/%3E%3Crect x='40' y='40' width='40' height='40' fill='%2310B981' fill-opacity='0.025'/%3E%3Crect x='40' width='40' height='40' fill='none' stroke='%2310B981' stroke-opacity='0.03' stroke-width='1'/%3E%3Crect y='40' width='40' height='40' fill='none' stroke='%2310B981' stroke-opacity='0.03' stroke-width='1'/%3E%3Cpath d='M0 40 L40 0' stroke='%2310B981' stroke-opacity='0.015' stroke-width='1' fill='none'/%3E%3Cpath d='M40 80 L80 40' stroke='%2310B981' stroke-opacity='0.015' stroke-width='1' fill='none'/%3E%3C/svg%3E"); background-size: 80px 80px; }
+    .sidebar-item:hover { background: #f0fdf4; }
+    .sidebar-item.active { background: #f0fdf4; color: #10B981; }
     .sidebar-item.active .sidebar-icon { color: #10B981; }
-    .stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,86,214,0.12); }
+    .stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(16,185,129,0.12); }
     .card-hover { transition: all 0.2s ease; }
     .card-hover:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
     .chart-bar { transition: height 1s cubic-bezier(0.34, 1.56, 0.64, 1); }
