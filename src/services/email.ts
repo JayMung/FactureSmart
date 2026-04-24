@@ -1,9 +1,9 @@
-// Email Service — FactureX Sprint 1
-// Provider: Resend (https://resend.com) — Free tier: 100 emails/jour
+// Email Service — FactureSmart Sprint 1
+// [COD-56] Refactorisé: RESEND_API_KEY supprimée du frontend
+// Appels via Edge Function /api-email-send (server-side)
+// La vraie clé Resend est stockée dans les environment variables Supabase
 
-import { RESEND_API_KEY } from './constants';
-
-const RESEND_ENDPOINT = 'https://api.resend.com';
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from './constants';
 
 export interface EmailOptions {
   to: string;
@@ -20,41 +20,56 @@ export interface EmailResult {
 }
 
 class EmailService {
-  private apiKey: string;
+  private edgeFunctionUrl: string;
   private fromEmail: string;
 
   constructor() {
-    this.apiKey = RESEND_API_KEY || process.env.RESEND_API_KEY || '';
-    this.fromEmail = 'FactureX <noreply@facturex.io>';
+    // Appelle l'Edge Function server-side — la clé API n'est jamais dans le frontend
+    this.edgeFunctionUrl = `${SUPABASE_URL}/functions/v1/api-email-send`;
+    this.fromEmail = 'FactureSmart <noreply@facturesmart.com>';
+  }
+
+  private async getAccessToken(): Promise<string> {
+    try {
+      const { supabase } = await import('@/integrations/supabase/client');
+      const { data: { session } } = await supabase.auth.getSession();
+      return session?.access_token || '';
+    } catch {
+      return '';
+    }
   }
 
   /**
-   * Send a transactional email via Resend API
+   * Send a transactional email via Edge Function proxy
+   * [COD-56] — La clé RESEND_API_KEY n'est plus dans le frontend
    */
   async send(options: EmailOptions): Promise<EmailResult> {
-    if (!this.apiKey) {
-      console.warn('[EmailService] RESEND_API_KEY not configured — email not sent');
+    if (!this.edgeFunctionUrl || !SUPABASE_URL) {
+      console.warn('[EmailService] SUPABASE_URL not configured — email not sent');
       return { success: false, error: 'Email service not configured' };
     }
 
     try {
-      const response = await fetch(`${RESEND_ENDPOINT}/emails`, {
+      const accessToken = await this.getAccessToken();
+
+      const response = await fetch(this.edgeFunctionUrl, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${this.apiKey}`,
           'Content-Type': 'application/json',
+          'apikey': SUPABASE_ANON_KEY || '',
+          'Authorization': `Bearer ${accessToken}`,
         },
         body: JSON.stringify({
-          from: options.from || this.fromEmail,
           to: options.to,
           subject: options.subject,
           html: options.html,
-          reply_to: options.replyTo,
+          from: options.from || this.fromEmail,
+          replyTo: options.replyTo,
         }),
       });
 
       if (!response.ok) {
-        const error = await response.json();
+        const error = await response.json().catch(() => ({ message: 'Failed to send email' }));
         console.error('[EmailService] Send failed:', error);
         return { success: false, error: error.message || 'Failed to send email' };
       }
@@ -74,10 +89,10 @@ class EmailService {
     const verifyUrl = `${import.meta.env.VITE_APP_URL}/verify-email?token=${verificationToken}`;
     return this.send({
       to,
-      subject: 'Vérifiez votre adresse email — FactureX',
+      subject: 'Vérifiez votre adresse email — FactureSmart',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h1 style="color: #22c55e;">Bienvenue sur FactureX</h1>
+          <h1 style="color: #22c55e;">Bienvenue sur FactureSmart</h1>
           <p>Merci pour votre inscription. Cliquez sur le bouton ci-dessous pour vérifier votre adresse email :</p>
           <a href="${verifyUrl}" style="display: inline-block; background: #22c55e; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin: 16px 0;">Vérifier mon email</a>
           <p style="color: #666; font-size: 14px;">Ce lien expire dans 24 heures.</p>
@@ -93,7 +108,7 @@ class EmailService {
     const resetUrl = `${import.meta.env.VITE_APP_URL}/reset-password?token=${resetToken}`;
     return this.send({
       to,
-      subject: 'Réinitialisation de votre mot de passe — FactureX',
+      subject: 'Réinitialisation de votre mot de passe — FactureSmart',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h1 style="color: #22c55e;">Réinitialisation de mot de passe</h1>
@@ -112,11 +127,11 @@ class EmailService {
     const inviteUrl = `${import.meta.env.VITE_APP_URL}/invitation/accept?token=${invitationToken}`;
     return this.send({
       to,
-      subject: `Invitation à rejoindre FactureX en tant que ${role}`,
+      subject: `Invitation à rejoindre FactureSmart en tant que ${role}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h1 style="color: #22c55e;">Vous êtes invité sur FactureX</h1>
-          <p><strong>${invitedBy}</strong> vous invite à rejoindre FactureX avec le rôle : <strong>${role}</strong></p>
+          <h1 style="color: #22c55e;">Vous êtes invité sur FactureSmart</h1>
+          <p><strong>${invitedBy}</strong> vous invite à rejoindre FactureSmart avec le rôle : <strong>${role}</strong></p>
           <a href="${inviteUrl}" style="display: inline-block; background: #22c55e; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin: 16px 0;">Accepter l'invitation</a>
           <p style="color: #666; font-size: 14px;">Cette invitation expire dans 7 jours.</p>
         </div>

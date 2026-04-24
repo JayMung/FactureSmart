@@ -199,28 +199,7 @@ const SettingsWithPermissions = () => {
       try {
         const { data: { user } } = await supabase.auth.getUser();
         if (user) {
-          const { data: adminRole } = await supabase
-            .from('admin_roles')
-            .select('role')
-            .eq('user_id', user.id)
-            .eq('is_active', true)
-            .single();
-
-          const actualRole = adminRole?.role || user.user_metadata?.role || 'operateur';
-
-          setUser({
-            id: user.id,
-            email: user.email || '',
-            first_name: user.user_metadata?.first_name || '',
-            last_name: user.user_metadata?.last_name || '',
-            role: actualRole,
-            phone: user.user_metadata?.phone || '',
-            avatar_url: user.user_metadata?.avatar_url || '',
-            is_active: true
-          });
-
-          setCurrentUserRole(actualRole);
-
+          // Fetch profile data first (server-side source of truth for role)
           const { data: profileData } = await supabase
             .from('profiles')
             .select('*')
@@ -228,6 +207,30 @@ const SettingsWithPermissions = () => {
             .single();
 
           setProfile(profileData);
+
+          // Also check admin_roles table for elevated permissions
+          const { data: adminRole } = await supabase
+            .from('admin_roles')
+            .select('role')
+            .eq('user_id', user.id)
+            .eq('is_active', true)
+            .single();
+
+          // Priority: admin_roles > profiles.role — NEVER use user_metadata.role (client-controllable)
+          const actualRole = adminRole?.role || profileData?.role || 'operateur';
+
+          setUser({
+            id: user.id,
+            email: user.email || '',
+            first_name: profileData?.first_name || user.user_metadata?.first_name || '',
+            last_name: profileData?.last_name || user.user_metadata?.last_name || '',
+            role: actualRole,
+            phone: profileData?.phone || user.user_metadata?.phone || '',
+            avatar_url: profileData?.avatar_url || user.user_metadata?.avatar_url || '',
+            is_active: profileData?.is_active ?? true
+          });
+
+          setCurrentUserRole(actualRole);
 
           if (profileData) {
             setProfileForm({
@@ -853,29 +856,12 @@ const SettingsWithPermissions = () => {
     // Admins see everything
     if (isAdmin) return true;
 
-    // Fallback: Check if user has super_admin role in metadata
-    const userRole = authUser?.user_metadata?.role || authUser?.app_metadata?.role;
-    if (userRole === 'super_admin' || userRole === 'admin') return true;
-
     // If adminOnly and not admin, hide
     if (option.adminOnly) return false;
 
     // Check module access for non-admin users
     const moduleId = sectionToModuleMap[option.id];
     return moduleId ? canAccessModule(moduleId as any) : true;
-  });
-
-  // Debug logging
-  console.log('Settings Debug:', {
-    isAdmin,
-    permissionsLoading,
-    loading,
-    filteredOptionsCount: filteredOptions.length,
-    allOptionsCount: settingsOptions.length,
-    authUser: authUser?.email,
-    authUserRole: authUser?.user_metadata?.role || authUser?.app_metadata?.role,
-    authUserMetadata: authUser?.user_metadata,
-    authAppMetadata: authUser?.app_metadata
   });
 
   return (
@@ -1574,7 +1560,7 @@ const SettingsWithPermissions = () => {
                   </CardHeader>
                   <CardContent className="text-blue-800 dark:text-blue-200">
                     <p className="mb-4">
-                      Les clés API vous permettent d'intégrer FactureX avec des outils externes comme n8n, Discord, ou vos propres applications.
+                      Les clés API vous permettent d'intégrer FactureSmart avec des outils externes comme n8n, Discord, ou vos propres applications.
                     </p>
                     <Button
                       onClick={() => navigate('/api-keys')}
@@ -1637,7 +1623,7 @@ const SettingsWithPermissions = () => {
                   </CardHeader>
                   <CardContent className="text-purple-800 dark:text-purple-200">
                     <p className="mb-4">
-                      Les webhooks vous permettent de recevoir des notifications en temps réel lorsque des événements se produisent dans FactureX.
+                      Les webhooks vous permettent de recevoir des notifications en temps réel lorsque des événements se produisent dans FactureSmart.
                     </p>
                     <Button
                       onClick={() => navigate('/webhooks')}

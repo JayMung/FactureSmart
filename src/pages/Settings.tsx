@@ -163,18 +163,7 @@ const Settings = () => {
       try {
         const { data: { user } } = await supabase.auth.getUser();
         if (user) {
-          setUser({
-            id: user.id,
-            email: user.email || '',
-            first_name: user.user_metadata?.first_name || '',
-            last_name: user.user_metadata?.last_name || '',
-            role: user.user_metadata?.role || 'operateur',
-            phone: user.user_metadata?.phone || '',
-            avatar_url: user.user_metadata?.avatar_url || '',
-            is_active: true
-          });
-
-          // Fetch profile data from profiles table
+          // Fetch profile data from profiles table (server-side source of truth for role)
           const { data: profileData } = await supabase
             .from('profiles')
             .select('*')
@@ -182,6 +171,18 @@ const Settings = () => {
             .single();
 
           setProfile(profileData);
+
+          // Use role from profiles table — NEVER from user_metadata (client-controllable)
+          setUser({
+            id: user.id,
+            email: user.email || '',
+            first_name: user.user_metadata?.first_name || '',
+            last_name: user.user_metadata?.last_name || '',
+            role: profileData?.role || 'operateur',
+            phone: user.user_metadata?.phone || '',
+            avatar_url: user.user_metadata?.avatar_url || '',
+            is_active: profileData?.is_active ?? true
+          });
 
           // Pré-remplir le formulaire avec les données disponibles
           if (profileData) {
@@ -1216,7 +1217,7 @@ const Settings = () => {
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <p className="text-gray-600 dark:text-gray-400">
-                      Gérez vos clés d'accès API pour intégrer FactureX avec vos applications.
+                      Gérez vos clés d'accès API pour intégrer FactureSmart avec vos applications.
                     </p>
                     <Button onClick={() => navigate('/api-keys')} className="bg-emerald-500 hover:bg-emerald-600">
                       Gérer les clés API

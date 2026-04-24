@@ -5,11 +5,12 @@ import path from "path";
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig(() => ({
-  server: {
+    server: {
     host: "::",
     port: 8080,
+    // Restrict fs access to project directory only — prevents SSRF/path traversal
     fs: {
-      allow: ['..']
+      allow: ['.', './src', './public']
     }
   },
   // Désactiver les source maps en développement pour éviter les erreurs CSP
@@ -50,9 +51,9 @@ export default defineConfig(() => ({
         ]
       },
       manifest: {
-        name: 'FactureX',
-        short_name: 'FactureX',
-        description: 'Système de gestion de facturation et transferts FactureX',
+        name: 'FactureSmart',
+        short_name: 'FactureSmart',
+        description: 'Système de gestion de facturation et transferts FactureSmart',
         theme_color: '#10b981',
         background_color: '#ffffff',
         display: 'standalone',

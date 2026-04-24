@@ -2,10 +2,10 @@ import { useEffect, useCallback, useRef } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '../integrations/supabase/client';
 import { differenceInDays } from 'date-fns';
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from '@/lib/constants';
 
 interface AlertConfig {
-  telegramBotToken?: string;
-  telegramChatId?: string;
+  telegramChatId?: string; // [COD-56] telegramBotToken supprimé du frontend — stocké server-side
   maxDaysWithoutReconciliation: number;
   maxUnrecordedExpenses: number;
 }
@@ -48,25 +48,51 @@ export function useComptabiliteAI(config: AlertConfig) {
     staleTime: 10 * 60 * 1000,
   });
 
+  /**
+   * [COD-56] Envoie une alerte Telegram via Edge Function server-side.
+   * Le token du bot Telegram (TELEGRAM_BOT_TOKEN) n'est plus dans le frontend.
+   * Appelle /functions/v1/api-telegram-send avec le jeton d'auth Supabase.
+   */
   const sendTelegramAlert = useCallback(async (message: string) => {
-    if (!config.telegramBotToken || !config.telegramChatId) {
+    if (!config.telegramChatId) {
+      console.warn('[ComptabiliteAI] telegramChatId not configured — alert not sent');
+      return;
+    }
+
+    const edgeFunctionUrl = `${SUPABASE_URL}/functions/v1/api-telegram-send`;
+    if (!edgeFunctionUrl || !SUPABASE_URL) {
+      console.warn('[ComptabiliteAI] SUPABASE_URL not configured — Telegram alert not sent');
       return;
     }
 
     try {
-      await fetch(`https://api.telegram.org/bot${config.telegramBotToken}/sendMessage`, {
+      const { data: { session } } = await supabase.auth.getSession();
+      const accessToken = session?.access_token || '';
+
+      const response = await fetch(edgeFunctionUrl, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPABASE_ANON_KEY || '',
+          'Authorization': `Bearer ${accessToken}`,
+        },
         body: JSON.stringify({
-          chat_id: config.telegramChatId,
-          text: message,
-          parse_mode: 'HTML',
+          message,
+          chatId: config.telegramChatId,
+          parseMode: 'HTML',
+          disableWebPagePreview: true,
+          disableNotification: false,
         }),
       });
+
+      if (!response.ok) {
+        const error = await response.json().catch(() => ({}));
+        console.error('[ComptabiliteAI] Telegram alert failed:', error);
+      }
     } catch (error) {
-      console.error('Failed to send Telegram alert:', error);
+      console.error('[ComptabiliteAI] Failed to send Telegram alert:', error);
     }
-  }, [config.telegramBotToken, config.telegramChatId]);
+  }, [config.telegramChatId]);
 
   // Daily check (around 18h)
   useEffect(() => {
@@ -94,9 +120,9 @@ export function useComptabiliteAI(config: AlertConfig) {
     // Alert: pending expenses
     if (pendingExpenses && pendingExpenses.length >= config.maxUnrecordedExpenses) {
       sendTelegramAlert(
-        `⚠️ <b>FactureX - Dépenses en attente</b>\n\n` +
+        `⚠️ <b>FactureSmart - Dépenses en attente</b>\n\n` +
         `Tu as <b>${pendingExpenses.length}</b> dépenses à valider aujourd'hui.\n\n` +
-        `Connecte-toi sur FactureX pour les enregistrer.\n\n` +
+        `Connecte-toi sur FactureSmart pour les enregistrer.\n\n` +
         `<i>Ne laisse pas traîner, c'est important pour ta trésorerie !</i>`
       );
     }
@@ -107,7 +133,7 @@ export function useComptabiliteAI(config: AlertConfig) {
 
       if (daysSinceReconciliation >= config.maxDaysWithoutReconciliation) {
         sendTelegramAlert(
-          `🚨 <b>FactureX - Réconciliation urgente</b>\n\n` +
+          `🚨 <b>FactureSmart - Réconciliation urgente</b>\n\n` +
           `Ta dernière réconciliation date de <b>${daysSinceReconciliation} jours</b>.\n\n` +
           `Va dans Comptes → Mouvements pour faire ta réconciliation.\n\n` +
           `<i>Sans réconciliation régulière, tu perds le contrôle de ta trésorerie !</i>`
