@@ -300,4 +300,4 @@ console.log('Nombre de lignes récupérées:', data?.length);
 
 **Dernière mise à jour** : 4 novembre 2025
 **Version** : 1.0.0
-**Auteur** : Équipe FactureX
+**Auteur** : Équipe FactureSmart

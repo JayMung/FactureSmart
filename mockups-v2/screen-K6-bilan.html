@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bilan — Facture Smart</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Manrope', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] },
+          colors: {
+            primary: { 50: '#ecfdf5', 100: '#d1fae5', 200: '#a7f3d0', 300: '#6ee7b7', 400: '#34d399', 500: '#10b981', 600: '#059669', 700: '#059669', 800: '#065f46', 900: '#064e3b' },
+            fx: { gray: '#F8FAFC', 'gray-100': '#F1F5F9', 'gray-200': '#E2E8F0', 'gray-300': '#CBD5E1', 'gray-500': '#64748B', 'gray-700': '#334155', 'gray-900': '#0F172A', success: '#10b981', warning: '#F59E0B', danger: '#EF4444' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Manrope', sans-serif; }
+    .rdc-bg { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Crect width='40' height='40' fill='%2310B981' fill-opacity='0.025'/%3E%3Crect x='40' y='40' width='40' height='40' fill='%2310B981' fill-opacity='0.025'/%3E%3C/svg%3E"); background-size: 80px 80px; }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen rdc-bg">
+
+  <header class="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
+    <div class="flex items-center justify-between px-6 py-3">
+      <div class="flex items-center gap-3">
+        <a href="index.html" class="w-9 h-9 rounded-xl bg-gray-100 flex items-center justify-center text-fx-gray-500 hover:bg-gray-200 transition-colors">
+          <i class="ri-arrow-left-line text-lg"></i>
+        </a>
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center shadow-sm">
+            <i class="ri-file-chart-line text-white text-sm"></i>
+          </div>
+          <span class="text-base font-extrabold text-fx-gray-900">Facture<span class="text-primary-600">X</span></span>
+          <span class="text-xs bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full font-bold">Bilan</span>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <select class="px-3 py-2 rounded-xl border border-gray-200 text-xs font-medium text-fx-gray-700 bg-white">
+          <option>Au 31/12/2026</option>
+          <option>Au 31/12/2025</option>
+        </select>
+        <button class="px-4 py-2 rounded-xl border border-gray-200 text-fx-gray-600 text-xs font-semibold flex items-center gap-2 hover:bg-gray-50 transition-colors">
+          <i class="ri-download-line"></i>
+          Exporter
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="p-6 space-y-6">
+
+    <!-- Balance check -->
+    <div class="grid grid-cols-3 gap-4">
+      <div class="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm text-center">
+        <div class="text-xs text-fx-gray-500 mb-1">Total Actif</div>
+        <div class="text-2xl font-extrabold text-fx-gray-900 font-mono">747 450 $</div>
+      </div>
+      <div class="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm text-center">
+        <div class="text-xs text-fx-gray-500 mb-1">Total Passif</div>
+        <div class="text-2xl font-extrabold text-fx-gray-900 font-mono">747 450 $</div>
+      </div>
+      <div class="bg-white rounded-2xl border-2 border-green-200 p-4 shadow-sm text-center">
+        <div class="text-xs text-green-600 mb-1 font-bold">Équilibre</div>
+        <div class="text-lg font-extrabold text-green-600">✓ Actif = Passif</div>
+      </div>
+    </div>
+
+    <!-- Bilan table -->
+    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+      <div class="grid grid-cols-2 divide-x divide-gray-100">
+
+        <!-- ACTIF -->
+        <div>
+          <div class="px-5 py-3 bg-blue-50 border-b border-blue-100">
+            <div class="text-base font-extrabold text-blue-800">ACTIF</div>
+          </div>
+
+          <div class="p-4 space-y-4">
+
+            <!-- ACTIF IMMOBILISÉ -->
+            <div>
+              <div class="text-[10px] font-bold text-blue-600 uppercase tracking-wider mb-2">Actif Immobilisé</div>
+              <div class="space-y-1.5 text-xs">
+                <div class="flex justify-between py-1 border-b border-gray-50">
+                  <span class="text-fx-gray-600 pl-2">22 — Immobilisations incorporelles</span>
+                  <span class="font-mono font-semibold text-fx-gray-900">0 $</span>
+                </div>
+                <div class="flex justify-between py-1 border-b border-gray-50">
+                  <span class="text-fx-gray-600 pl-2">24 — Immobilisations corporelles</span>
+                  <span class="font-mono font-semibold text-fx-gray-900">25 700 $</span>
+                </div>
+                <div class="flex justify-between py-1 border-b border-gray-50">
+                  <span class="text-fx-gray-600 pl-2">27 — Immobilisations financières</span>
+                  <span class="font-mono font-semibold text-fx-gray-900">0 $</span>
+                </div>
+                <div class="flex justify-between py-1.5 font-bold text-fx-gray-800 bg-blue-50/50 rounded px-2">
+                  <span>Total Actif Immobilisé</span>
+                  <span class="font-mono text-blue-700">25 700 $</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- ACTIF CIRCULANT -->
+            <div>
+              <div class="text-[10px] font-bold text-blue-600 uppercase tracking-wider mb-2">Actif Circulant</div>
+              <div class="space-y-1.5 text-xs">
+                <div class="flex justify-between py-1 border-b border-gray-50">
+                  <span class="text-fx-gray-600 pl-2">31 — Stocks</span>
+                  <span class="font-mono font-semibold text-fx-gray-900">0 $</span>
+                </div>
+                <div class="flex justify-between py-1 border-b border-gray-50">
+                  <span class="text-fx-gray-600 pl-2">34 — Créances et emplois assimilés</span>
+                  <span class="font-mono font-semibold text-fx-gray-900">89 450 $</span>
+                </div>
+                <div class="flex justify-between py-1 border-b border-gray-50">
+                  <span class="text-fx-gray-600 pl-2">35 — Titres de placement</span>
+                  <span class="font-mono font-semibold text-fx-gray-900">0 $</span>
+                </div>
+                <div class="flex justify-between py-1 border-b border-gray-50">
+                  <span class="text-fx-gray-600 pl-2">41 — Fournisseurs et comptes rattachés</span>
+                  <span class="font-mono font-semibold text-fx-gray-900">45 200 $</span>
+                </div>
+                <div class="flex justify-between py-1 border-b border-gray-50">
+                  <span class="text-fx-gray-600 pl-2">35 — Charges constatées d'avance</span>
+                  <span class="font-mono font-semibold text-fx-gray-900">0 $</span>
+                </div>
+                <div class="flex justify-between py-1.5 font-bold text-fx-gray-800 bg-blue-50/50 rounded px-2">
+                  <span>Total Actif Circulant</span>
+                  <span class="font-mono text-blue-700">134 650 $</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- TRÉSORERIE ACTIF -->
+            <div>
+              <div class="text-[10px] font-bold text-blue-600 uppercase tracking-wider mb-2">Trésorerie Actif</div>
+              <div class="space-y-1.5 text-xs">
+                <div class="flex justify-between py-1 border-b border-gray-50">
+                  <span class="text-fx-gray-600 pl-2">51 — Banques, établissements financiers</span>
+                  <span class="font-mono font-semibold text-fx-gray-900">234 100 $</span>
+                </div>
+                <div class="flex justify-between py-1 border-b border-gray-50">
+                  <span class="text-fx-gray-600 pl-2">57 — Caisses</span>
+                  <span class="font-mono font-semibold text-fx-gray-900">12 450 $</span>
+                </div>
+                <div class="flex justify-between py-1.5 font-bold text-fx-gray-800 bg-blue-50/50 rounded px-2">
+                  <span>Total Trésorerie Actif</span>
+                  <span class="font-mono text-blue-700">246 550 $</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- TOTAL ACTIF -->
+            <div class="bg-blue-600 rounded-xl p-4 text-white">
+              <div class="flex justify-between items-center">
+                <span class="text-sm font-extrabold">TOTAL ACTIF</span>
+                <span class="text-xl font-extrabold font-mono">747 450 $</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- PASSIF -->
+        <div>
+          <div class="px-5 py-3 bg-red-50 border-b border-red-100">
+            <div class="text-base font-extrabold text-red-800">PASSIF</div>
+          </div>
+
+          <div class="p-4 space-y-4">
+
+            <!-- CAPITAUX PROPRES -->
+            <div>
+              <div class="text-[10px] font-bold text-red-600 uppercase tracking-wider mb-2">Capitaux Propres</div>
+              <div class="space-y-1.5 text-xs">
+                <div class="flex justify-between py-1 border-b border-gray-50">
+                  <span class="text-fx-gray-600 pl-2">10 — Capital et réserves</span>
+                  <span class="font-mono font-semibold text-fx-gray-900">500 000 $</span>
+                </div>
+                <div class="flex justify-between py-1 border-b border-gray-50">
+                  <span class="text-fx-gray-600 pl-2">12 — Report à nouveau</span>
+                  <span class="font-mono font-semibold text-fx-gray-900">0 $</span>
+                </div>
+                <div class="flex justify-between py-1 border-b border-gray-50">
+                  <span class="text-fx-gray-600 pl-2">13 — Résultat net de l'exercice</span>
+                  <span class="font-mono font-semibold text-fx-gray-900">124 750 $</span>
+                </div>
+                <div class="flex justify-between py-1.5 font-bold text-fx-gray-800 bg-red-50/50 rounded px-2">
+                  <span>Total Capitaux Propres</span>
+                  <span class="font-mono text-red-700">624 750 $</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- DETTES -->
+            <div>
+              <div class="text-[10px] font-bold text-red-600 uppercase tracking-wider mb-2">Dettes</div>
+              <div class="space-y-1.5 text-xs">
+                <div class="flex justify-between py-1 border-b border-gray-50">
+                  <span class="text-fx-gray-600 pl-2">16 — Emprunts et dettes financières</span>
+                  <span class="font-mono font-semibold text-fx-gray-900">0 $</span>
+                </div>
+                <div class="flex justify-between py-1 border-b border-gray-50">
+                  <span class="text-fx-gray-600 pl-2">40 — Fournisseurs et comptes rattachés</span>
+                  <span class="font-mono font-semibold text-fx-gray-900">45 200 $</span>
+                </div>
+                <div class="flex justify-between py-1 border-b border-gray-50">
+                  <span class="text-fx-gray-600 pl-2">44 — État et autres organismes publics</span>
+                  <span class="font-mono font-semibold text-fx-gray-900">32 750 $</span>
+                </div>
+                <div class="flex justify-between py-1 border-b border-gray-50">
+                  <span class="text-fx-gray-600 pl-2">46 — Dettes liées au patrimoine</span>
+                  <span class="font-mono font-semibold text-fx-gray-900">0 $</span>
+                </div>
+                <div class="flex justify-between py-1 border-b border-gray-50">
+                  <span class="text-fx-gray-600 pl-2">47 — Comptes de régularisation passif</span>
+                  <span class="font-mono font-semibold text-fx-gray-900">0 $</span>
+                </div>
+                <div class="flex justify-between py-1.5 font-bold text-fx-gray-800 bg-red-50/50 rounded px-2">
+                  <span>Total Dettes</span>
+                  <span class="font-mono text-red-700">77 950 $</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- TRÉSORERIE PASSIF -->
+            <div>
+              <div class="text-[10px] font-bold text-red-600 uppercase tracking-wider mb-2">Trésorerie Passif</div>
+              <div class="space-y-1.5 text-xs">
+                <div class="flex justify-between py-1 border-b border-gray-50">
+                  <span class="text-fx-gray-600 pl-2">51 — Concours bancaires</span>
+                  <span class="font-mono font-semibold text-fx-gray-900">44 750 $</span>
+                </div>
+                <div class="flex justify-between py-1.5 font-bold text-fx-gray-800 bg-red-50/50 rounded px-2">
+                  <span>Total Trésorerie Passif</span>
+                  <span class="font-mono text-red-700">44 750 $</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- TOTAL PASSIF -->
+            <div class="bg-red-600 rounded-xl p-4 text-white">
+              <div class="flex justify-between items-center">
+                <span class="text-sm font-extrabold">TOTAL PASSIF</span>
+                <span class="text-xl font-extrabold font-mono">747 450 $</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="flex items-center justify-between bg-white rounded-2xl border border-gray-100 p-4 shadow-sm">
+      <span class="text-xs text-fx-gray-400">Bilan annuel — Exercice 2026 —Conforme SYSCOHADA</span>
+      <button class="px-4 py-2 rounded-xl bg-primary-500 text-white text-xs font-bold flex items-center gap-2 hover:bg-primary-600 transition-colors">
+        <i class="ri-file-chart-2-line"></i>
+        Générer PDF SYSCOHADA
+      </button>
+    </div>
+
+  </div>
+
+</body>
+</html>

@@ -157,7 +157,7 @@ interface ReportDownloadInfo { ... }
 ### 2. Watermark Dynamique
 - ✅ **Email utilisateur** : inclus dans chaque rapport
 - ✅ **Date génération** : timestamp précis
-- ✅ **Format sécurisé** : "Généré par [email] le [date] - FactureX"
+- ✅ **Format sécurisé** : "Généré par [email] le [date] - FactureSmart"
 
 ### 3. Intégrité des Fichiers
 - ✅ **Checksum MD5** : vérification rapide

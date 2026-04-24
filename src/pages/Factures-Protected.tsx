@@ -39,7 +39,6 @@ import {
   Calendar
 } from 'lucide-react';
 import { startOfDay, startOfWeek, startOfMonth, startOfYear, endOfDay, endOfWeek, endOfMonth, endOfYear, subDays } from 'date-fns';
-import ProtectedRouteEnhanced from '../components/auth/ProtectedRouteEnhanced';
 import PermissionGuard from '../components/auth/PermissionGuard';
 import { UnifiedDataTable } from '@/components/ui/unified-data-table';
 import { FilterTabs } from '@/components/ui/filter-tabs';
@@ -345,9 +344,7 @@ const FacturesProtected: React.FC = () => {
   }
 
   return (
-    <ProtectedRouteEnhanced requiredModule="factures" requiredPermission="read">
-      <Layout>
-        <div className="space-y-6 animate-in fade-in duration-300">
+    <Layout><div className="space-y-6 animate-in fade-in duration-300">
           {/* Bulk Actions Bar */}
           {selectedFactures.size > 0 && (() => {
             const selectedTotals = calculateSelectedTotals();
@@ -911,9 +908,7 @@ const FacturesProtected: React.FC = () => {
             cancelText="Annuler"
             onConfirm={handleConfirmDelete}
           />
-        </div>
-      </Layout>
-    </ProtectedRouteEnhanced>
+        </div></Layout>
   );
 };
 

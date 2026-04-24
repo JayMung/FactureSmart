@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rapprochement Bancaire — Facture Smart</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Manrope', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] },
+          colors: {
+            primary: { 50: '#ecfdf5', 100: '#d1fae5', 200: '#a7f3d0', 300: '#6ee7b7', 400: '#34d399', 500: '#10b981', 600: '#059669', 700: '#059669', 800: '#065f46', 900: '#064e3b' },
+            fx: { gray: '#F8FAFC', 'gray-100': '#F1F5F9', 'gray-200': '#E2E8F0', 'gray-300': '#CBD5E1', 'gray-500': '#64748B', 'gray-700': '#334155', 'gray-900': '#0F172A', success: '#10b981', warning: '#F59E0B', danger: '#EF4444' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Manrope', sans-serif; }
+    .rdc-bg { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Crect width='40' height='40' fill='%2310B981' fill-opacity='0.025'/%3E%3Crect x='40' y='40' width='40' height='40' fill='%2310B981' fill-opacity='0.025'/%3E%3C/svg%3E"); background-size: 80px 80px; }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen rdc-bg">
+
+  <header class="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
+    <div class="flex items-center justify-between px-6 py-3">
+      <div class="flex items-center gap-3">
+        <a href="index.html" class="w-9 h-9 rounded-xl bg-gray-100 flex items-center justify-center text-fx-gray-500 hover:bg-gray-200 transition-colors">
+          <i class="ri-arrow-left-line text-lg"></i>
+        </a>
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center shadow-sm">
+            <i class="ri-file-chart-line text-white text-sm"></i>
+          </div>
+          <span class="text-base font-extrabold text-fx-gray-900">Facture<span class="text-primary-600">X</span></span>
+          <span class="text-xs bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full font-bold">Rapprochement</span>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="flex items-center gap-1.5 text-xs font-semibold text-yellow-600 bg-yellow-50 px-3 py-1.5 rounded-lg">
+          <i class="ri-alert-line text-sm"></i>
+          3 écarts
+        </div>
+        <button class="px-4 py-2 rounded-xl border border-gray-200 text-fx-gray-600 text-xs font-semibold flex items-center gap-2 hover:bg-gray-50 transition-colors">
+          <i class="ri-upload-line"></i>
+          Importer relevé
+        </button>
+        <button class="px-4 py-2 rounded-xl bg-primary-500 text-white text-xs font-bold flex items-center gap-2 hover:bg-primary-600 transition-colors shadow-sm">
+          <i class="ri-links-line"></i>
+          Lancer rapprochement auto
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="p-6 space-y-6">
+
+    <!-- Header summary -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm">
+        <div class="text-xs text-fx-gray-500 mb-1">Solde banque (relevé)</div>
+        <div class="text-xl font-extrabold text-fx-gray-900 font-mono">241 850 $</div>
+        <div class="text-xs text-fx-gray-400 mt-1">Rawbank — Avril 2026</div>
+      </div>
+      <div class="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm">
+        <div class="text-xs text-fx-gray-500 mb-1">Solde comptabilité</div>
+        <div class="text-xl font-extrabold text-fx-gray-900 font-mono">234 100 $</div>
+        <div class="text-xs text-yellow-500 font-semibold mt-1">Écart: 7 750 $</div>
+      </div>
+      <div class="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm">
+        <div class="text-xs text-fx-gray-500 mb-1">Écritures rapprochées</div>
+        <div class="text-xl font-extrabold text-green-600">18 / 21</div>
+        <div class="text-xs text-fx-gray-400 mt-1">85.7% matched</div>
+      </div>
+      <div class="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm">
+        <div class="text-xs text-fx-gray-500 mb-1">Écarts non lettrés</div>
+        <div class="text-xl font-extrabold text-yellow-600">3</div>
+        <div class="text-xs text-fx-gray-400 mt-1">À investiguer</div>
+      </div>
+    </div>
+
+    <!-- Rapprochement comparison -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+      <!-- Relevé bancaire -->
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        <div class="px-4 py-3 bg-blue-50 border-b border-blue-100 flex items-center justify-between">
+          <span class="text-sm font-bold text-blue-800">Relevé bancaire — Rawbank (importé)</span>
+          <span class="text-xs text-blue-600 font-semibold">Avril 2026</span>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-xs">
+            <thead>
+              <tr class="text-fx-gray-400 uppercase tracking-wider text-[10px] font-bold bg-gray-50 border-b border-gray-100">
+                <th class="text-left px-4 py-2.5">Date</th>
+                <th class="text-left px-4 py-2.5">Référence</th>
+                <th class="text-left px-4 py-2.5">Libellé</th>
+                <th class="text-right px-4 py-2.5">Débit ($)</th>
+                <th class="text-right px-4 py-2.5">Crédit ($)</th>
+                <th class="text-center px-4 py-2.5">Statut</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-50">
+              <tr class="hover:bg-gray-50 transition-colors">
+                <td class="px-4 py-2.5 font-mono font-semibold text-fx-gray-900 whitespace-nowrap">05/04</td>
+                <td class="px-4 py-2.5 font-mono text-fx-gray-500">RB-2026-0401</td>
+                <td class="px-4 py-2.5 text-fx-gray-700 truncate max-w-[120px]">Virement reçu — Kin Import</td>
+                <td class="px-4 py-2.5 text-right font-mono text-fx-gray-500">—</td>
+                <td class="px-4 py-2.5 text-right font-mono font-bold text-green-600">14 520.00</td>
+                <td class="px-4 py-2.5 text-center"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-green-100 text-green-700">✓ Rapproché</span></td>
+              </tr>
+              <tr class="hover:bg-gray-50 transition-colors">
+                <td class="px-4 py-2.5 font-mono font-semibold text-fx-gray-900 whitespace-nowrap">12/04</td>
+                <td class="px-4 py-2.5 font-mono text-fx-gray-500">RB-2026-0407</td>
+                <td class="px-4 py-2.5 text-fx-gray-700 truncate max-w-[120px]">Paiement M-Pesa — Facture 89</td>
+                <td class="px-4 py-2.5 text-right font-mono text-fx-gray-500">—</td>
+                <td class="px-4 py-2.5 text-right font-mono font-bold text-green-600">5 250.00</td>
+                <td class="px-4 py-2.5 text-center"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-green-100 text-green-700">✓ Rapproché</span></td>
+              </tr>
+              <tr class="hover:bg-gray-50 transition-colors">
+                <td class="px-4 py-2.5 font-mono font-semibold text-fx-gray-900 whitespace-nowrap">18/04</td>
+                <td class="px-4 py-2.5 font-mono text-fx-gray-500">RB-2026-0412</td>
+                <td class="px-4 py-2.5 text-fx-gray-700 truncate max-w-[120px]">Frais bancaires Avril</td>
+                <td class="px-4 py-2.5 text-right font-mono font-bold text-red-600">45.00</td>
+                <td class="px-4 py-2.5 text-right font-mono text-fx-gray-500">—</td>
+                <td class="px-4 py-2.5 text-center"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-yellow-100 text-yellow-700">⚠ À lettrer</span></td>
+              </tr>
+              <tr class="hover:bg-gray-50 transition-colors">
+                <td class="px-4 py-2.5 font-mono font-semibold text-fx-gray-900 whitespace-nowrap">20/04</td>
+                <td class="px-4 py-2.5 font-mono text-fx-gray-500">RB-2026-0415</td>
+                <td class="px-4 py-2.5 text-fx-gray-700 truncate max-w-[120px]">Virement client — Kimbélavo</td>
+                <td class="px-4 py-2.5 text-right font-mono text-fx-gray-500">—</td>
+                <td class="px-4 py-2.5 text-right font-mono font-bold text-green-600">34 500.00</td>
+                <td class="px-4 py-2.5 text-center"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-green-100 text-green-700">✓ Rapproché</span></td>
+              </tr>
+              <tr class="hover:bg-gray-50 transition-colors">
+                <td class="px-4 py-2.5 font-mono font-semibold text-fx-gray-900 whitespace-nowrap">22/04</td>
+                <td class="px-4 py-2.5 font-mono text-fx-gray-500">RB-2026-0418</td>
+                <td class="px-4 py-2.5 text-fx-gray-700 truncate max-w-[120px]">Paiement Airtel — Facture 91</td>
+                <td class="px-4 py-2.5 text-right font-mono text-fx-gray-500">—</td>
+                <td class="px-4 py-2.5 text-right font-mono font-bold text-green-600">8 920.00</td>
+                <td class="px-4 py-2.5 text-center"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-green-100 text-green-700">✓ Rapproché</span></td>
+              </tr>
+              <tr class="hover:bg-gray-50 transition-colors bg-yellow-50/50">
+                <td class="px-4 py-2.5 font-mono font-semibold text-yellow-700 whitespace-nowrap">23/04</td>
+                <td class="px-4 py-2.5 font-mono text-yellow-600">RB-2026-0419</td>
+                <td class="px-4 py-2.5 text-yellow-700 truncate max-w-[120px]">Dépôt espèces non identifié</td>
+                <td class="px-4 py-2.5 text-right font-mono font-bold text-yellow-700">7 705.00</td>
+                <td class="px-4 py-2.5 text-right font-mono text-yellow-400">—</td>
+                <td class="px-4 py-2.5 text-center"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-yellow-100 text-yellow-700 border border-yellow-200">⚠ À lettrer</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Écritures comptables non lettrées -->
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        <div class="px-4 py-3 bg-orange-50 border-b border-orange-100 flex items-center justify-between">
+          <span class="text-sm font-bold text-orange-800">Écritures comptables non lettrées</span>
+          <span class="text-xs text-orange-600 font-semibold">3 écritures</span>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-xs">
+            <thead>
+              <tr class="text-fx-gray-400 uppercase tracking-wider text-[10px] font-bold bg-gray-50 border-b border-gray-100">
+                <th class="text-left px-4 py-2.5">Date</th>
+                <th class="text-left px-4 py-2.5">Pièce</th>
+                <th class="text-left px-4 py-2.5">Libellé</th>
+                <th class="text-right px-4 py-2.5">Débit ($)</th>
+                <th class="text-right px-4 py-2.5">Crédit ($)</th>
+                <th class="text-center px-4 py-2.5">Action</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-50">
+              <tr class="hover:bg-gray-50 transition-colors">
+                <td class="px-4 py-2.5 font-mono font-semibold text-fx-gray-900 whitespace-nowrap">18/04</td>
+                <td class="px-4 py-2.5 font-mono text-fx-gray-500">OD-2026-0018</td>
+                <td class="px-4 py-2.5 text-fx-gray-700 truncate max-w-[120px]">Frais bancaires Avril — Rawbank</td>
+                <td class="px-4 py-2.5 text-right font-mono font-bold text-red-600">45.00</td>
+                <td class="px-4 py-2.5 text-right font-mono text-fx-gray-500">—</td>
+                <td class="px-4 py-2.5 text-center"><button class="px-3 py-1 rounded-lg bg-yellow-50 text-yellow-700 text-[10px] font-bold hover:bg-yellow-100 transition-colors border border-yellow-200">Lettrer</button></td>
+              </tr>
+              <tr class="hover:bg-gray-50 transition-colors">
+                <td class="px-4 py-2.5 font-mono font-semibold text-fx-gray-900 whitespace-nowrap">23/04</td>
+                <td class="px-4 py-2.5 font-mono text-fx-gray-500">FAC-2026-0140</td>
+                <td class="px-4 py-2.5 text-fx-gray-700 truncate max-w-[120px]">Dépôt espèces — Kimbélavo Sprl</td>
+                <td class="px-4 py-2.5 text-right font-mono font-bold text-green-600">7 705.00</td>
+                <td class="px-4 py-2.5 text-right font-mono text-fx-gray-500">—</td>
+                <td class="px-4 py-2.5 text-center"><button class="px-3 py-1 rounded-lg bg-yellow-50 text-yellow-700 text-[10px] font-bold hover:bg-yellow-100 transition-colors border border-yellow-200">Lettrer</button></td>
+              </tr>
+              <tr class="hover:bg-gray-50 transition-colors">
+                <td class="px-4 py-2.5 font-mono font-semibold text-fx-gray-900 whitespace-nowrap">23/04</td>
+                <td class="px-4 py-2.5 font-mono text-fx-gray-500">ACH-2026-0091</td>
+                <td class="px-4 py-2.5 text-fx-gray-700 truncate max-w-[120px]">Paiement fournisseur — Tropic Shop</td>
+                <td class="px-4 py-2.5 text-right font-mono text-fx-gray-500">—</td>
+                <td class="px-4 py-2.5 text-right font-mono font-bold text-red-600">12 450.00</td>
+                <td class="px-4 py-2.5 text-center"><button class="px-3 py-1 rounded-lg bg-yellow-50 text-yellow-700 text-[10px] font-bold hover:bg-yellow-100 transition-colors border border-yellow-200">Lettrer</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>

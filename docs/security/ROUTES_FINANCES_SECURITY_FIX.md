@@ -191,4 +191,4 @@ describe('Protection Routes Finances', () => {
 
 ---
 
-#FactureX #Sécurité #Permissions #Routes #Finances
+#FactureSmart #Sécurité #Permissions #Routes #Finances

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ouverture de Caisse — Facture Smart</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Manrope', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] },
+          colors: {
+            primary: { 50: '#ecfdf5', 100: '#d1fae5', 200: '#a7f3d0', 300: '#6ee7b7', 400: '#34d399', 500: '#10b981', 600: '#059669', 700: '#059669', 800: '#065f46', 900: '#064e3b' },
+            fx: { gray: '#F8FAFC', 'gray-100': '#F1F5F9', 'gray-200': '#E2E8F0', 'gray-300': '#CBD5E1', 'gray-500': '#64748B', 'gray-700': '#334155', 'gray-900': '#0F172A', success: '#10b981', warning: '#F59E0B', danger: '#EF4444' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Manrope', sans-serif; }
+    .rdc-bg { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Crect width='40' height='40' fill='%2310B981' fill-opacity='0.025'/%3E%3Crect x='40' y='40' width='40' height='40' fill='%2310B981' fill-opacity='0.025'/%3E%3C/svg%3E"); background-size: 80px 80px; }
+    .bill-btn { min-width: 72px; min-height: 60px; }
+    .bill-btn:active { transform: scale(0.95); }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen rdc-bg">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
+    <div class="flex items-center justify-between px-6 py-3">
+      <div class="flex items-center gap-3">
+        <a href="index.html" class="w-9 h-9 rounded-xl bg-gray-100 flex items-center justify-center text-fx-gray-500 hover:bg-gray-200 transition-colors">
+          <i class="ri-arrow-left-line text-lg"></i>
+        </a>
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center shadow-sm">
+            <i class="ri-money-dollar-circle-line text-white text-sm"></i>
+          </div>
+          <span class="text-base font-extrabold text-fx-gray-900">Facture<span class="text-primary-600">X</span></span>
+          <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-bold">Caisse</span>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="text-xs text-fx-gray-500 font-mono bg-gray-100 px-3 py-1.5 rounded-lg" id="datetime"></div>
+        <div class="flex items-center gap-1.5 text-xs font-semibold text-primary-600 bg-primary-50 px-3 py-1.5 rounded-lg">
+          <i class="ri-checkbox-circle-line"></i>
+          Prête
+        </div>
+      </div>
+    </div>
+    <script>document.getElementById('datetime').textContent = new Date().toLocaleString('fr-FR', {weekday:'short', day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit'});</script>
+  </header>
+
+  <div class="p-4 md:p-6 space-y-5">
+
+    <!-- Cashier info -->
+    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
+      <div class="flex flex-wrap items-center gap-4">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
+            <i class="ri-user-line text-green-600 text-lg"></i>
+          </div>
+          <div>
+            <div class="text-sm font-bold text-fx-gray-900">Jean-Pierre Kabongo</div>
+            <div class="text-xs text-fx-gray-400">Caissier — Boutique Gombe</div>
+          </div>
+        </div>
+        <div class="ml-auto flex items-center gap-2">
+          <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+          <span class="text-xs text-green-600 font-bold">Session active</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Denomination grid -->
+    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <div class="text-base font-bold text-fx-gray-900">Fonds d'ouverture</div>
+          <div class="text-xs text-fx-gray-400">Sélectionnez les quantités par dénomination</div>
+        </div>
+        <div class="text-right">
+          <div class="text-xs text-fx-gray-400">Total ouvert</div>
+          <div class="text-2xl font-extrabold text-green-600 font-mono" id="total-display">0 CDF</div>
+        </div>
+      </div>
+
+      <!-- Bills -->
+      <div class="mb-4">
+        <div class="text-xs font-bold text-fx-gray-500 uppercase tracking-wider mb-2">Billets CDF</div>
+        <div class="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-10 gap-2">
+          <!-- 10,000 -->
+          <div class="flex flex-col items-center gap-1">
+            <div class="text-lg font-bold text-fx-gray-700">10 000</div>
+            <div class="w-full h-14 rounded-xl border-2 border-gray-200 bg-gray-50 flex items-center justify-center">
+              <input type="number" min="0" value="0" class="w-10 text-center font-mono font-bold text-lg bg-transparent focus:outline-none" data-denom="10000" onchange="updateTotal()">
+            </div>
+            <div class="text-[9px] text-fx-gray-400 font-mono">×10 000</div>
+          </div>
+          <!-- 5,000 -->
+          <div class="flex flex-col items-center gap-1">
+            <div class="text-lg font-bold text-fx-gray-700">5 000</div>
+            <div class="w-full h-14 rounded-xl border-2 border-gray-200 bg-gray-50 flex items-center justify-center">
+              <input type="number" min="0" value="0" class="w-10 text-center font-mono font-bold text-lg bg-transparent focus:outline-none" data-denom="5000" onchange="updateTotal()">
+            </div>
+            <div class="text-[9px] text-fx-gray-400 font-mono">×5 000</div>
+          </div>
+          <!-- 2,000 -->
+          <div class="flex flex-col items-center gap-1">
+            <div class="text-lg font-bold text-fx-gray-700">2 000</div>
+            <div class="w-full h-14 rounded-xl border-2 border-gray-200 bg-gray-50 flex items-center justify-center">
+              <input type="number" min="0" value="0" class="w-10 text-center font-mono font-bold text-lg bg-transparent focus:outline-none" data-denom="2000" onchange="updateTotal()">
+            </div>
+            <div class="text-[9px] text-fx-gray-400 font-mono">×2 000</div>
+          </div>
+          <!-- 1,000 -->
+          <div class="flex flex-col items-center gap-1">
+            <div class="text-lg font-bold text-fx-gray-700">1 000</div>
+            <div class="w-full h-14 rounded-xl border-2 border-gray-200 bg-gray-50 flex items-center justify-center">
+              <input type="number" min="0" value="0" class="w-10 text-center font-mono font-bold text-lg bg-transparent focus:outline-none" data-denom="1000" onchange="updateTotal()">
+            </div>
+            <div class="text-[9px] text-fx-gray-400 font-mono">×1 000</div>
+          </div>
+          <!-- 500 -->
+          <div class="flex flex-col items-center gap-1">
+            <div class="text-lg font-bold text-fx-gray-700">500</div>
+            <div class="w-full h-14 rounded-xl border-2 border-gray-200 bg-gray-50 flex items-center justify-center">
+              <input type="number" min="0" value="0" class="w-10 text-center font-mono font-bold text-lg bg-transparent focus:outline-none" data-denom="500" onchange="updateTotal()">
+            </div>
+            <div class="text-[9px] text-fx-gray-400 font-mono">×500</div>
+          </div>
+          <!-- 200 -->
+          <div class="flex flex-col items-center gap-1">
+            <div class="text-lg font-bold text-fx-gray-700">200</div>
+            <div class="w-full h-14 rounded-xl border-2 border-gray-200 bg-gray-50 flex items-center justify-center">
+              <input type="number" min="0" value="0" class="w-10 text-center font-mono font-bold text-lg bg-transparent focus:outline-none" data-denom="200" onchange="updateTotal()">
+            </div>
+            <div class="text-[9px] text-fx-gray-400 font-mono">×200</div>
+          </div>
+          <!-- 100 -->
+          <div class="flex flex-col items-center gap-1">
+            <div class="text-lg font-bold text-fx-gray-700">100</div>
+            <div class="w-full h-14 rounded-xl border-2 border-gray-200 bg-gray-50 flex items-center justify-center">
+              <input type="number" min="0" value="0" class="w-10 text-center font-mono font-bold text-lg bg-transparent focus:outline-none" data-denom="100" onchange="updateTotal()">
+            </div>
+            <div class="text-[9px] text-fx-gray-400 font-mono">×100</div>
+          </div>
+          <!-- 50 -->
+          <div class="flex flex-col items-center gap-1">
+            <div class="text-lg font-bold text-fx-gray-700">50</div>
+            <div class="w-full h-14 rounded-xl border-2 border-gray-200 bg-gray-50 flex items-center justify-center">
+              <input type="number" min="0" value="0" class="w-10 text-center font-mono font-bold text-lg bg-transparent focus:outline-none" data-denom="50" onchange="updateTotal()">
+            </div>
+            <div class="text-[9px] text-fx-gray-400 font-mono">×50</div>
+          </div>
+          <!-- 20 -->
+          <div class="flex flex-col items-center gap-1">
+            <div class="text-lg font-bold text-fx-gray-700">20</div>
+            <div class="w-full h-14 rounded-xl border-2 border-gray-200 bg-gray-50 flex items-center justify-center">
+              <input type="number" min="0" value="0" class="w-10 text-center font-mono font-bold text-lg bg-transparent focus:outline-none" data-denom="20" onchange="updateTotal()">
+            </div>
+            <div class="text-[9px] text-fx-gray-400 font-mono">×20</div>
+          </div>
+          <!-- 10 -->
+          <div class="flex flex-col items-center gap-1">
+            <div class="text-lg font-bold text-fx-gray-700">10</div>
+            <div class="w-full h-14 rounded-xl border-2 border-gray-200 bg-gray-50 flex items-center justify-center">
+              <input type="number" min="0" value="0" class="w-10 text-center font-mono font-bold text-lg bg-transparent focus:outline-none" data-denom="10" onchange="updateTotal()">
+            </div>
+            <div class="text-[9px] text-fx-gray-400 font-mono">×10</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Coins -->
+      <div>
+        <div class="text-xs font-bold text-fx-gray-500 uppercase tracking-wider mb-2">Pièces CDF</div>
+        <div class="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-8 gap-2">
+          <div class="flex flex-col items-center gap-1">
+            <div class="text-sm font-bold text-fx-gray-700">5</div>
+            <div class="w-full h-12 rounded-xl border-2 border-gray-200 bg-gray-50 flex items-center justify-center">
+              <input type="number" min="0" value="0" class="w-8 text-center font-mono font-bold bg-transparent focus:outline-none" data-denom="5" onchange="updateTotal()">
+            </div>
+            <div class="text-[9px] text-fx-gray-400 font-mono">×5</div>
+          </div>
+          <div class="flex flex-col items-center gap-1">
+            <div class="text-sm font-bold text-fx-gray-700">1</div>
+            <div class="w-full h-12 rounded-xl border-2 border-gray-200 bg-gray-50 flex items-center justify-center">
+              <input type="number" min="0" value="0" class="w-8 text-center font-mono font-bold bg-transparent focus:outline-none" data-denom="1" onchange="updateTotal()">
+            </div>
+            <div class="text-[9px] text-fx-gray-400 font-mono">×1</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Summary -->
+    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
+      <div class="flex items-center justify-between mb-4">
+        <div class="text-sm font-bold text-fx-gray-900">Récapitulatif</div>
+        <div class="flex items-center gap-2">
+          <div class="flex items-center gap-1.5 text-xs text-green-600">
+            <i class="ri-checkbox-circle-line"></i>
+            <span class="font-semibold">Équilibré</span>
+          </div>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+        <div class="bg-green-50 rounded-xl p-3 text-center">
+          <div class="text-xs text-green-600 mb-1">Billets</div>
+          <div class="text-lg font-extrabold text-green-700 font-mono" id="bills-total">0</div>
+        </div>
+        <div class="bg-green-50 rounded-xl p-3 text-center">
+          <div class="text-xs text-green-600 mb-1">Pièces</div>
+          <div class="text-lg font-extrabold text-green-700 font-mono" id="coins-total">0</div>
+        </div>
+        <div class="bg-gray-100 rounded-xl p-3 text-center col-span-2">
+          <div class="text-xs text-fx-gray-500 mb-1">Total ouverture</div>
+          <div class="text-xl font-extrabold text-green-600 font-mono" id="grand-total">0 CDF</div>
+        </div>
+      </div>
+
+      <!-- PIN validation -->
+      <div class="border-t border-gray-100 pt-4">
+        <div class="text-xs font-bold text-fx-gray-500 uppercase tracking-wider mb-3">Validation PIN Caissier</div>
+        <div class="flex items-center gap-3">
+          <div class="flex gap-2">
+            <div class="w-10 h-10 rounded-xl border-2 border-gray-200 bg-gray-50 flex items-center justify-center text-xl font-bold text-fx-gray-900">•</div>
+            <div class="w-10 h-10 rounded-xl border-2 border-gray-200 bg-gray-50 flex items-center justify-center text-xl font-bold text-fx-gray-900">•</div>
+            <div class="w-10 h-10 rounded-xl border-2 border-gray-200 bg-gray-50 flex items-center justify-center text-xl font-bold text-fx-gray-900">•</div>
+            <div class="w-10 h-10 rounded-xl border-2 border-gray-200 bg-gray-50 flex items-center justify-center text-xl font-bold text-fx-gray-900">•</div>
+          </div>
+          <button class="flex-1 py-3 rounded-xl bg-green-500 text-white text-sm font-extrabold hover:bg-green-600 transition-colors shadow-sm flex items-center justify-center gap-2">
+            <i class="ri-lock-unlock-line"></i>
+            Ouvrir la caisse
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function updateTotal() {
+      let total = 0;
+      let bills = 0;
+      let coins = 0;
+      document.querySelectorAll('input[data-denom]').forEach(input => {
+        const val = parseInt(input.value) || 0;
+        const denom = parseInt(input.dataset.denom);
+        total += val * denom;
+        if (denom >= 10) bills += val * denom;
+        else coins += val * denom;
+      });
+      document.getElementById('bills-total').textContent = bills.toLocaleString('fr-FR') + ' CDF';
+      document.getElementById('coins-total').textContent = coins.toLocaleString('fr-FR') + ' CDF';
+      document.getElementById('grand-total').textContent = total.toLocaleString('fr-FR') + ' CDF';
+      document.getElementById('total-display').textContent = total.toLocaleString('fr-FR') + ' CDF';
+    }
+    updateTotal();
+  </script>
+
+</body>
+</html>

@@ -1,4 +1,4 @@
-# Optimisations de Performance - FactureX
+# Optimisations de Performance - FactureSmart
 
 ## 📱 Animations Fluides avec Framer Motion
 

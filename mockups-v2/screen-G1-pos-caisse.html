@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>POS Caisse — Facture Smart</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Manrope', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] },
+          colors: {
+            primary: { 50: '#ecfdf5', 100: '#d1fae5', 200: '#a7f3d0', 300: '#6ee7b7', 400: '#34d399', 500: '#10b981', 600: '#059669', 700: '#059669', 800: '#065f46', 900: '#064e3b' },
+            fx: { blue: '#10b981', 'blue-dark': '#059669', 'blue-light': '#E8F0FE', gray: '#F8FAFC', 'gray-100': '#F1F5F9', 'gray-200': '#E2E8F0', 'gray-300': '#CBD5E1', 'gray-500': '#64748B', 'gray-700': '#334155', 'gray-900': '#0F172A', success: '#10b981', warning: '#F59E0B', danger: '#EF4444' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Manrope', sans-serif; }
+    .rdc-bg { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Crect width='40' height='40' fill='%2310B981' fill-opacity='0.025'/%3E%3Crect x='40' y='40' width='40' height='40' fill='%2310B981' fill-opacity='0.025'/%3E%3Crect x='40' width='40' height='40' fill='none' stroke='%2310B981' stroke-opacity='0.03' stroke-width='1'/%3E%3Crect y='40' width='40' height='40' fill='none' stroke='%2310B981' stroke-opacity='0.03' stroke-width='1'/%3E%3C/svg%3E"); background-size: 80px 80px; }
+    .glass { background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.3); }
+    .glass-sidebar { background: rgba(255,255,255,0.95); backdrop-filter: blur(16px); }
+    .product-tile { transition: all 0.15s ease; }
+    .product-tile:active { transform: scale(0.95); background: #ecfdf5; }
+    .cart-item { transition: all 0.2s ease; }
+    .fade-in { animation: fadeIn 0.3s ease-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .pulse-green { animation: pulseGreen 2s infinite; }
+    @keyframes pulseGreen { 0%,100% { box-shadow: 0 0 0 0 rgba(16,185,129,0.4); } 50% { box-shadow: 0 0 0 8px rgba(16,185,129,0); } }
+    input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen rdc-bg">
+
+  <!-- Top Bar -->
+  <header class="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
+    <div class="flex items-center justify-between px-6 py-3">
+      <div class="flex items-center gap-4">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center shadow-sm">
+            <i class="ri-file-chart-line text-white text-sm"></i>
+          </div>
+          <span class="text-base font-extrabold text-fx-gray-900">Facture<span class="text-primary-600">X</span></span>
+          <span class="text-xs bg-primary-100 text-primary-700 px-2 py-0.5 rounded-full font-bold ml-2">POS</span>
+        </div>
+        <div class="hidden sm:flex items-center gap-2 text-xs text-fx-gray-500 ml-4 pl-4 border-l border-gray-200">
+          <i class="ri-user-line"></i>
+          <span>Marie K.</span>
+          <span class="text-gray-300">•</span>
+          <span>Caisse #1</span>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="hidden md:flex items-center gap-1.5 text-xs text-fx-gray-500 bg-fx-gray-100 px-3 py-1.5 rounded-lg">
+          <i class="ri-time-line"></i>
+          <span id="clock" class="font-mono font-medium">--:--</span>
+        </div>
+        <a href="screen-G-pos.html" class="text-sm text-fx-gray-500 hover:text-fx-gray-700 font-medium flex items-center gap-1">
+          <i class="ri-settings-3-line"></i>
+        </a>
+        <button class="w-9 h-9 rounded-xl bg-fx-gray-100 flex items-center justify-center text-fx-gray-500 hover:bg-gray-200 transition-colors">
+          <i class="ri-notification-3-line text-lg"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Layout -->
+  <div class="flex h-[calc(100vh-60px)]">
+
+    <!-- LEFT: Products grid -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+
+      <!-- Search + Category filter -->
+      <div class="p-4 bg-white border-b border-gray-100">
+        <div class="flex gap-3 mb-3">
+          <div class="flex-1 relative">
+            <i class="ri-search-line absolute left-3 top-1/2 -translate-y-1/2 text-fx-gray-400 text-lg"></i>
+            <input type="text" placeholder="Rechercher un produit..." class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-100 focus:border-primary-300 bg-white">
+          </div>
+          <button class="px-4 py-2.5 rounded-xl bg-primary-500 text-white text-sm font-bold flex items-center gap-2 hover:bg-primary-600 transition-colors shadow-sm">
+            <i class="ri-barcode-line text-lg"></i>
+            <span class="hidden sm:inline">Scanner</span>
+          </button>
+        </div>
+        <!-- Category pills -->
+        <div class="flex gap-2 overflow-x-auto pb-1 scroll-hidden">
+          <button class="px-4 py-1.5 rounded-full text-xs font-bold bg-primary-500 text-white whitespace-nowrap shadow-sm">Tous</button>
+          <button class="px-4 py-1.5 rounded-full text-xs font-semibold bg-white text-fx-gray-700 border border-gray-200 hover:bg-gray-50 whitespace-nowrap transition-colors">Boissons</button>
+          <button class="px-4 py-1.5 rounded-full text-xs font-semibold bg-white text-fx-gray-700 border border-gray-200 hover:bg-gray-50 whitespace-nowrap transition-colors">Snacks</button>
+          <button class="px-4 py-1.5 rounded-full text-xs font-semibold bg-white text-fx-gray-700 border border-gray-200 hover:bg-gray-50 whitespace-nowrap transition-colors">Alimentation</button>
+          <button class="px-4 py-1.5 rounded-full text-xs font-semibold bg-white text-fx-gray-700 border border-gray-200 hover:bg-gray-50 whitespace-nowrap transition-colors">produits frais</button>
+          <button class="px-4 py-1.5 rounded-full text-xs font-semibold bg-white text-fx-gray-700 border border-gray-200 hover:bg-gray-50 whitespace-nowrap transition-colors">Accessoires</button>
+          <button class="px-4 py-1.5 rounded-full text-xs font-semibold bg-white text-fx-gray-700 border border-gray-200 hover:bg-gray-50 whitespace-nowrap transition-colors">Telecom</button>
+        </div>
+      </div>
+
+      <!-- Products grid -->
+      <div class="flex-1 overflow-y-auto p-4">
+        <div class="grid grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+
+          <!-- Product tile -->
+          <button class="product-tile bg-white rounded-2xl border border-gray-100 p-3 flex flex-col items-center text-center shadow-sm relative overflow-hidden">
+            <div class="absolute top-0 left-0 right-0 h-1 bg-primary-500"></div>
+            <div class="w-12 h-12 rounded-xl bg-primary-50 flex items-center justify-center mb-2">
+              <i class="ri-cup-line text-primary-600 text-2xl"></i>
+            </div>
+            <div class="text-xs font-bold text-fx-gray-900 leading-tight mb-1">Café expresso</div>
+            <div class="text-xs text-fx-gray-500 mb-1">Stock: 48</div>
+            <div class="text-sm font-extrabold text-primary-600">1.50 $</div>
+            <div class="absolute bottom-1.5 right-1.5 w-6 h-6 rounded-full bg-primary-500 flex items-center justify-center">
+              <i class="ri-add-line text-white text-sm font-bold"></i>
+            </div>
+          </button>
+
+          <button class="product-tile bg-white rounded-2xl border border-gray-100 p-3 flex flex-col items-center text-center shadow-sm relative overflow-hidden">
+            <div class="absolute top-0 left-0 right-0 h-1 bg-blue-400"></div>
+            <div class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center mb-2">
+              <i class="ri-bottle-line text-blue-500 text-2xl"></i>
+            </div>
+            <div class="text-xs font-bold text-fx-gray-900 leading-tight mb-1">Eau minérale 50cl</div>
+            <div class="text-xs text-fx-gray-500 mb-1">Stock: 120</div>
+            <div class="text-sm font-extrabold text-primary-600">0.75 $</div>
+            <div class="absolute bottom-1.5 right-1.5 w-6 h-6 rounded-full bg-primary-500 flex items-center justify-center">
+              <i class="ri-add-line text-white text-sm font-bold"></i>
+            </div>
+          </button>
+
+          <button class="product-tile bg-white rounded-2xl border border-gray-100 p-3 flex flex-col items-center text-center shadow-sm relative overflow-hidden">
+            <div class="absolute top-0 left-0 right-0 h-1 bg-orange-400"></div>
+            <div class="w-12 h-12 rounded-xl bg-orange-50 flex items-center justify-center mb-2">
+              <i class="ri-bread-line text-orange-500 text-2xl"></i>
+            </div>
+            <div class="text-xs font-bold text-fx-gray-900 leading-tight mb-1">Pain au chocolat</div>
+            <div class="text-xs text-fx-gray-500 mb-1">Stock: 25</div>
+            <div class="text-sm font-extrabold text-primary-600">2.00 $</div>
+            <div class="absolute bottom-1.5 right-1.5 w-6 h-6 rounded-full bg-primary-500 flex items-center justify-center">
+              <i class="ri-add-line text-white text-sm font-bold"></i>
+            </div>
+          </button>
+
+          <button class="product-tile bg-white rounded-2xl border border-gray-100 p-3 flex flex-col items-center text-center shadow-sm relative overflow-hidden">
+            <div class="absolute top-0 left-0 right-0 h-1 bg-yellow-400"></div>
+            <div class="w-12 h-12 rounded-xl bg-yellow-50 flex items-center justify-center mb-2">
+              <i class="ri-sousoupe text-yellow-600 text-2xl"></i>
+            </div>
+            <div class="text-xs font-bold text-fx-gray-900 leading-tight mb-1">Chocapic Granola</div>
+            <div class="text-xs text-fx-gray-500 mb-1">Stock: 38</div>
+            <div class="text-sm font-extrabold text-primary-600">3.50 $</div>
+            <div class="absolute bottom-1.5 right-1.5 w-6 h-6 rounded-full bg-primary-500 flex items-center justify-center">
+              <i class="ri-add-line text-white text-sm font-bold"></i>
+            </div>
+          </button>
+
+          <button class="product-tile bg-white rounded-2xl border border-gray-100 p-3 flex flex-col items-center text-center shadow-sm relative overflow-hidden">
+            <div class="absolute top-0 left-0 right-0 h-1 bg-purple-400"></div>
+            <div class="w-12 h-12 rounded-xl bg-purple-50 flex items-center justify-center mb-2">
+              <i class="ri-handbag-line text-purple-500 text-2xl"></i>
+            </div>
+            <div class="text-xs font-bold text-fx-gray-900 leading-tight mb-1">Sac plastique</div>
+            <div class="text-xs text-fx-gray-500 mb-1">Stock: 200</div>
+            <div class="text-sm font-extrabold text-primary-600">0.25 $</div>
+            <div class="absolute bottom-1.5 right-1.5 w-6 h-6 rounded-full bg-primary-500 flex items-center justify-center">
+              <i class="ri-add-line text-white text-sm font-bold"></i>
+            </div>
+          </button>
+
+          <button class="product-tile bg-white rounded-2xl border border-gray-100 p-3 flex flex-col items-center text-center shadow-sm relative overflow-hidden">
+            <div class="absolute top-0 left-0 right-0 h-1 bg-red-400"></div>
+            <div class="w-12 h-12 rounded-xl bg-red-50 flex items-center justify-center mb-2">
+              <i class="ri-file-chart-line text-red-500 text-2xl"></i>
+            </div>
+            <div class="text-xs font-bold text-fx-gray-900 leading-tight mb-1">Recharge Om 5$</div>
+            <div class="text-xs text-fx-gray-500 mb-1">Stock: ∞</div>
+            <div class="text-sm font-extrabold text-primary-600">5.00 $</div>
+            <div class="absolute bottom-1.5 right-1.5 w-6 h-6 rounded-full bg-primary-500 flex items-center justify-center">
+              <i class="ri-add-line text-white text-sm font-bold"></i>
+            </div>
+          </button>
+
+          <button class="product-tile bg-white rounded-2xl border border-gray-100 p-3 flex flex-col items-center text-center shadow-sm relative overflow-hidden">
+            <div class="absolute top-0 left-0 right-0 h-1 bg-cyan-400"></div>
+            <div class="w-12 h-12 rounded-xl bg-cyan-50 flex items-center justify-center mb-2">
+              <i class="ri-hand-heart-line text-cyan-500 text-2xl"></i>
+            </div>
+            <div class="text-xs font-bold text-fx-gray-900 leading-tight mb-1">Savon lave-linge</div>
+            <div class="text-xs text-fx-gray-500 mb-1">Stock: 55</div>
+            <div class="text-sm font-extrabold text-primary-600">4.75 $</div>
+            <div class="absolute bottom-1.5 right-1.5 w-6 h-6 rounded-full bg-primary-500 flex items-center justify-center">
+              <i class="ri-add-line text-white text-sm font-bold"></i>
+            </div>
+          </button>
+
+          <button class="product-tile bg-white rounded-2xl border border-gray-100 p-3 flex flex-col items-center text-center shadow-sm relative overflow-hidden">
+            <div class="absolute top-0 left-0 right-0 h-1 bg-green-400"></div>
+            <div class="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center mb-2">
+              <i class="ri-leaf-line text-green-500 text-2xl"></i>
+            </div>
+            <div class="text-xs font-bold text-fx-gray-900 leading-tight mb-1">Jus naturel 30cl</div>
+            <div class="text-xs text-fx-gray-500 mb-1">Stock: 30</div>
+            <div class="text-sm font-extrabold text-primary-600">2.50 $</div>
+            <div class="absolute bottom-1.5 right-1.5 w-6 h-6 rounded-full bg-primary-500 flex items-center justify-center">
+              <i class="ri-add-line text-white text-sm font-bold"></i>
+            </div>
+          </button>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Cart sidebar -->
+    <div class="w-80 xl:w-96 glass-sidebar border-l border-gray-200 flex flex-col shadow-lg">
+
+      <!-- Cart header -->
+      <div class="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i class="ri-shopping-cart-2-line text-fx-gray-700 text-lg"></i>
+          <span class="font-bold text-fx-gray-900 text-sm">Panier</span>
+          <span class="bg-primary-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">4</span>
+        </div>
+        <button class="text-xs text-fx-gray-400 hover:text-red-500 font-medium flex items-center gap-1 transition-colors">
+          <i class="ri-delete-bin-line text-sm"></i>
+          Vider
+        </button>
+      </div>
+
+      <!-- Cart items -->
+      <div class="flex-1 overflow-y-auto p-3 space-y-2">
+        <div class="cart-item bg-white rounded-xl border border-gray-100 p-3 flex items-center gap-3 shadow-sm">
+          <div class="w-10 h-10 rounded-lg bg-primary-50 flex items-center justify-center flex-shrink-0">
+            <i class="ri-cup-line text-primary-500 text-base"></i>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="text-xs font-bold text-fx-gray-900 truncate">Café expresso</div>
+            <div class="text-[10px] text-fx-gray-400">1.50 $ / unité</div>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <button class="w-6 h-6 rounded-lg bg-gray-100 flex items-center justify-center text-fx-gray-500 hover:bg-gray-200 transition-colors">
+              <i class="ri-subtract-line text-xs font-bold"></i>
+            </button>
+            <span class="text-sm font-bold text-fx-gray-900 w-4 text-center">2</span>
+            <button class="w-6 h-6 rounded-lg bg-primary-50 flex items-center justify-center text-primary-600 hover:bg-primary-100 transition-colors">
+              <i class="ri-add-line text-xs font-bold"></i>
+            </button>
+          </div>
+          <div class="text-xs font-extrabold text-fx-gray-900 font-mono w-12 text-right">3.00 $</div>
+        </div>
+
+        <div class="cart-item bg-white rounded-xl border border-gray-100 p-3 flex items-center gap-3 shadow-sm">
+          <div class="w-10 h-10 rounded-lg bg-orange-50 flex items-center justify-center flex-shrink-0">
+            <i class="ri-bread-line text-orange-500 text-base"></i>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="text-xs font-bold text-fx-gray-900 truncate">Pain au chocolat</div>
+            <div class="text-[10px] text-fx-gray-400">2.00 $ / unité</div>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <button class="w-6 h-6 rounded-lg bg-gray-100 flex items-center justify-center text-fx-gray-500 hover:bg-gray-200 transition-colors">
+              <i class="ri-subtract-line text-xs font-bold"></i>
+            </button>
+            <span class="text-sm font-bold text-fx-gray-900 w-4 text-center">1</span>
+            <button class="w-6 h-6 rounded-lg bg-primary-50 flex items-center justify-center text-primary-600 hover:bg-primary-100 transition-colors">
+              <i class="ri-add-line text-xs font-bold"></i>
+            </button>
+          </div>
+          <div class="text-xs font-extrabold text-fx-gray-900 font-mono w-12 text-right">2.00 $</div>
+        </div>
+
+        <div class="cart-item bg-white rounded-xl border border-gray-100 p-3 flex items-center gap-3 shadow-sm">
+          <div class="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
+            <i class="ri-bottle-line text-blue-500 text-base"></i>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="text-xs font-bold text-fx-gray-900 truncate">Eau minérale 50cl</div>
+            <div class="text-[10px] text-fx-gray-400">0.75 $ / unité</div>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <button class="w-6 h-6 rounded-lg bg-gray-100 flex items-center justify-center text-fx-gray-500 hover:bg-gray-200 transition-colors">
+              <i class="ri-subtract-line text-xs font-bold"></i>
+            </button>
+            <span class="text-sm font-bold text-fx-gray-900 w-4 text-center">3</span>
+            <button class="w-6 h-6 rounded-lg bg-primary-50 flex items-center justify-center text-primary-600 hover:bg-primary-100 transition-colors">
+              <i class="ri-add-line text-xs font-bold"></i>
+            </button>
+          </div>
+          <div class="text-xs font-extrabold text-fx-gray-900 font-mono w-12 text-right">2.25 $</div>
+        </div>
+
+        <div class="cart-item bg-white rounded-xl border border-gray-100 p-3 flex items-center gap-3 shadow-sm">
+          <div class="w-10 h-10 rounded-lg bg-yellow-50 flex items-center justify-center flex-shrink-0">
+            <i class="ri-sousoupe text-yellow-600 text-base"></i>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="text-xs font-bold text-fx-gray-900 truncate">Chocapic Granola</div>
+            <div class="text-[10px] text-fx-gray-400">3.50 $ / unité</div>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <button class="w-6 h-6 rounded-lg bg-gray-100 flex items-center justify-center text-fx-gray-500 hover:bg-gray-200 transition-colors">
+              <i class="ri-subtract-line text-xs font-bold"></i>
+            </button>
+            <span class="text-sm font-bold text-fx-gray-900 w-4 text-center">1</span>
+            <button class="w-6 h-6 rounded-lg bg-primary-50 flex items-center justify-center text-primary-600 hover:bg-primary-100 transition-colors">
+              <i class="ri-add-line text-xs font-bold"></i>
+            </button>
+          </div>
+          <div class="text-xs font-extrabold text-fx-gray-900 font-mono w-12 text-right">3.50 $</div>
+        </div>
+      </div>
+
+      <!-- Totals + Pay button -->
+      <div class="border-t border-gray-200 p-4 space-y-3 bg-white">
+        <div class="space-y-1.5">
+          <div class="flex justify-between text-xs text-fx-gray-500">
+            <span>HT (7 articles)</span>
+            <span class="font-mono">9.50 $</span>
+          </div>
+          <div class="flex justify-between text-xs text-fx-gray-500">
+            <span>TVA 18%</span>
+            <span class="font-mono">1.71 $</span>
+          </div>
+          <div class="flex justify-between text-lg font-extrabold text-fx-gray-900 border-t border-gray-200 pt-1.5">
+            <span>Total TTC</span>
+            <span class="font-mono text-primary-600">11.21 $</span>
+          </div>
+        </div>
+
+        <a href="screen-G3-pos-checkout.html" class="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-gradient-to-br from-primary-500 to-primary-600 text-white font-extrabold text-lg shadow-lg shadow-primary-500/25 hover:shadow-xl hover:shadow-primary-500/30 transition-all pulse-green">
+          <i class="ri-wallet-line text-xl"></i>
+          Payer — 11.21 $
+        </a>
+
+        <div class="flex gap-2">
+          <a href="screen-G2-pos-catalogue.html" class="flex-1 py-2.5 rounded-xl border border-gray-200 text-fx-gray-600 text-xs font-semibold flex items-center justify-center gap-1.5 hover:bg-gray-50 transition-colors">
+            <i class="ri-file-list-3-line text-sm"></i>
+            Catalogue
+          </a>
+          <button class="flex-1 py-2.5 rounded-xl border border-gray-200 text-fx-gray-600 text-xs font-semibold flex items-center justify-center gap-1.5 hover:bg-gray-50 transition-colors">
+            <i class="ri-save-line text-sm"></i>
+            Sauvegarder
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    function updateClock() {
+      const now = new Date();
+      document.getElementById('clock').textContent = now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+  </script>
+
+</body>
+</html>

@@ -24,10 +24,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Badge } from '@/components/ui/badge';
-import { useAuth } from '@/components/auth/AuthProvider';
-import { usePermissions } from '@/hooks/usePermissions';
-import NotificationCenter from '@/components/activity/NotificationCenter';
 
 interface HeaderProps {
   title: string;
@@ -43,7 +39,6 @@ const Header: React.FC<HeaderProps> = ({
   user
 }) => {
   const navigate = useNavigate();
-  const { checkPermission } = usePermissions();
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -119,8 +114,13 @@ const Header: React.FC<HeaderProps> = ({
 
           {/* Right side - Notifications and user menu */}
           <div className="flex items-center gap-1 sm:gap-3 flex-shrink-0">
-            {/* Notifications temps réel */}
-            <NotificationCenter />
+            {/* Notifications placeholder */}
+            <button
+              className="relative p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-all focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              aria-label="Notifications"
+            >
+              <Bell className="h-5 w-5 sm:h-6 sm:w-6" />
+            </button>
 
             {/* User menu */}
             <DropdownMenu>

@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Facture Smart — Facturation électronique conforme DGI | RDC</title>
+  <meta name="description" content="Logiciel de facturation électronique conforme à la DGI pour les entreprises de la République Démocratique du Congo. Créez, envoyez et validez vos factures en toute conformité.">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Manrope', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] },
+          colors: {
+            primary: { 50: '#ecfdf5', 100: '#d1fae5', 200: '#a7f3d0', 300: '#6ee7b7', 400: '#34d399', 500: '#10b981', 600: '#059669', 700: '#059669', 800: '#065f46', 900: '#064e3b' },
+            fx: { blue: '#10b981', 'blue-dark': '#059669', 'blue-light': '#E8F0FE', gray: '#F8FAFC', 'gray-100': '#F1F5F9', 'gray-200': '#E2E8F0', 'gray-300': '#CBD5E1', 'gray-500': '#64748B', 'gray-700': '#334155', 'gray-900': '#0F172A', success: '#10b981', warning: '#F59E0B', danger: '#EF4444' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Manrope', sans-serif; }
+    .bg-dots { background-image: radial-gradient(circle, rgba(16,185,129,0.08) 1.5px, transparent 1.5px); background-size: 28px 28px; }
+    .bg-grid { background-image: linear-gradient(rgba(16,185,129,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(16,185,129,0.04) 1px, transparent 1px); background-size: 48px 48px; }
+    .gradient-hero { background: linear-gradient(135deg, #059669 0%, #10b981 40%, #34d399 100%); }
+    .gradient-btn { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
+    .gradient-btn:hover { background: linear-gradient(135deg, #059669 0%, #047857 100%); }
+    .glass-card { background: rgba(255,255,255,0.92); backdrop-filter: blur(16px); border: 1px solid rgba(16,185,129,0.12); }
+    .card-hover { transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .card-hover:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(16,185,129,0.15); }
+    .feature-icon { transition: transform 0.3s ease; }
+    .card-hover:hover .feature-icon { transform: scale(1.1); }
+    .fade-in { animation: fadeIn 0.6s ease-out; }
+    .fade-up { animation: fadeUp 0.7s ease-out; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    .float { animation: float 3s ease-in-out infinite; }
+    @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+    .pulse-dot { animation: pulse 2s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+    .pricing-popular { border: 2px solid #10b981; position: relative; }
+    .pricing-popular::before { content: 'Populaire'; position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #10b981, #059669); color: white; font-size: 11px; font-weight: 700; padding: 4px 16px; border-radius: 9999px; letter-spacing: 0.5px; text-transform: uppercase; }
+    .scroll-hidden { scrollbar-width: none; -ms-overflow-style: none; }
+    .scroll-hidden::-webkit-scrollbar { display: none; }
+  </style>
+</head>
+<body class="bg-white overflow-x-hidden">
+
+  <!-- NAV -->
+  <nav class="fixed top-0 w-full z-50 glass-dark" id="navbar">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center shadow-lg shadow-primary-500/30">
+          <i class="ri-file-chart-line text-white text-lg"></i>
+        </div>
+        <span class="text-xl font-extrabold text-white tracking-tight">Facture<span class="text-primary-300">X</span></span>
+      </div>
+      <div class="hidden md:flex items-center gap-8">
+        <a href="#features" class="text-sm font-medium text-white/80 hover:text-white transition-colors">Fonctionnalités</a>
+        <a href="#pricing" class="text-sm font-medium text-white/80 hover:text-white transition-colors">Tarifs</a>
+        <a href="#dgi" class="text-sm font-medium text-white/80 hover:text-white transition-colors">Conformité DGI</a>
+        <a href="#faq" class="text-sm font-medium text-white/80 hover:text-white transition-colors">FAQ</a>
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="#" class="text-sm font-semibold text-white/90 hover:text-white transition-colors hidden sm:block">Connexion</a>
+        <a href="#" class="px-5 py-2.5 rounded-xl text-sm font-bold text-primary-700 bg-white hover:bg-gray-50 transition-all shadow-lg shadow-white/20">
+          Essai gratuit
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="relative min-h-screen gradient-hero flex items-center overflow-hidden">
+    <!-- Background decorations -->
+    <div class="absolute inset-0 bg-dots opacity-60"></div>
+    <div class="absolute top-20 right-10 w-72 h-72 bg-white/5 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-20 left-10 w-96 h-96 bg-primary-300/10 rounded-full blur-3xl"></div>
+
+    <div class="relative max-w-7xl mx-auto px-6 py-32 grid md:grid-cols-2 gap-16 items-center">
+      <!-- Left -->
+      <div class="fade-up">
+        <div class="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm border border-white/20 rounded-full px-4 py-2 mb-6">
+          <span class="w-2 h-2 bg-green-300 rounded-full pulse-dot"></span>
+          <span class="text-xs font-semibold text-white/90 tracking-wide">Conforme DGI — République Démocratique du Congo</span>
+        </div>
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight tracking-tight mb-6">
+          La facturation<br>
+          <span class="text-primary-200">électronique</span><br>
+          nouvelle génération
+        </h1>
+        <p class="text-lg text-white/80 mb-8 max-w-lg leading-relaxed">
+          Créez des factures conformes à la DGI en quelques clics. Transmission automatique, signature numérique RSA-2048, et QR Code pour chaque document.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="#" class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-white text-primary-700 font-bold text-base shadow-2xl shadow-primary-900/20 hover:bg-gray-50 transition-all">
+            <i class="ri-rocket-line text-xl"></i>
+            Démarrer gratuitement
+          </a>
+          <a href="#features" class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl border-2 border-white/30 text-white font-semibold text-base hover:bg-white/10 transition-all">
+            <i class="ri-play-circle-line text-xl"></i>
+            Voir la démo
+          </a>
+        </div>
+        <div class="flex items-center gap-6 mt-8">
+          <div class="flex -space-x-2">
+            <div class="w-8 h-8 rounded-full bg-primary-200 border-2 border-white flex items-center justify-center text-[10px] font-bold text-primary-800">JM</div>
+            <div class="w-8 h-8 rounded-full bg-primary-400 border-2 border-white flex items-center justify-center text-[10px] font-bold text-white">PK</div>
+            <div class="w-8 h-8 rounded-full bg-primary-600 border-2 border-white flex items-center justify-center text-[10px] font-bold text-white">ML</div>
+          </div>
+          <div>
+            <div class="text-sm font-bold text-white">+2 400 entreprises</div>
+            <div class="text-xs text-white/60">font-family: Manrope, sans-serif; font-weight: 500;">Already trust Facture Smart</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right — App mockup -->
+      <div class="fade-in hidden md:block" style="animation-delay: 0.3s">
+        <div class="relative float">
+          <div class="absolute -inset-4 bg-white/10 rounded-3xl blur-xl"></div>
+          <div class="relative bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-100">
+            <!-- Browser chrome -->
+            <div class="bg-gray-100 px-4 py-3 flex items-center gap-2 border-b border-gray-200">
+              <div class="flex gap-1.5">
+                <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                <div class="w-3 h-3 rounded-full bg-green-400"></div>
+              </div>
+              <div class="flex-1 mx-4 bg-white rounded-lg px-3 py-1 text-xs text-gray-400 font-mono">app.facturesmart.cd</div>
+            </div>
+            <!-- App content -->
+            <div class="flex">
+              <!-- Sidebar -->
+              <div class="w-14 bg-gray-50 border-r border-gray-100 py-3 flex flex-col items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-primary-500 flex items-center justify-center"><i class="ri-file-chart-line text-white text-sm"></i></div>
+                <div class="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400"><i class="ri-dashboard-line text-base"></i></div>
+                <div class="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400"><i class="ri-file-list-2-line text-base"></i></div>
+                <div class="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400"><i class="ri-group-line text-base"></i></div>
+                <div class="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 mt-auto"><i class="ri-settings-3-line text-base"></i></div>
+              </div>
+              <!-- Main -->
+              <div class="flex-1 p-4">
+                <!-- Header -->
+                <div class="flex items-center justify-between mb-4">
+                  <div>
+                    <div class="text-sm font-bold text-gray-900">Mes factures</div>
+                    <div class="text-xs text-gray-400">Avril 2026</div>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <div class="w-7 h-7 rounded-lg bg-primary-500 flex items-center justify-center text-white text-xs"><i class="ri-add-line"></i></div>
+                  </div>
+                </div>
+                <!-- Stats -->
+                <div class="grid grid-cols-3 gap-2 mb-4">
+                  <div class="bg-green-50 rounded-xl p-2">
+                    <div class="text-xs text-green-600 font-semibold">Validées</div>
+                    <div class="text-lg font-bold text-green-700">142</div>
+                  </div>
+                  <div class="bg-yellow-50 rounded-xl p-2">
+                    <div class="text-xs text-yellow-600 font-semibold">En attente</div>
+                    <div class="text-lg font-bold text-yellow-700">18</div>
+                  </div>
+                  <div class="bg-gray-50 rounded-xl p-2">
+                    <div class="text-xs text-gray-500 font-semibold">Brouillons</div>
+                    <div class="text-lg font-bold text-gray-700">7</div>
+                  </div>
+                </div>
+                <!-- Table rows -->
+                <div class="space-y-2">
+                  <div class="flex items-center gap-2 bg-white border border-gray-100 rounded-xl px-3 py-2">
+                    <div class="w-6 h-6 rounded-full bg-primary-100 flex items-center justify-center text-[8px] font-bold text-primary-700">CD</div>
+                    <div class="flex-1 min-w-0">
+                      <div class="text-xs font-semibold text-gray-900 truncate">Congo Tech SARL</div>
+                      <div class="text-[10px] text-gray-400 font-mono">FX-2026-00142</div>
+                    </div>
+                    <div class="text-xs font-bold text-green-600">1 240 $</div>
+                    <div class="w-5 h-5 rounded-full bg-green-100 flex items-center justify-center"><i class="ri-check-line text-green-600 text-[8px]"></i></div>
+                  </div>
+                  <div class="flex items-center gap-2 bg-white border border-gray-100 rounded-xl px-3 py-2">
+                    <div class="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-[8px] font-bold text-blue-700">AS</div>
+                    <div class="flex-1 min-w-0">
+                      <div class="text-xs font-semibold text-gray-900 truncate">Asbl Lumière</div>
+                      <div class="text-[10px] text-gray-400 font-mono">FX-2026-00141</div>
+                    </div>
+                    <div class="text-xs font-bold text-yellow-600">890 $</div>
+                    <div class="w-5 h-5 rounded-full bg-yellow-100 flex items-center justify-center"><i class="ri-time-line text-yellow-600 text-[8px]"></i></div>
+                  </div>
+                  <div class="flex items-center gap-2 bg-white border border-gray-100 rounded-xl px-3 py-2">
+                    <div class="w-6 h-6 rounded-full bg-purple-100 flex items-center justify-center text-[8px] font-bold text-purple-700">KM</div>
+                    <div class="flex-1 min-w-0">
+                      <div class="text-xs font-semibold text-gray-900 truncate">Kimbélavo Sprl</div>
+                      <div class="text-[10px] text-gray-400 font-mono">FX-2026-00140</div>
+                    </div>
+                    <div class="text-xs font-bold text-green-600">3 450 $</div>
+                    <div class="w-5 h-5 rounded-full bg-green-100 flex items-center justify-center"><i class="ri-check-line text-green-600 text-[8px]"></i></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- DGI Badge -->
+          <div class="absolute -bottom-4 -right-4 bg-white rounded-2xl shadow-xl border border-gray-100 px-4 py-3 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center">
+              <i class="ri-shield-check-line text-green-600 text-lg"></i>
+            </div>
+            <div>
+              <div class="text-xs font-bold text-gray-900">Certifié DGI</div>
+              <div class="text-[10px] text-gray-400">Conforme RDC</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/60">
+      <span class="text-xs font-medium tracking-wide">Découvrir</span>
+      <div class="w-6 h-10 rounded-full border-2 border-white/30 flex items-start justify-center p-1.5">
+        <div class="w-1.5 h-3 bg-white/70 rounded-full animate-bounce"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOGOS / TRUST -->
+  <section class="py-12 bg-gray-50 border-y border-gray-100">
+    <div class="max-w-7xl mx-auto px-6">
+      <p class="text-center text-sm text-gray-400 font-medium mb-8 tracking-wide uppercase">Adopté par des entreprises de tous les secteurs en RDC</p>
+      <div class="flex flex-wrap items-center justify-center gap-10 md:gap-16 opacity-40">
+        <div class="text-xl font-extrabold text-gray-700 tracking-tight">Congo<span class="text-primary-600">Logistics</span></div>
+        <div class="text-xl font-extrabold text-gray-700 tracking-tight">Kinshasa<span class="text-primary-600">Tech</span></div>
+        <div class="text-xl font-extrabold text-gray-700 tracking-tight">RDC<span class="text-primary-600">Immo</span></div>
+        <div class="text-xl font-extrabold text-gray-700 tracking-tight">Mbuji<span class="text-primary-600">Mayi</span>Corp</div>
+        <div class="text-xl font-extrabold text-gray-700 tracking-tight">Katanga<span class="text-primary-600">Group</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section id="features" class="py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <div class="inline-flex items-center gap-2 bg-primary-50 rounded-full px-4 py-2 mb-4">
+          <i class="ri-star-line text-primary-600 text-sm"></i>
+          <span class="text-xs font-bold text-primary-700 tracking-wide uppercase">Fonctionnalités</span>
+        </div>
+        <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">Tout ce dont vous avez besoin</h2>
+        <p class="text-gray-500 max-w-2xl mx-auto">Une solution complète pour gérer votre facturation électronique en toute conformité avec la réglementation DGI de la RDC.</p>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <!-- Feature 1 -->
+        <div class="card-hover bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
+          <div class="w-12 h-12 rounded-2xl bg-primary-50 flex items-center justify-center mb-4 feature-icon">
+            <i class="ri-government-line text-primary-600 text-2xl"></i>
+          </div>
+          <h3 class="text-lg font-bold text-gray-900 mb-2">Transmission DGI automatique</h3>
+          <p class="text-sm text-gray-500 leading-relaxed">Chaque facture est automatiquement transmise à la DGI dès sa création. Plus besoin de manipulations manuelles.</p>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="card-hover bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
+          <div class="w-12 h-12 rounded-2xl bg-primary-50 flex items-center justify-center mb-4 feature-icon">
+            <i class="ri-qr-code-line text-primary-600 text-2xl"></i>
+          </div>
+          <h3 class="text-lg font-bold text-gray-900 mb-2">QR Code & Signature numérique</h3>
+          <p class="text-sm text-gray-500 leading-relaxed">QR Code unique et signature numérique RSA-2048 sur chaque facture. Authenticité garantie par cryptographie.</p>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="card-hover bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
+          <div class="w-12 h-12 rounded-2xl bg-primary-50 flex items-center justify-center mb-4 feature-icon">
+            <i class="ri-file-chart-2-line text-primary-600 text-2xl"></i>
+          </div>
+          <h3 class="text-lg font-bold text-gray-900 mb-2">Rapports fiscaux détaillés</h3>
+          <p class="text-sm text-gray-500 leading-relaxed">Générez vos rapports mensuels et annuels en un clic. TVA 18% calculée automatiquement.</p>
+        </div>
+
+        <!-- Feature 4 -->
+        <div class="card-hover bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
+          <div class="w-12 h-12 rounded-2xl bg-primary-50 flex items-center justify-center mb-4 feature-icon">
+            <i class="ri-user-settings-line text-primary-600 text-2xl"></i>
+          </div>
+          <h3 class="text-lg font-bold text-gray-900 mb-2">Multi-utilisateurs & Rôles</h3>
+          <p class="text-sm text-gray-500 leading-relaxed">Attribuez des rôles à votre équipe : comptable, vendeur, admin. Permissions granulaires par fonctionnalité.</p>
+        </div>
+
+        <!-- Feature 5 -->
+        <div class="card-hover bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
+          <div class="w-12 h-12 rounded-2xl bg-primary-50 flex items-center justify-center mb-4 feature-icon">
+            <i class="ri-smartphone-line text-primary-600 text-2xl"></i>
+          </div>
+          <h3 class="text-lg font-bold text-gray-900 mb-2">Application mobile</h3>
+          <p class="text-sm text-gray-500 leading-relaxed">Gérez vos factures depuis votre téléphone. Interface mobile optimisée pour iOS et Android.</p>
+        </div>
+
+        <!-- Feature 6 -->
+        <div class="card-hover bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
+          <div class="w-12 h-12 rounded-2xl bg-primary-50 flex items-center justify-center mb-4 feature-icon">
+            <i class="ri-printer-line text-primary-600 text-2xl"></i>
+          </div>
+          <h3 class="text-lg font-bold text-gray-900 mb-2">Impression & Ticket POS</h3>
+          <p class="text-sm text-gray-500 leading-relaxed">Imprimez vos factures en A4 ou générez des tickets 80mm pour imprimantes thermiques POS.</p>
+        </div>
+
+        <!-- Feature 7 -->
+        <div class="card-hover bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
+          <div class="w-12 h-12 rounded-2xl bg-primary-50 flex items-center justify-center mb-4 feature-icon">
+            <i class="ri-shield-user-line text-primary-600 text-2xl"></i>
+          </div>
+          <h3 class="text-lg font-bold text-gray-900 mb-2">Sécurité maximale</h3>
+          <p class="text-sm text-gray-500 leading-relaxed">Authentification 2FA, chiffrement AES-256, journal d'audit complet. Vos données sont protégées.</p>
+        </div>
+
+        <!-- Feature 8 -->
+        <div class="card-hover bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
+          <div class="w-12 h-12 rounded-2xl bg-primary-50 flex items-center justify-center mb-4 feature-icon">
+            <i class="ri-money-dollar-circle-line text-primary-600 text-2xl"></i>
+          </div>
+          <h3 class="text-lg font-bold text-gray-900 mb-2">Paiements Mobile Money</h3>
+          <p class="text-sm text-gray-500 leading-relaxed">Acceptez les paiements via Mobile Money (Vodacom, Airtel). Intégration native avec M-Pesa et Airtel Money.</p>
+        </div>
+
+        <!-- Feature 9 -->
+        <div class="card-hover bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
+          <div class="w-12 h-12 rounded-2xl bg-primary-50 flex items-center justify-center mb-4 feature-icon">
+            <i class="ri-cloud-line text-primary-600 text-2xl"></i>
+          </div>
+          <h3 class="text-lg font-bold text-gray-900 mb-2">Synchronisation cloud</h3>
+          <p class="text-sm text-gray-500 leading-relaxed">Toutes vos données sont synchronisées en temps réel. Accessible depuis n'importe quel appareil, n'importe où.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- DGI COMPLIANCE -->
+  <section id="dgi" class="py-24 bg-gray-50 border-y border-gray-100">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid md:grid-cols-2 gap-16 items-center">
+        <div>
+          <div class="inline-flex items-center gap-2 bg-green-50 rounded-full px-4 py-2 mb-4">
+            <i class="ri-shield-check-line text-green-600 text-sm"></i>
+            <span class="text-xs font-bold text-green-700 tracking-wide uppercase">Conformité DGI</span>
+          </div>
+          <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-6">100% conforme à la réglementation DGI</h2>
+          <p class="text-gray-500 leading-relaxed mb-8">Facture Smart est conçu en étroite collaboration avec la Direction Générale des Impôts (DGI) de la République Démocratique du Congo. Chaque fonctionnalité respecte les exigences légales en vigueur.</p>
+
+          <div class="space-y-4">
+            <div class="flex items-start gap-4 bg-white rounded-xl p-4 border border-gray-100 shadow-sm">
+              <div class="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <i class="ri-check-line text-green-600 text-sm"></i>
+              </div>
+              <div>
+                <div class="font-semibold text-gray-900 text-sm">NIF vendeur & acheteur</div>
+                <div class="text-xs text-gray-400 mt-0.5">Validation automatique via l'API DGI</div>
+              </div>
+            </div>
+            <div class="flex items-start gap-4 bg-white rounded-xl p-4 border border-gray-100 shadow-sm">
+              <div class="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <i class="ri-check-line text-green-600 text-sm"></i>
+              </div>
+              <div>
+                <div class="font-semibold text-gray-900 text-sm">RCCM & Numéro d'entreprise</div>
+                <div class="text-xs text-gray-400 mt-0.5">Vérification automatique en base DGI</div>
+              </div>
+            </div>
+            <div class="flex items-start gap-4 bg-white rounded-xl p-4 border border-gray-100 shadow-sm">
+              <div class="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <i class="ri-check-line text-green-600 text-sm"></i>
+              </div>
+              <div>
+                <div class="font-semibold text-gray-900 text-sm">Code d'authentification DGI</div>
+                <div class="text-xs text-gray-400 mt-0.5">Généré et apposé automatiquement sur chaque facture</div>
+              </div>
+            </div>
+            <div class="flex items-start gap-4 bg-white rounded-xl p-4 border border-gray-100 shadow-sm">
+              <div class="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <i class="ri-check-line text-green-600 text-sm"></i>
+              </div>
+              <div>
+                <div class="font-semibold text-gray-900 text-sm">Signature numérique RSA-2048</div>
+                <div class="text-xs text-gray-400 mt-0.5">Cryptographie asymétrique pour intégrité des documents</div>
+              </div>
+            </div>
+            <div class="flex items-start gap-4 bg-white rounded-xl p-4 border border-gray-100 shadow-sm">
+              <div class="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <i class="ri-check-line text-green-600 text-sm"></i>
+              </div>
+              <div>
+                <div class="font-semibold text-gray-900 text-sm">QR Code dynamique</div>
+                <div class="text-xs text-gray-400 mt-0.5">Lien direct vers le portail de validation DGI</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Invoice mockup -->
+        <div class="relative">
+          <div class="absolute -inset-4 bg-gradient-to-br from-primary-500/5 to-primary-600/15 rounded-3xl blur-xl"></div>
+          <div class="relative bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden">
+            <div class="bg-gradient-to-r from-primary-600 to-primary-500 px-6 py-4">
+              <div class="flex items-center justify-between">
+                <div>
+                  <div class="text-white font-bold text-lg">FACTURE</div>
+                  <div class="text-primary-200 text-xs font-mono">FX-2026-00142</div>
+                </div>
+                <div class="text-right">
+                  <div class="text-white/80 text-xs">Date d'émission</div>
+                  <div class="text-white font-semibold text-sm">23 Avril 2026</div>
+                </div>
+              </div>
+            </div>
+            <div class="p-6 space-y-4">
+              <!-- From/To -->
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <div class="text-[10px] uppercase tracking-wider text-gray-400 font-semibold mb-1">Vendeur</div>
+                  <div class="text-sm font-bold text-gray-900">Ma Société SARL</div>
+                  <div class="text-[10px] text-gray-400">NIF: 0123456789</div>
+                  <div class="text-[10px] text-gray-400">RCCM: CD/KIN/2024/12345</div>
+                </div>
+                <div>
+                  <div class="text-[10px] uppercase tracking-wider text-gray-400 font-semibold mb-1">Acheteur</div>
+                  <div class="text-sm font-bold text-gray-900">Congo Tech SARL</div>
+                  <div class="text-[10px] text-gray-400">NIF: 9876543210</div>
+                  <div class="text-[10px] text-gray-400">Avenue du Commerce, Kinshasa</div>
+                </div>
+              </div>
+              <!-- Table -->
+              <div class="border border-gray-100 rounded-xl overflow-hidden">
+                <table class="w-full text-xs">
+                  <thead class="bg-gray-50 border-b border-gray-100">
+                    <tr>
+                      <th class="text-left px-3 py-2 font-semibold text-gray-500">Description</th>
+                      <th class="text-right px-3 py-2 font-semibold text-gray-500">Qté</th>
+                      <th class="text-right px-3 py-2 font-semibold text-gray-500">P.U.</th>
+                      <th class="text-right px-3 py-2 font-semibold text-gray-500">Total</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-gray-50">
+                    <tr>
+                      <td class="px-3 py-2 text-gray-700">Développement web sur mesure</td>
+                      <td class="px-3 py-2 text-right text-gray-600">1</td>
+                      <td class="px-3 py-2 text-right text-gray-600 font-mono">800 $</td>
+                      <td class="px-3 py-2 text-right font-semibold text-gray-900 font-mono">800 $</td>
+                    </tr>
+                    <tr>
+                      <td class="px-3 py-2 text-gray-700">Hébergement annuel</td>
+                      <td class="px-3 py-2 text-right text-gray-600">1</td>
+                      <td class="px-3 py-2 text-right text-gray-600 font-mono">200 $</td>
+                      <td class="px-3 py-2 text-right font-semibold text-gray-900 font-mono">200 $</td>
+                    </tr>
+                    <tr>
+                      <td class="px-3 py-2 text-gray-700">Maintenance mensuelle</td>
+                      <td class="px-3 py-2 text-right text-gray-600">4</td>
+                      <td class="px-3 py-2 text-right text-gray-600 font-mono">60 $</td>
+                      <td class="px-3 py-2 text-right font-semibold text-gray-900 font-mono">240 $</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- Totals -->
+              <div class="flex justify-end">
+                <div class="w-56 space-y-1.5">
+                  <div class="flex justify-between text-xs text-gray-500">
+                    <span>HT</span><span class="font-mono">1 240 $</span>
+                  </div>
+                  <div class="flex justify-between text-xs text-gray-500">
+                    <span>TVA 18%</span><span class="font-mono">223.20 $</span>
+                  </div>
+                  <div class="flex justify-between text-base font-bold text-gray-900 border-t border-gray-200 pt-1.5">
+                    <span>TTC</span><span class="font-mono text-primary-600">1 463.20 $</span>
+                  </div>
+                </div>
+              </div>
+              <!-- DGI footer -->
+              <div class="bg-gray-50 rounded-xl p-3 flex items-center justify-between gap-4">
+                <div>
+                  <div class="text-[10px] text-gray-400">Code DGI</div>
+                  <div class="text-xs font-mono font-bold text-gray-700">DGI-2026-A7X9K2M</div>
+                </div>
+                <div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
+                  <div class="w-8 h-8 grid grid-cols-4 gap-px">
+                    <div class="bg-gray-900 rounded-sm"></div>
+                    <div class="bg-white rounded-sm"></div>
+                    <div class="bg-gray-900 rounded-sm"></div>
+                    <div class="bg-white rounded-sm"></div>
+                    <div class="bg-white rounded-sm"></div>
+                    <div class="bg-gray-900 rounded-sm"></div>
+                    <div class="bg-gray-900 rounded-sm"></div>
+                    <div class="bg-white rounded-sm"></div>
+                    <div class="bg-gray-900 rounded-sm"></div>
+                    <div class="bg-gray-900 rounded-sm"></div>
+                    <div class="bg-white rounded-sm"></div>
+                    <div class="bg-gray-900 rounded-sm"></div>
+                    <div class="bg-white rounded-sm"></div>
+                    <div class="bg-gray-900 rounded-sm"></div>
+                    <div class="bg-white rounded-sm"></div>
+                    <div class="bg-gray-900 rounded-sm"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="pricing" class="py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <div class="inline-flex items-center gap-2 bg-primary-50 rounded-full px-4 py-2 mb-4">
+          <i class="ri-money-dollar-circle-line text-primary-600 text-sm"></i>
+          <span class="text-xs font-bold text-primary-700 tracking-wide uppercase">Tarifs</span>
+        </div>
+        <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">Des tarifs adaptés à votre activité</h2>
+        <p class="text-gray-500 max-w-2xl mx-auto">Commencez gratuitement et évoluez selon vos besoins. Aucune carte bancaire requise pour l'essai gratuit.</p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+
+        <!-- Starter -->
+        <div class="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm">
+          <div class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-2">Starter</div>
+          <div class="flex items-end gap-1 mb-1">
+            <span class="text-4xl font-extrabold text-gray-900">Gratuit</span>
+          </div>
+          <p class="text-sm text-gray-400 mb-6">Pour découvrir Facture Smart en toute simplicité.</p>
+          <a href="#" class="block w-full text-center py-3 rounded-xl border-2 border-gray-200 text-gray-700 font-semibold hover:bg-gray-50 transition-all mb-6">
+            Commencer gratuitement
+          </a>
+          <ul class="space-y-3">
+            <li class="flex items-center gap-3 text-sm text-gray-600">
+              <i class="ri-check-line text-primary-500 text-base"></i>
+              <span>Jusqu'à 10 factures/mois</span>
+            </li>
+            <li class="flex items-center gap-3 text-sm text-gray-600">
+              <i class="ri-check-line text-primary-500 text-base"></i>
+              <span>1 utilisateur</span>
+            </li>
+            <li class="flex items-center gap-3 text-sm text-gray-600">
+              <i class="ri-check-line text-primary-500 text-base"></i>
+              <span>Transmission DGI</span>
+            </li>
+            <li class="flex items-center gap-3 text-sm text-gray-600">
+              <i class="ri-check-line text-primary-500 text-base"></i>
+              <span>QR Code & signature</span>
+            </li>
+            <li class="flex items-center gap-3 text-sm text-gray-400">
+              <i class="ri-close-line text-gray-300 text-base"></i>
+              <span>Paiements Mobile Money</span>
+            </li>
+            <li class="flex items-center gap-3 text-sm text-gray-400">
+              <i class="ri-close-line text-gray-300 text-base"></i>
+              <span>Multi-utilisateurs</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Pro (Popular) -->
+        <div class="pricing-popular bg-white rounded-2xl p-8 shadow-lg">
+          <div class="text-sm font-bold text-primary-600 uppercase tracking-wider mb-2">Pro</div>
+          <div class="flex items-end gap-1 mb-1">
+            <span class="text-4xl font-extrabold text-gray-900">49 $</span>
+            <span class="text-gray-400 mb-1.5">/mois</span>
+          </div>
+          <p class="text-sm text-gray-400 mb-6">Pour les PME en pleine croissance.</p>
+          <a href="#" class="block w-full text-center py-3 rounded-xl gradient-btn text-white font-bold mb-6 shadow-lg shadow-primary-500/25">
+            Essai gratuit 14 jours
+          </a>
+          <ul class="space-y-3">
+            <li class="flex items-center gap-3 text-sm text-gray-600">
+              <i class="ri-check-line text-primary-500 text-base"></i>
+              <span>Factures illimitées</span>
+            </li>
+            <li class="flex items-center gap-3 text-sm text-gray-600">
+              <i class="ri-check-line text-primary-500 text-base"></i>
+              <span>5 utilisateurs</span>
+            </li>
+            <li class="flex items-center gap-3 text-sm text-gray-600">
+              <i class="ri-check-line text-primary-500 text-base"></i>
+              <span>Transmission DGI prioritaire</span>
+            </li>
+            <li class="flex items-center gap-3 text-sm text-gray-600">
+              <i class="ri-check-line text-primary-500 text-base"></i>
+              <span>QR Code & signature</span>
+            </li>
+            <li class="flex items-center gap-3 text-sm text-gray-600">
+              <i class="ri-check-line text-primary-500 text-base"></i>
+              <span>Paiements Mobile Money</span>
+            </li>
+            <li class="flex items-center gap-3 text-sm text-gray-600">
+              <i class="ri-check-line text-primary-500 text-base"></i>
+              <span>Rapports fiscaux avancés</span>
+            </li>
+            <li class="flex items-center gap-3 text-sm text-gray-600">
+              <i class="ri-check-line text-primary-500 text-base"></i>
+              <span>Support prioritaire</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Enterprise -->
+        <div class="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm">
+          <div class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-2">Enterprise</div>
+          <div class="flex items-end gap-1 mb-1">
+            <span class="text-4xl font-extrabold text-gray-900">Sur mesure</span>
+          </div>
+          <p class="text-sm text-gray-400 mb-6">Pour les grandes entreprises et groupes.</p>
+          <a href="#" class="block w-full text-center py-3 rounded-xl border-2 border-gray-200 text-gray-700 font-semibold hover:bg-gray-50 transition-all mb-6">
+            Contacter commercial
+          </a>
+          <ul class="space-y-3">
+            <li class="flex items-center gap-3 text-sm text-gray-600">
+              <i class="ri-check-line text-primary-500 text-base"></i>
+              <span>Tout de Pro</span>
+            </li>
+            <li class="flex items-center gap-3 text-sm text-gray-600">
+              <i class="ri-check-line text-primary-500 text-base"></i>
+              <span>Utilisateurs illimités</span>
+            </li>
+            <li class="flex items-center gap-3 text-sm text-gray-600">
+              <i class="ri-check-line text-primary-500 text-base"></i>
+              <span>Intégration API personnalisée</span>
+            </li>
+            <li class="flex items-center gap-3 text-sm text-gray-600">
+              <i class="ri-check-line text-primary-500 text-base"></i>
+              <span>SSO & LDAP</span>
+            </li>
+            <li class="flex items-center gap-3 text-sm text-gray-600">
+              <i class="ri-check-line text-primary-500 text-base"></i>
+              <span>Account manager dédié</span>
+            </li>
+            <li class="flex items-center gap-3 text-sm text-gray-600">
+              <i class="ri-check-line text-primary-500 text-base"></i>
+              <span>SLA 99.9%</span>
+            </li>
+            <li class="flex items-center gap-3 text-sm text-gray-600">
+              <i class="ri-check-line text-primary-500 text-base"></i>
+              <span>Formation équipe</span>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+      <p class="text-center text-sm text-gray-400 mt-8">Prix indicatifs — devis personnalisé disponible sur demande. TVA 18% applicable.</p>
+    </div>
+  </section>
+
+  <!-- SOCIAL PROOF / TESTIMONIALS -->
+  <section class="py-24 bg-gray-50 border-y border-gray-100">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">Ils nous font confiance</h2>
+        <p class="text-gray-500">Des entrepreneurs congolais partagent leur expérience avec Facture Smart</p>
+      </div>
+      <div class="grid md:grid-cols-3 gap-6">
+
+        <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
+          <div class="flex items-center gap-1 mb-3">
+            <i class="ri-star-fill text-yellow-400 text-sm"></i>
+            <i class="ri-star-fill text-yellow-400 text-sm"></i>
+            <i class="ri-star-fill text-yellow-400 text-sm"></i>
+            <i class="ri-star-fill text-yellow-400 text-sm"></i>
+            <i class="ri-star-fill text-yellow-400 text-sm"></i>
+          </div>
+          <p class="text-sm text-gray-600 leading-relaxed mb-4">"Avant Facture Smart, la transmission à la DGI nous prenait des heures chaque semaine. Maintenant, c'est automatique. Un gain de temps énorme pour notre équipe comptable."</p>
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center text-sm font-bold text-primary-700">JM</div>
+            <div>
+              <div class="text-sm font-bold text-gray-900">Jean-Marc Kabamba</div>
+              <div class="text-xs text-gray-400">Directeur financier, Congo Logistics SARL</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
+          <div class="flex items-center gap-1 mb-3">
+            <i class="ri-star-fill text-yellow-400 text-sm"></i>
+            <i class="ri-star-fill text-yellow-400 text-sm"></i>
+            <i class="ri-star-fill text-yellow-400 text-sm"></i>
+            <i class="ri-star-fill text-yellow-400 text-sm"></i>
+            <i class="ri-star-fill text-yellow-400 text-sm"></i>
+          </div>
+          <p class="text-sm text-gray-600 leading-relaxed mb-4">"La conformité DGI était notre plus grande inquiétude. Avec Facture Smart, nous avons la tranquillité d'esprit totale. Chaque facture est parfaitement en règle."</p>
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-sm font-bold text-blue-700">PK</div>
+            <div>
+              <div class="text-sm font-bold text-gray-900">Patricia Kambole</div>
+              <div class="text-xs text-gray-400">CEO, KinshasaTech Solutions</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
+          <div class="flex items-center gap-1 mb-3">
+            <i class="ri-star-fill text-yellow-400 text-sm"></i>
+            <i class="ri-star-fill text-yellow-400 text-sm"></i>
+            <i class="ri-star-fill text-yellow-400 text-sm"></i>
+            <i class="ri-star-fill text-yellow-400 text-sm"></i>
+            <i class="ri-star-line text-yellow-400 text-sm"></i>
+          </div>
+          <p class="text-sm text-gray-600 leading-relaxed mb-4">"L'application mobile est exceptionnelle. Je crée mes factures depuis le terrain avec mon téléphone. Mes clients reçoivent tout instantanément par WhatsApp."</p>
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-sm font-bold text-purple-700">ML</div>
+            <div>
+              <div class="text-sm font-bold text-gray-900">Micheline Lusamba</div>
+              <div class="text-xs text-gray-400">Gerante, Mbuji-Mayi Distributors</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="py-24 bg-white">
+    <div class="max-w-3xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <div class="inline-flex items-center gap-2 bg-primary-50 rounded-full px-4 py-2 mb-4">
+          <i class="ri-question-line text-primary-600 text-sm"></i>
+          <span class="text-xs font-bold text-primary-700 tracking-wide uppercase">FAQ</span>
+        </div>
+        <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">Questions fréquentes</h2>
+      </div>
+
+      <div class="space-y-4">
+        <div class="border border-gray-100 rounded-2xl overflow-hidden">
+          <button class="w-full flex items-center justify-between p-5 text-left hover:bg-gray-50 transition-colors" onclick="this.classList.toggle('active'); this.nextElementSibling.classList.toggle('hidden')">
+            <span class="font-semibold text-gray-900 text-sm">Dois-je payer pour utiliser Facture Smart ?</span>
+            <i class="ri-add-line text-gray-400 transition-transform"></i>
+          </button>
+          <div class="hidden px-5 pb-5">
+            <p class="text-sm text-gray-500 leading-relaxed">Non, le plan Starter est 100% gratuit avec jusqu'à 10 factures par mois. Vous pouvez commencer sans carte bancaire.</p>
+          </div>
+        </div>
+
+        <div class="border border-gray-100 rounded-2xl overflow-hidden">
+          <button class="w-full flex items-center justify-between p-5 text-left hover:bg-gray-50 transition-colors" onclick="this.classList.toggle('active'); this.nextElementSibling.classList.toggle('hidden')">
+            <span class="font-semibold text-gray-900 text-sm">Facture Smart est-il vraiment conforme à la DGI ?</span>
+            <i class="ri-add-line text-gray-400 transition-transform"></i>
+          </button>
+          <div class="hidden px-5 pb-5">
+            <p class="text-sm text-gray-500 leading-relaxed">Oui, Facture Smart a été développé en conformité stricte avec les exigences de la Direction Générale des Impôts (DGI) de la RDC. Chaque facture inclut NIF, RCCM, code DGI, signature RSA-2048 et QR Code.</p>
+          </div>
+        </div>
+
+        <div class="border border-gray-100 rounded-2xl overflow-hidden">
+          <button class="w-full flex items-center justify-between p-5 text-left hover:bg-gray-50 transition-colors" onclick="this.classList.toggle('active'); this.nextElementSibling.classList.toggle('hidden')">
+            <span class="font-semibold text-gray-900 text-sm">Comment fonctionne la transmission automatique à la DGI ?</span>
+            <i class="ri-add-line text-gray-400 transition-transform"></i>
+          </button>
+          <div class="hidden px-5 pb-5">
+            <p class="text-sm text-gray-500 leading-relaxed">Dès que vous émettez une facture, elle est automatiquement signée numériquement et transmise au serveur DGI via notre API sécurisée. Vous recevez un code d'authentification en temps réel.</p>
+          </div>
+        </div>
+
+        <div class="border border-gray-100 rounded-2xl overflow-hidden">
+          <button class="w-full flex items-center justify-between p-5 text-left hover:bg-gray-50 transition-colors" onclick="this.classList.toggle('active'); this.nextElementSibling.classList.toggle('hidden')">
+            <span class="font-semibold text-gray-900 text-sm">Puis-je utiliser Facture Smart hors connexion ?</span>
+            <i class="ri-add-line text-gray-400 transition-transform"></i>
+          </button>
+          <div class="hidden px-5 pb-5">
+            <p class="text-sm text-gray-500 leading-relaxed">L'application mobile dispose d'un mode hors ligne. Vous pouvez créer des factures sans connexion internet ; elles seront automatiquement synchronisées dès que vous serez en ligne.</p>
+          </div>
+        </div>
+
+        <div class="border border-gray-100 rounded-2xl overflow-hidden">
+          <button class="w-full flex items-center justify-between p-5 text-left hover:bg-gray-50 transition-colors" onclick="this.classList.toggle('active'); this.nextElementSibling.classList.toggle('hidden')">
+            <span class="font-semibold text-gray-900 text-sm">Comment sont protégées mes données ?</span>
+            <i class="ri-add-line text-gray-400 transition-transform"></i>
+          </button>
+          <div class="hidden px-5 pb-5">
+            <p class="text-sm text-gray-500 leading-relaxed">Vos données sont chiffrées avec AES-256 au repos et TLS 1.3 en transit. L'authentification 2FA est disponible. Nos serveurs sont hébergés dans un datacenter sécurisé en Afrique centrale avec redondance géographique.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-24 gradient-hero relative overflow-hidden">
+    <div class="absolute inset-0 bg-dots opacity-40"></div>
+    <div class="relative max-w-3xl mx-auto px-6 text-center">
+      <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-6">Prêt à digitaliser votre facturation ?</h2>
+      <p class="text-white/80 text-lg mb-8 max-w-xl mx-auto">Rejoignez plus de 2 400 entreprises congolaises qui font confiance à Facture Smart pour leur conformité DGI.</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="#" class="inline-flex items-center justify-center gap-2 px-10 py-4 rounded-2xl bg-white text-primary-700 font-bold text-base shadow-2xl shadow-primary-900/20 hover:bg-gray-50 transition-all">
+          <i class="ri-rocket-line text-xl"></i>
+          Démarrer gratuitement
+        </a>
+        <a href="#" class="inline-flex items-center justify-center gap-2 px-10 py-4 rounded-2xl border-2 border-white/30 text-white font-semibold text-base hover:bg-white/10 transition-all">
+          <i class="ri-calendar-line text-xl"></i>
+          Prendre rendez-vous
+        </a>
+      </div>
+      <p class="text-white/50 text-sm mt-6">Sans carte bancaire • Configuration en 5 minutes</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-gray-900 py-16">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid md:grid-cols-4 gap-12 mb-12">
+        <div class="md:col-span-2">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center">
+              <i class="ri-file-chart-line text-white text-lg"></i>
+            </div>
+            <span class="text-xl font-extrabold text-white tracking-tight">Facture<span class="text-primary-400">X</span></span>
+          </div>
+          <p class="text-gray-400 text-sm leading-relaxed max-w-sm">Logiciel de facturation électronique conforme DGI pour les entreprises de la République Démocratique du Congo.</p>
+          <div class="flex items-center gap-3 mt-4">
+            <a href="#" class="w-9 h-9 rounded-lg bg-gray-800 flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-700 transition-all">
+              <i class="ri-linkedin-fill text-base"></i>
+            </a>
+            <a href="#" class="w-9 h-9 rounded-lg bg-gray-800 flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-700 transition-all">
+              <i class="ri-twitter-x-line text-base"></i>
+            </a>
+            <a href="#" class="w-9 h-9 rounded-lg bg-gray-800 flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-700 transition-all">
+              <i class="ri-whatsapp-line text-base"></i>
+            </a>
+          </div>
+        </div>
+        <div>
+          <h4 class="text-sm font-bold text-white mb-4">Produit</h4>
+          <ul class="space-y-2.5">
+            <li><a href="#features" class="text-sm text-gray-400 hover:text-white transition-colors">Fonctionnalités</a></li>
+            <li><a href="#pricing" class="text-sm text-gray-400 hover:text-white transition-colors">Tarifs</a></li>
+            <li><a href="#" class="text-sm text-gray-400 hover:text-white transition-colors">Intégrations</a></li>
+            <li><a href="#" class="text-sm text-gray-400 hover:text-white transition-colors">Sécurité</a></li>
+            <li><a href="#" class="text-sm text-gray-400 hover:text-white transition-colors">API</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-sm font-bold text-white mb-4">Entreprise</h4>
+          <ul class="space-y-2.5">
+            <li><a href="#" class="text-sm text-gray-400 hover:text-white transition-colors">À propos</a></li>
+            <li><a href="#" class="text-sm text-gray-400 hover:text-white transition-colors">Blog</a></li>
+            <li><a href="#" class="text-sm text-gray-400 hover:text-white transition-colors">Contact</a></li>
+            <li><a href="#" class="text-sm text-gray-400 hover:text-white transition-colors">CGU</a></li>
+            <li><a href="#" class="text-sm text-gray-400 hover:text-white transition-colors">Confidentialité</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+        <p class="text-xs text-gray-500">© 2026 Facture Smart — Tous droits réservés. Conforme DGI/RDC.</p>
+        <div class="flex items-center gap-2">
+          <div class="w-2 h-2 bg-green-500 rounded-full pulse-dot"></div>
+          <span class="text-xs text-gray-500">Tous les systèmes sont opérationnels</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Navbar scroll effect
+    window.addEventListener('scroll', () => {
+      const navbar = document.getElementById('navbar');
+      if (window.scrollY > 20) {
+        navbar.style.background = 'rgba(15,23,42,0.95)';
+      } else {
+        navbar.style.background = 'rgba(15,23,42,0.8)';
+      }
+    });
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const t = document.querySelector(a.getAttribute('href'));
+        if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+      });
+    });
+  </script>
+
+</body>
+</html>

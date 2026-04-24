@@ -1,4 +1,4 @@
-# 📊 RAPPORT D'AUDIT DE SÉCURITÉ - FactureX
+# 📊 RAPPORT D'AUDIT DE SÉCURITÉ - FactureSmart
 
 **Date:** 27 octobre 2025  
 **Auditeur:** Cascade AI Security Assistant  
@@ -9,7 +9,7 @@
 
 ## 🎯 SYNTHÈSE EXÉCUTIVE
 
-L'application FactureX présente un **niveau de sécurité excellent** avec toutes les vulnérabilités identifiées corrigées. L'application est **prête pour la production** avec un score de sécurité de 9.5/10.
+L'application FactureSmart présente un **niveau de sécurité excellent** avec toutes les vulnérabilités identifiées corrigées. L'application est **prête pour la production** avec un score de sécurité de 9.5/10.
 
 ### ✅ POINTS FORTS
 - Multi-tenancy avec isolation complète des données
@@ -328,4 +328,4 @@ Pour toute question sur ce rapport d'audit:
 
 **RAPPORT TERMINÉ** ✅
 
-*FactureX est prêt pour la production avec un niveau de sécurité excellent (9.5/10). Toutes les vulnérabilités identifiées ont été corrigées.*
+*FactureSmart est prêt pour la production avec un niveau de sécurité excellent (9.5/10). Toutes les vulnérabilités identifiées ont été corrigées.*

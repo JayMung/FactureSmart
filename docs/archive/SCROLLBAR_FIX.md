@@ -1,4 +1,4 @@
-# Fix Scrollbar & Trigger SQL - FactureX
+# Fix Scrollbar & Trigger SQL - FactureSmart
 
 ## 🐛 Problèmes Corrigés
 

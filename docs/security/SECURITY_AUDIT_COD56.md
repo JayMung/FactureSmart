@@ -95,6 +95,28 @@ Les Edge Functions n'ont pas de Content-Security-Policy explicite.
 
 La table centralisée `audit_logs` n'existe pas encore.
 
+### 3.3 — Tests unitaires (COD-56)
+
+**Status: ✅ Tests de validation créés (COD-56)**
+
+```bash
+tests/lib/validation.test.ts  # 12 tests - TOUS PASSANTS ✅
+- NIF Validation: 4 tests
+- Phone RDC Validation: 4 tests
+- Amount Validation: 3 tests
+- Email Validation: 2 tests
+```
+
+**Couverture actuelle:**
+| Zone | Tests | Status |
+|------|-------|--------|
+| Validation NIF (15 chiffres) | 3 | ✅ |
+| Validation Phone RDC | 4 | ✅ |
+| Validation Montants | 3 | ✅ |
+| Validation Email | 2 | ✅ |
+| Hooks React | 0 | ❌ À faire |
+| Edge Functions | 0 | ❌ À faire |
+
 ---
 
 ## 📋 Plan d'Action — Mis à jour

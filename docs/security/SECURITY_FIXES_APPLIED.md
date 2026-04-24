@@ -1,4 +1,4 @@
-# 🔒 CORRECTIFS DE SÉCURITÉ APPLIQUÉS - FactureX
+# 🔒 CORRECTIFS DE SÉCURITÉ APPLIQUÉS - FactureSmart
 
 **Date:** 27 octobre 2025  
 **Statut:** ✅ COMPLÉTÉ
@@ -158,4 +158,4 @@ Pour toute question sur ces correctifs de sécurité:
 
 **✅ MISSION ACCOMPLIE**
 
-*Toutes les vulnérabilités identifiées ont été corrigées. FactureX est maintenant sécurisé pour la production.*
+*Toutes les vulnérabilités identifiées ont été corrigées. FactureSmart est maintenant sécurisé pour la production.*

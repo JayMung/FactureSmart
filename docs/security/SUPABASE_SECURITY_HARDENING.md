@@ -219,7 +219,7 @@ SELECT * FROM clients WHERE organization_id = auth.uid(); -- ✅ Enforced by RLS
 
 ## Conclusion ✅
 
-The FactureX application now has **comprehensive Supabase security** with:
+The FactureSmart application now has **comprehensive Supabase security** with:
 
 - ✅ **Secure Configuration**: No credential exposure
 - ✅ **Database Protection**: RLS + multi-tenancy

@@ -262,7 +262,7 @@ componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
 ---
 
 **Auteur** : Cascade AI  
-**Projet** : FactureX  
+**Projet** : FactureSmart  
 **Module** : Colis Aériens  
 **Statut** : ✅ **PAGE STABLE ET FONCTIONNELLE**
 
@@ -272,4 +272,4 @@ componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
 
 **La page des colis aériens est maintenant 100% fonctionnelle avec un sélecteur de date stable et une gestion d'erreur complète !** 🚀
 
-#FactureX #DatePicker #ErrorBoundary #Stability
+#FactureSmart #DatePicker #ErrorBoundary #Stability

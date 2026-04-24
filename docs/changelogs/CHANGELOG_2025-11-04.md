@@ -168,4 +168,4 @@ export const useMyModuleStats = (filters?) => {
 ---
 
 **Auteur** : Cascade AI
-**Projet** : FactureX
+**Projet** : FactureSmart

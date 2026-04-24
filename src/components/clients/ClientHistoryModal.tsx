@@ -187,52 +187,101 @@ const ClientHistoryModal: React.FC<ClientHistoryModalProps> = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange} modal>
-      <DialogContent 
-        className="max-w-6xl max-h-[90vh] overflow-y-auto p-4 sm:p-6"
+      <DialogContent
+        className="max-w-6xl max-h-[95vh] overflow-y-auto p-0"
         onInteractOutside={(e) => e.preventDefault()}
         onEscapeKeyDown={(e) => e.preventDefault()}
       >
-        <DialogHeader>
-          <DialogTitle className="text-lg sm:text-xl font-bold">
-            Historique complet - {client.nom.split(' ').map(word => 
-              word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-            ).join(' ')}
-          </DialogTitle>
-        </DialogHeader>
+        {/* Header */}
+        <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-white sticky top-0 z-10">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => onOpenChange(false)}
+              className="w-9 h-9 bg-gray-100 rounded-xl flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors"
+            >
+              <span className="text-lg">←</span>
+            </button>
+            <h2 className="text-lg font-bold text-gray-900">
+              {client.nom.split(' ').map(word =>
+                word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+              ).join(' ')}
+            </h2>
+          </div>
+          <div className="flex gap-2">
+            <Button variant="outline" size="sm" className="rounded-xl">
+              Modifier
+            </Button>
+            <Button size="sm" className="bg-green-500 hover:bg-green-600 rounded-xl">
+              Nouvelle facture
+            </Button>
+          </div>
+        </div>
 
-        {/* Client Info Header Card - Mobile Optimized */}
-        <Card className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 border-green-200">
-          <CardContent className="p-3 sm:p-4">
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
-              <div className="flex items-center space-x-3">
-                <div className="p-2 bg-green-500 rounded-full">
-                  <User className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+        <div className="p-6 space-y-5">
+        {/* Stats Cards - alignes mockup J1 */}
+        <div className="grid grid-cols-3 gap-5">
+          <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
+            <p className="text-xs text-gray-400 uppercase tracking-wider">Total facturé</p>
+            <p className="text-2xl font-extrabold text-gray-900 mt-1">
+              {formatCurrencyValue(transactionStats?.totalAmount || 0, 'CDF')}
+            </p>
+            <p className="text-xs text-gray-400 mt-1">{facturePagination?.count || 0} factures</p>
+          </div>
+          <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
+            <p className="text-xs text-gray-400 uppercase tracking-wider">Payé</p>
+            <p className="text-2xl font-extrabold text-green-700 mt-1">
+              {formatCurrencyValue(transactionStats?.totalPaye || 0, 'CDF')}
+            </p>
+            <p className="text-xs text-green-600 mt-1">
+              {transactionStats?.totalAmount ? Math.round((transactionStats.totalPaye / transactionStats.totalAmount) * 100) : 0}%
+            </p>
+          </div>
+          <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
+            <p className="text-xs text-gray-400 uppercase tracking-wider">En attente</p>
+            <p className="text-2xl font-extrabold text-amber-600 mt-1">
+              {formatCurrencyValue((transactionStats?.totalAmount || 0) - (transactionStats?.totalPaye || 0), 'CDF')}
+            </p>
+            <p className="text-xs text-amber-600 mt-1">{(facturePagination?.count || 0) - (transactionStats?.paidCount || 0)} factures en attente</p>
+          </div>
+        </div>
+
+        {/* Client Info Card */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-sm">Informations client</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 gap-6">
+              <div className="space-y-3">
+                {client.nif && (
+                  <div>
+                    <p className="text-[10px] text-gray-400 uppercase tracking-wider">NIF</p>
+                    <p className="text-sm font-mono text-gray-900">{client.nif}</p>
+                  </div>
+                )}
+                <div>
+                  <p className="text-[10px] text-gray-400 uppercase tracking-wider">Téléphone</p>
+                  <p className="text-sm text-gray-900">{client.telephone}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-gray-500 uppercase tracking-wide">Nom complet</p>
-                  <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-gray-100">
-                    {client.nom.split(' ').map(word => 
-                      word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-                    ).join(' ')}
+                  <p className="text-[10px] text-gray-400 uppercase tracking-wider">Email</p>
+                  <p className="text-sm text-gray-900">{client.adresse || '—'}</p>
+                </div>
+              </div>
+              <div className="space-y-3">
+                <div>
+                  <p className="text-[10px] text-gray-400 uppercase tracking-wider">Adresse</p>
+                  <p className="text-sm text-gray-900">{client.adresse || client.ville || '—'}</p>
+                </div>
+                <div>
+                  <p className="text-[10px] text-gray-400 uppercase tracking-wider">Ville</p>
+                  <p className="text-sm text-gray-900">{client.ville}</p>
+                </div>
+                <div>
+                  <p className="text-[10px] text-gray-400 uppercase tracking-wider">Client depuis</p>
+                  <p className="text-sm text-gray-900">
+                    {client.created_at ? new Date(client.created_at).toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' }) : '—'}
                   </p>
-                </div>
-              </div>
-              <div className="flex items-center space-x-3">
-                <div className="p-2 bg-blue-500 rounded-full">
-                  <Phone className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
-                </div>
-                <div>
-                  <p className="text-xs text-gray-500 uppercase tracking-wide">Téléphone</p>
-                  <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-gray-100">{client.telephone}</p>
-                </div>
-              </div>
-              <div className="flex items-center space-x-3">
-                <div className="p-2 bg-purple-500 rounded-full">
-                  <MapPin className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
-                </div>
-                <div>
-                  <p className="text-xs text-gray-500 uppercase tracking-wide">Ville</p>
-                  <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-gray-100">{client.ville}</p>
                 </div>
               </div>
             </div>
@@ -691,6 +740,7 @@ const ClientHistoryModal: React.FC<ClientHistoryModalProps> = ({
             </Card>
           </TabsContent>
         </Tabs>
+        </div>
       </DialogContent>
     </Dialog>
   );

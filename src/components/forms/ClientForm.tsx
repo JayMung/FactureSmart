@@ -35,7 +35,10 @@ const ClientForm: React.FC<ClientFormProps> = ({
   const [formData, setFormData] = useState<CreateClientData>({
     nom: client?.nom || '',
     telephone: client?.telephone || '',
-    ville: client?.ville || ''
+    ville: client?.ville || '',
+    adresse: client?.adresse || '',
+    nif: client?.nif || '',
+    type: client?.type || 'particulier'
   });
   
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -50,13 +53,19 @@ const ClientForm: React.FC<ClientFormProps> = ({
       setFormData({
         nom: client.nom || '',
         telephone: client.telephone || '',
-        ville: client.ville || ''
+        ville: client.ville || '',
+        adresse: client.adresse || '',
+        nif: client.nif || '',
+        type: client.type || 'particulier'
       });
     } else {
       setFormData({
         nom: '',
         telephone: '',
-        ville: ''
+        ville: '',
+        adresse: '',
+        nif: '',
+        type: 'particulier'
       });
     }
     setErrors({});
@@ -97,6 +106,15 @@ const ClientForm: React.FC<ClientFormProps> = ({
       }
     }
 
+    // NIF validation (optional but if provided, must be valid format)
+    if (formData.nif && formData.nif.trim()) {
+      // DRC NIF format: 1-12 digits with optional hyphens, or 13+ chars
+      const nifClean = formData.nif.replace(/[-\s]/g, '');
+      if (!/^\d{6,15}$/.test(nifClean)) {
+        newErrors.nif = 'Format NIF invalide (ex: 123456789012)';
+      }
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -111,7 +129,10 @@ const ClientForm: React.FC<ClientFormProps> = ({
       const dataToSave = {
         nom: sanitizeClientName(capitalizeWords(formData.nom.trim())),
         telephone: sanitizePhoneNumber(formData.telephone.trim()),
-        ville: sanitizeCityName(formData.ville.trim())
+        ville: sanitizeCityName(formData.ville.trim()),
+        ...(formData.adresse && { adresse: formData.adresse.trim() }),
+        ...(formData.nif && { nif: formData.nif.trim() }),
+        ...(formData.type && { type: formData.type })
       };
 
       if (isEditing && client) {
@@ -123,7 +144,7 @@ const ClientForm: React.FC<ClientFormProps> = ({
       onSuccess?.();
       onClose();
       // Reset form
-      setFormData({ nom: '', telephone: '', ville: '' });
+      setFormData({ nom: '', telephone: '', ville: '', adresse: '', nif: '', type: 'particulier' });
       setErrors({});
     } catch (error: any) {
       // Gestion spécifique pour les doublons
@@ -202,7 +223,49 @@ const ClientForm: React.FC<ClientFormProps> = ({
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="ville">Ville *</Label>
+              <Label htmlFor="type">Type de client</Label>
+              <select
+                id="type"
+                name="type"
+                value={formData.type}
+                onChange={(e) => {
+                  const { name, value } = e.target;
+                  setFormData(prev => ({ ...prev, [name]: value }));
+                }}
+                className="w-full border rounded-md px-3 py-2 text-sm bg-background"
+              >
+                <option value="particulier">Particulier</option>
+                <option value="entreprise">Entreprise</option>
+              </select>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="nif">NIF (optionnel)</Label>
+              <Input
+                id="nif"
+                name="nif"
+                value={formData.nif}
+                onChange={handleChange}
+                placeholder="123456789012"
+                className={errors.nif ? 'border-red-500' : ''}
+              />
+              {errors.nif && (
+                <p className="text-sm text-red-600">{errors.nif}</p>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="adresse">Adresse (optionnel)</Label>
+              <Input
+                id="adresse"
+                name="adresse"
+                value={formData.adresse}
+                onChange={handleChange}
+                placeholder="123 Avenue du Commerce, Kinshasa"
+              />
+            </div>
+
+            <div className="space-y-2">
               <Input
                 id="ville"
                 name="ville"

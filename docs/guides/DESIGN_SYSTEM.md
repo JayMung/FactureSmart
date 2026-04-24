@@ -1,4 +1,4 @@
-# Design System - FactureX
+# Design System - FactureSmart
 
 ## 🎨 Vue d'ensemble
 

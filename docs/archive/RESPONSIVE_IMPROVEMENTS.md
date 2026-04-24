@@ -1,4 +1,4 @@
-# Améliorations Responsive - FactureX
+# Améliorations Responsive - FactureSmart
 
 ## 📱 Résumé des modifications
 

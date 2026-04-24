@@ -423,7 +423,7 @@ Nouvelle Transaction
 
 1. **Discord** : Créer le canal `#operations-internes`
 2. **Webhook Discord** : Copier l'URL
-3. **FactureX → Webhooks** :
+3. **FactureSmart → Webhooks** :
    - Nom : Discord - Opérations Internes
    - URL : [URL Discord]
    - Format : Discord

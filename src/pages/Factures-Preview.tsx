@@ -31,7 +31,6 @@ import ImagePreview from '@/components/ui/ImagePreview';
 import { generateFacturePDF } from '@/utils/pdfGenerator';
 import { showSuccess, showError } from '@/utils/toast';
 import { useFactures } from '../hooks/useFactures';
-import ProtectedRouteEnhanced from '../components/auth/ProtectedRouteEnhanced';
 import { encodeHtml } from '@/lib/xss-protection';
 import type { Facture } from '@/types';
 
@@ -167,40 +166,30 @@ const FacturesPreview: React.FC = () => {
 
   if (loading) {
     return (
-      <ProtectedRouteEnhanced requiredModule="factures" requiredPermission="read">
-        <Layout>
-          <div className="flex items-center justify-center h-64">
+      <Layout><div className="flex items-center justify-center h-64">
             <div className="text-center">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500 mx-auto mb-4"></div>
               <p className="text-gray-600">Chargement de l'aperçu...</p>
             </div>
-          </div>
-        </Layout>
-      </ProtectedRouteEnhanced>
+          </div></Layout>
     );
   }
 
   if (!facture) {
     return (
-      <ProtectedRouteEnhanced requiredModule="factures" requiredPermission="read">
-        <Layout>
-          <div className="flex items-center justify-center h-64">
+      <Layout><div className="flex items-center justify-center h-64">
             <div className="text-center">
               <AlertCircle className="h-12 w-12 text-red-600 mx-auto mb-4" />
               <p className="text-red-600">Facture introuvable</p>
             </div>
-          </div>
-        </Layout>
-      </ProtectedRouteEnhanced>
+          </div></Layout>
     );
   }
 
   const items = facture.items || [];
 
   return (
-    <ProtectedRouteEnhanced requiredModule="factures" requiredPermission="read">
-      <Layout>
-        <div className="space-y-6">
+    <Layout><div className="space-y-6">
           {/* Header avec notification */}
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
             <div className="flex items-start">
@@ -610,9 +599,7 @@ const FacturesPreview: React.FC = () => {
               </Button>
             </div>
           </DialogContent>
-        </Dialog>
-      </Layout>
-    </ProtectedRouteEnhanced>
+        </Dialog></Layout>
   );
 };
 

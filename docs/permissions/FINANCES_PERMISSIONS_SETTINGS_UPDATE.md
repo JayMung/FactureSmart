@@ -211,4 +211,4 @@ const getModuleIcon = (iconName: string) => {
 
 **Les administrateurs peuvent maintenant attribuer les permissions financières directement depuis l'interface des paramètres !** 💼✨
 
-#FactureX #Permissions #Finances #Sécurité #Admin
+#FactureSmart #Permissions #Finances #Sécurité #Admin

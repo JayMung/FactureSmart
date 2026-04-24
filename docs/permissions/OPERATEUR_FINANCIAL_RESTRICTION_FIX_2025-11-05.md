@@ -249,7 +249,7 @@ const { isAdmin } = usePermissions(); // false
 ---
 
 **Auteur** : Cascade AI  
-**Projet** : FactureX  
+**Projet** : FactureSmart  
 **Module** : Restrictions Financières  
 **Statut** : ✅ **OPÉRATEURS SÉCURISÉS**
 
@@ -259,4 +259,4 @@ const { isAdmin } = usePermissions(); // false
 
 **Les opérateurs ne peuvent plus voir AUCUNE information financière - uniquement les données opérationnelles de base !** 🛡️
 
-#FactureX #Sécurité #Permissions #AdminOnly
+#FactureSmart #Sécurité #Permissions #AdminOnly

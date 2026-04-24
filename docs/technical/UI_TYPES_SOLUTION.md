@@ -171,7 +171,7 @@ git commit -m "fix: resolve UI component types with module augmentation
 
 ---
 
-**FactureX UI Types - Solution Élégante et Efficace** ✨
+**FactureSmart UI Types - Solution Élégante et Efficace** ✨
 
 ---
 

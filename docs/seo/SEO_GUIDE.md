@@ -1,9 +1,9 @@
-# Guide SEO - FactureX
+# Guide SEO - FactureSmart
 
 ## ✅ Améliorations implémentées
 
 ### 1. **Métadonnées Open Graph** (Facebook, LinkedIn, WhatsApp)
-- Titre optimisé : "FactureX - Gestion de facturation moderne et intuitive"
+- Titre optimisé : "FactureSmart - Gestion de facturation moderne et intuitive"
 - Description engageante avec mots-clés
 - Image de preview personnalisée (1200x630px)
 - Locale française (fr_FR)
@@ -26,7 +26,7 @@
 
 ### 5. **Image Open Graph**
 - Design moderne avec gradient violet
-- Logo FactureX
+- Logo FactureSmart
 - Liste des fonctionnalités clés
 - Format SVG optimisé (1200x630px)
 - Localisation : `/public/og-image.svg`
@@ -76,7 +76,7 @@ facturex.coccinelledrc.com
 ┌─────────────────────────────────────┐
 │  [Image gradient violet avec logo]  │
 │                                      │
-│  FactureX                           │
+│  FactureSmart                           │
 │  Gestion de facturation moderne     │
 │  et intuitive                        │
 │                                      │

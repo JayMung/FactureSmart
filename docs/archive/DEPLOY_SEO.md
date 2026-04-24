@@ -2,7 +2,7 @@
 
 ## ✅ Ce qui a été fait
 
-J'ai amélioré le SEO de FactureX pour que vos liens partagés affichent un beau preview avec :
+J'ai amélioré le SEO de FactureSmart pour que vos liens partagés affichent un beau preview avec :
 - 🖼️ Une image personnalisée (gradient violet avec logo)
 - 📝 Un titre optimisé
 - 💬 Une description engageante
@@ -58,7 +58,7 @@ Après : **Image + Titre + Description** 🎨
 ┌─────────────────────────────────────┐
 │  [Image gradient violet avec logo]  │
 │                                      │
-│  FactureX                           │
+│  FactureSmart                           │
 │  Gestion de facturation moderne     │
 │                                      │
 │  Créez, gérez et suivez vos         │

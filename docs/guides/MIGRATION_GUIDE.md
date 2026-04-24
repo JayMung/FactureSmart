@@ -1,4 +1,4 @@
-# Guide de Migration - Design System FactureX
+# Guide de Migration - Design System FactureSmart
 
 ## 🎯 Objectif
 

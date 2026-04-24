@@ -1,4 +1,4 @@
-# PRD - FactureX
+# PRD - FactureSmart
 
 ## 📋 Document de Spécifications du Produit (Product Requirements Document)
 
@@ -13,7 +13,7 @@
 
 ### 1.1 Description générale
 
-**FactureX** est une plateforme de facturation et gestion commerciale conforme aux exigences de la DGI (Direction Générale des Impôts de la RDC). L'application permet de gérer les clients, les transactions commerciales, la génération de factures et devis avec transmission automatique à la DGI, ainsi que le suivi des activités avec un système de permissions granulaire.
+**FactureSmart** est une plateforme de facturation et gestion commerciale conforme aux exigences de la DGI (Direction Générale des Impôts de la RDC). L'application permet de gérer les clients, les transactions commerciales, la génération de factures et devis avec transmission automatique à la DGI, ainsi que le suivi des activités avec un système de permissions granulaire.
 
 ### 1.2 Vision et objectifs
 
@@ -949,12 +949,12 @@ npm run preview
 - Base de données: PostgreSQL (Supabase)
 
 **Ressources:**
-- Repository: `FactureX`
+- Repository: `FactureSmart`
 - Documentation technique: `/AI_RULES.md`
 - Migrations: `/supabase/migrations/`
 
 --
 
-**Fin du document PRD FactureX v2.0**
+**Fin du document PRD FactureSmart v2.0**
 
-*Ce document constitue la spécification complète du produit FactureX à la date d'avril 2026. Il doit être mis à jour à chaque évolution majeure de l'application.*
+*Ce document constitue la spécification complète du produit FactureSmart à la date d'avril 2026. Il doit être mis à jour à chaque évolution majeure de l'application.*

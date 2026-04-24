@@ -20,7 +20,7 @@ const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
 const SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 const ADMIN_EMAIL = 'admin.facturex@local';
-const ADMIN_PASSWORD = 'FactureX2026!';
+const ADMIN_PASSWORD = 'FactureSmart2026!';
 
 async function seedAdmin() {
   if (!SUPABASE_URL || !SERVICE_ROLE_KEY) {
@@ -47,7 +47,7 @@ async function seedAdmin() {
     email: ADMIN_EMAIL,
     password: ADMIN_PASSWORD,
     email_confirm: true,
-    user_metadata: { full_name: 'Administrateur FactureX' },
+    user_metadata: { full_name: 'Administrateur FactureSmart' },
   });
 
   if (error) {

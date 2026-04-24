@@ -254,7 +254,7 @@ npx tsc --noEmit --skipLibCheck
 ---
 
 **Auteur** : Cascade AI  
-**Projet** : FactureX  
+**Projet** : FactureSmart  
 **Module** : Restrictions Financières Clients  
 **Statut** : ✅ **OPÉRATEURS SÉCURISÉS**
 
@@ -264,4 +264,4 @@ npx tsc --noEmit --skipLibCheck
 
 **Les opérateurs ne peuvent plus voir AUCUNE information financière des clients - uniquement les données opérationnelles de base !** 🛡️
 
-#FactureX #Sécurité #Permissions #AdminOnly
+#FactureSmart #Sécurité #Permissions #AdminOnly

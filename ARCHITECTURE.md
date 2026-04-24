@@ -1,6 +1,6 @@
 # 🏗️ ARCHITECTURE FACTUREX
 
-> Documentation technique du projet FactureX v1.0.2  
+> Documentation technique du projet FactureSmart v1.0.2  
 > Dernière mise à jour : 11 Février 2026
 
 ---
@@ -8,7 +8,7 @@
 ## 📁 Structure du Projet
 
 ```
-FactureX/
+FactureSmart/
 ├── src/
 │   ├── components/          # 23 dossiers de composants UI
 │   │   ├── activity/        # Logs d'activité

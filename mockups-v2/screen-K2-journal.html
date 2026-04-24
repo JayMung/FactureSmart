@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Journal des écritures — Facture Smart</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Manrope', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] },
+          colors: {
+            primary: { 50: '#ecfdf5', 100: '#d1fae5', 200: '#a7f3d0', 300: '#6ee7b7', 400: '#34d399', 500: '#10b981', 600: '#059669', 700: '#059669', 800: '#065f46', 900: '#064e3b' },
+            fx: { gray: '#F8FAFC', 'gray-100': '#F1F5F9', 'gray-200': '#E2E8F0', 'gray-300': '#CBD5E1', 'gray-500': '#64748B', 'gray-700': '#334155', 'gray-900': '#0F172A', success: '#10b981', warning: '#F59E0B', danger: '#EF4444' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Manrope', sans-serif; }
+    .rdc-bg { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Crect width='40' height='40' fill='%2310B981' fill-opacity='0.025'/%3E%3Crect x='40' y='40' width='40' height='40' fill='%2310B981' fill-opacity='0.025'/%3E%3C/svg%3E"); background-size: 80px 80px; }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen rdc-bg">
+
+  <header class="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
+    <div class="flex items-center justify-between px-6 py-3">
+      <div class="flex items-center gap-3">
+        <a href="index.html" class="w-9 h-9 rounded-xl bg-gray-100 flex items-center justify-center text-fx-gray-500 hover:bg-gray-200 transition-colors">
+          <i class="ri-arrow-left-line text-lg"></i>
+        </a>
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center shadow-sm">
+            <i class="ri-file-chart-line text-white text-sm"></i>
+          </div>
+          <span class="text-base font-extrabold text-fx-gray-900">Facture<span class="text-primary-600">X</span></span>
+          <span class="text-xs bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full font-bold">Comptabilité</span>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="hidden md:flex items-center gap-1.5 text-xs text-fx-gray-500 bg-fx-gray-100 px-3 py-1.5 rounded-lg">
+          <i class="ri-shield-check-line text-indigo-500"></i>
+          <span class="font-semibold">Conforme SYSCOHADA</span>
+        </div>
+        <button class="px-4 py-2 rounded-xl bg-primary-500 text-white text-sm font-bold flex items-center gap-2 hover:bg-primary-600 transition-colors shadow-sm">
+          <i class="ri-add-line"></i>
+          Nouvelle écriture
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="p-6 space-y-6">
+
+    <!-- Summary -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm">
+        <div class="text-xs text-fx-gray-500 mb-1">Total débit</div>
+        <div class="text-xl font-extrabold text-fx-gray-900 font-mono">1 247 850 $</div>
+      </div>
+      <div class="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm">
+        <div class="text-xs text-fx-gray-500 mb-1">Total crédit</div>
+        <div class="text-xl font-extrabold text-fx-gray-900 font-mono">1 247 850 $</div>
+      </div>
+      <div class="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm">
+        <div class="text-xs text-fx-gray-500 mb-1">Écritures (exercice)</div>
+        <div class="text-xl font-extrabold text-fx-gray-900">1 428</div>
+      </div>
+      <div class="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm">
+        <div class="text-xs text-fx-gray-500 mb-1">Période</div>
+        <div class="text-lg font-bold text-fx-gray-900">Jan — Déc 2026</div>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
+      <div class="flex flex-wrap gap-3 items-center">
+        <div class="flex items-center gap-2 text-sm font-semibold text-fx-gray-700">
+          <i class="ri-filter-3-line text-primary-500"></i>
+          Filtres
+        </div>
+        <select class="px-3 py-2.5 rounded-xl border border-gray-200 text-xs font-medium text-fx-gray-700 bg-white">
+          <option>Janvier 2026</option>
+          <option>Février 2026</option>
+          <option>Mars 2026</option>
+          <option selected>Avril 2026</option>
+        </select>
+        <select class="px-3 py-2.5 rounded-xl border border-gray-200 text-xs font-medium text-fx-gray-700 bg-white">
+          <option>Tous les journaux</option>
+          <option>Journal des ventes</option>
+          <option>Journal des achats</option>
+          <option>Journal de trésorerie</option>
+          <option>Journal OD</option>
+        </select>
+        <input type="text" placeholder="N° de pièce..." class="px-3 py-2.5 rounded-xl border border-gray-200 text-xs font-medium text-fx-gray-700 bg-white w-36">
+        <button class="px-4 py-2.5 rounded-xl bg-primary-50 text-primary-700 text-xs font-bold flex items-center gap-2 hover:bg-primary-100 transition-colors">
+          <i class="ri-filter-line"></i>
+          Appliquer
+        </button>
+        <button class="ml-auto px-4 py-2.5 rounded-xl border border-gray-200 text-fx-gray-600 text-xs font-semibold flex items-center gap-2 hover:bg-gray-50 transition-colors">
+          <i class="ri-download-line"></i>
+          Exporter
+        </button>
+      </div>
+    </div>
+
+    <!-- Journal table -->
+    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-xs">
+          <thead>
+            <tr class="bg-gray-50 border-b border-gray-100 text-fx-gray-400 uppercase tracking-wider text-[10px] font-bold">
+              <th class="text-left px-4 py-3">Date</th>
+              <th class="text-left px-4 py-3">N° Pièce</th>
+              <th class="text-left px-4 py-3">Compte</th>
+              <th class="text-left px-4 py-3">Libellé</th>
+              <th class="text-left px-4 py-3">Journal</th>
+              <th class="text-right px-4 py-3">Débit ($)</th>
+              <th class="text-right px-4 py-3">Crédit ($)</th>
+              <th class="text-center px-4 py-3">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-50">
+            <tr class="hover:bg-gray-50 transition-colors">
+              <td class="px-4 py-3 font-mono font-semibold text-fx-gray-900 whitespace-nowrap">23/04/2026</td>
+              <td class="px-4 py-3 font-mono text-fx-gray-600">FAC-2026-0142</td>
+              <td class="px-4 py-3">
+                <div class="font-mono font-semibold text-fx-gray-900">4111</div>
+                <div class="text-[10px] text-fx-gray-400">Clients — facturas</div>
+              </td>
+              <td class="px-4 py-3 text-fx-gray-700 max-w-xs truncate">Facture n° FAC-2026-0142 — Congo Tech SARL</td>
+              <td class="px-4 py-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-blue-700">Ventes</span></td>
+              <td class="px-4 py-3 text-right font-mono font-bold text-fx-gray-900">1 463.20</td>
+              <td class="px-4 py-3 text-right font-mono text-fx-gray-500">—</td>
+              <td class="px-4 py-3 text-center"><button class="text-fx-gray-400 hover:text-primary-600"><i class="ri-eye-line"></i></button></td>
+            </tr>
+            <tr class="hover:bg-gray-50 transition-colors bg-gray-25">
+              <td class="px-4 py-3 font-mono text-fx-gray-400 whitespace-nowrap">23/04/2026</td>
+              <td class="px-4 py-3 font-mono text-fx-gray-400">FAC-2026-0142</td>
+              <td class="px-4 py-3">
+                <div class="font-mono font-semibold text-fx-gray-900">7011</div>
+                <div class="text-[10px] text-fx-gray-400">Ventes de marchandises</div>
+              </td>
+              <td class="px-4 py-3 text-fx-gray-500 max-w-xs truncate">TVA collectée sur FAC-2026-0142</td>
+              <td class="px-4 py-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-blue-700">Ventes</span></td>
+              <td class="px-4 py-3 text-right font-mono text-fx-gray-500">—</td>
+              <td class="px-4 py-3 text-right font-mono font-bold text-fx-gray-900">1 463.20</td>
+              <td class="px-4 py-3 text-center"><button class="text-fx-gray-400 hover:text-primary-600"><i class="ri-eye-line"></i></button></td>
+            </tr>
+            <tr class="hover:bg-gray-50 transition-colors">
+              <td class="px-4 py-3 font-mono font-semibold text-fx-gray-900 whitespace-nowrap">23/04/2026</td>
+              <td class="px-4 py-3 font-mono text-fx-gray-600">ACH-2026-0089</td>
+              <td class="px-4 py-3">
+                <div class="font-mono font-semibold text-fx-gray-900">6011</div>
+                <div class="text-[10px] text-fx-gray-400">Achats stockés</div>
+              </td>
+              <td class="px-4 py-3 text-fx-gray-700 max-w-xs truncate">Achat fournisseur — Congo Distribution</td>
+              <td class="px-4 py-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-orange-50 text-orange-700">Achats</span></td>
+              <td class="px-4 py-3 text-right font-mono font-bold text-fx-gray-900">850.00</td>
+              <td class="px-4 py-3 text-right font-mono text-fx-gray-500">—</td>
+              <td class="px-4 py-3 text-center"><button class="text-fx-gray-400 hover:text-primary-600"><i class="ri-eye-line"></i></button></td>
+            </tr>
+            <tr class="hover:bg-gray-50 transition-colors">
+              <td class="px-4 py-3 font-mono font-semibold text-fx-gray-900 whitespace-nowrap">22/04/2026</td>
+              <td class="px-4 py-3 font-mono text-fx-gray-600">OD-2026-0045</td>
+              <td class="px-4 py-3">
+                <div class="font-mono font-semibold text-fx-gray-900">6351</div>
+                <div class="text-[10px] text-fx-gray-400">Impôts et taxes</div>
+              </td>
+              <td class="px-4 py-3 text-fx-gray-700 max-w-xs truncate">Liquidation TVA mensuelle — Mars 2026</td>
+              <td class="px-4 py-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-50 text-indigo-700">OD</span></td>
+              <td class="px-4 py-3 text-right font-mono font-bold text-fx-gray-900">12 450.00</td>
+              <td class="px-4 py-3 text-right font-mono text-fx-gray-500">—</td>
+              <td class="px-4 py-3 text-center"><button class="text-fx-gray-400 hover:text-primary-600"><i class="ri-eye-line"></i></button></td>
+            </tr>
+            <tr class="hover:bg-gray-50 transition-colors">
+              <td class="px-4 py-3 font-mono font-semibold text-fx-gray-900 whitespace-nowrap">22/04/2026</td>
+              <td class="px-4 py-3 font-mono text-fx-gray-600">OD-2026-0045</td>
+              <td class="px-4 py-3">
+                <div class="font-mono font-semibold text-fx-gray-900">4452</div>
+                <div class="text-[10px] text-fx-gray-400">TVA due</div>
+              </td>
+              <td class="px-4 py-3 text-fx-gray-700 max-w-xs truncate">Crédit TVA à reporter — Avril 2026</td>
+              <td class="px-4 py-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-50 text-indigo-700">OD</span></td>
+              <td class="px-4 py-3 text-right font-mono text-fx-gray-500">—</td>
+              <td class="px-4 py-3 text-right font-mono font-bold text-fx-gray-900">12 450.00</td>
+              <td class="px-4 py-3 text-center"><button class="text-fx-gray-400 hover:text-primary-600"><i class="ri-eye-line"></i></button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="px-4 py-3 border-t border-gray-100 flex items-center justify-between">
+        <span class="text-xs text-fx-gray-400">Page 1/12 — 60 écritures affichées</span>
+        <div class="flex items-center gap-2">
+          <button class="px-3 py-1.5 rounded-lg bg-gray-100 text-fx-gray-400 text-xs font-semibold cursor-not-allowed">Préc.</button>
+          <button class="px-3 py-1.5 rounded-lg bg-primary-500 text-white text-xs font-bold">1</button>
+          <button class="px-3 py-1.5 rounded-lg bg-white border border-gray-200 text-fx-gray-600 text-xs font-semibold hover:bg-gray-50">2</button>
+          <button class="px-3 py-1.5 rounded-lg bg-white border border-gray-200 text-fx-gray-600 text-xs font-semibold hover:bg-gray-50">3</button>
+          <button class="px-3 py-1.5 rounded-lg bg-gray-100 text-fx-gray-600 text-xs font-semibold hover:bg-gray-50">Suiv.</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>

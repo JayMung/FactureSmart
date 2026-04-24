@@ -46,7 +46,6 @@ import TransactionFormFinancial from '@/components/forms/TransactionFormFinancia
 import ConfirmDialog from '@/components/ui/confirm-dialog';
 import TransactionDetailsModal from '../components/modals/TransactionDetailsModal';
 import PermissionGuard from '../components/auth/PermissionGuard';
-import ProtectedRouteEnhanced from '../components/auth/ProtectedRouteEnhanced';
 import { TransactionStats } from '@/components/transactions/TransactionStats';
 import { StatusBadge } from '@/components/transactions/StatusBadge';
 import type { Transaction } from '@/types';
@@ -951,9 +950,7 @@ const TransactionsProtected: React.FC = () => {
   const tabConfig = getTabConfig();
 
   return (
-    <ProtectedRouteEnhanced requiredModule="transactions" requiredPermission="read">
-      <Layout>
-        <div className="space-y-4 md:space-y-6 p-2 sm:p-4 md:p-0 animate-in fade-in duration-300">
+    <Layout><div className="space-y-4 md:space-y-6 p-2 sm:p-4 md:p-0 animate-in fade-in duration-300">
           {/* Bulk Actions Bar */}
           {selectedTransactions.size > 0 && (() => {
             const selectedTotals = calculateSelectedTotals();
@@ -1371,9 +1368,7 @@ const TransactionsProtected: React.FC = () => {
               onDuplicate={handleDuplicateTransaction}
             />
           </Tabs>
-        </div>
-      </Layout>
-    </ProtectedRouteEnhanced>
+        </div></Layout>
   );
 };
 

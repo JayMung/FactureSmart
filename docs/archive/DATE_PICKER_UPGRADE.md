@@ -1,4 +1,4 @@
-# Amélioration du Date Picker - FactureX
+# Amélioration du Date Picker - FactureSmart
 
 ## 📅 Nouveau Date Picker Moderne
 

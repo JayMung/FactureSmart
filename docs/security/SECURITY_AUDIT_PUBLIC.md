@@ -1,4 +1,4 @@
-# 🔒 PAGE D'AUDIT DE SÉCURITÉ PUBLIQUE - FactureX
+# 🔒 PAGE D'AUDIT DE SÉCURITÉ PUBLIQUE - FactureSmart
 
 **Date:** 27 octobre 2025  
 **Statut:** ✅ CRÉÉE ET DÉPLOYÉE
@@ -7,7 +7,7 @@
 
 ## 📋 RÉSUMÉ
 
-Une page `/security_audit` moderne et présentable a été créée pour partager publiquement les résultats de l'audit de sécurité de FactureX.
+Une page `/security_audit` moderne et présentable a été créée pour partager publiquement les résultats de l'audit de sécurité de FactureSmart.
 
 ---
 
@@ -164,4 +164,4 @@ https://votre-domaine.com/security_audit
 
 **✅ PAGE CRÉÉE AVEC SUCCÈS**
 
-*La page `/security_audit` est maintenant disponible et partageable publiquement, présentant FactureX comme une solution sécurisée et professionnelle.*
+*La page `/security_audit` est maintenant disponible et partageable publiquement, présentant FactureSmart comme une solution sécurisée et professionnelle.*

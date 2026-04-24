@@ -1,4 +1,4 @@
-# 🚀 Améliorations SEO - FactureX
+# 🚀 Améliorations SEO - FactureSmart
 
 ## 📋 Résumé des changements
 
@@ -20,7 +20,7 @@ Ajout de toutes les métadonnées SEO :
 ### 2. **public/og-image.svg** ✨ Nouveau
 Image de preview personnalisée (1200x630px) avec :
 - Design moderne avec gradient violet (#667eea → #764ba2)
-- Logo FactureX
+- Logo FactureSmart
 - Titre et description
 - Liste des fonctionnalités clés
 - URL du site
@@ -74,7 +74,7 @@ Maintenant, quand vous partagez le lien, vous verrez :
 │                                            │
 │  [Image avec gradient violet et logo]     │
 │                                            │
-│  FactureX - Gestion de facturation        │
+│  FactureSmart - Gestion de facturation        │
 │  moderne et intuitive                      │
 │                                            │
 │  Créez, gérez et suivez vos factures      │
@@ -133,7 +133,7 @@ Ouvrez `test-seo.html` dans votre navigateur pour voir tous les liens de test et
 ```html
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://facturex.coccinelledrc.com/" />
-<meta property="og:title" content="FactureX - Gestion de facturation moderne et intuitive" />
+<meta property="og:title" content="FactureSmart - Gestion de facturation moderne et intuitive" />
 <meta property="og:description" content="Créez, gérez et suivez vos factures professionnelles..." />
 <meta property="og:image" content="https://facturex.coccinelledrc.com/og-image.svg" />
 <meta property="og:locale" content="fr_FR" />
@@ -142,14 +142,14 @@ Ouvrez `test-seo.html` dans votre navigateur pour voir tous les liens de test et
 ### Twitter Cards
 ```html
 <meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:title" content="FactureX - Gestion de facturation moderne et intuitive" />
+<meta property="twitter:title" content="FactureSmart - Gestion de facturation moderne et intuitive" />
 <meta property="twitter:description" content="Créez, gérez et suivez vos factures professionnelles..." />
 <meta property="twitter:image" content="https://facturex.coccinelledrc.com/og-image.svg" />
 ```
 
 ### SEO Classique
 ```html
-<title>FactureX - Gestion de facturation moderne et intuitive</title>
+<title>FactureSmart - Gestion de facturation moderne et intuitive</title>
 <meta name="description" content="Créez, gérez et suivez vos factures professionnelles..." />
 <meta name="keywords" content="facturation, factures, gestion, comptabilité, PDF, suivi paiements, analytics" />
 <link rel="canonical" href="https://facturex.coccinelledrc.com/" />

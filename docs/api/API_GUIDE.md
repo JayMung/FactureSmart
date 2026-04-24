@@ -1,6 +1,6 @@
-# 📚 FactureX API - Guide Complet
+# 📚 FactureSmart API - Guide Complet
 
-Guide complet pour utiliser l'API externe de FactureX avec n8n, Discord, et autres intégrations.
+Guide complet pour utiliser l'API externe de FactureSmart avec n8n, Discord, et autres intégrations.
 
 ## 📋 Table des Matières
 
@@ -18,7 +18,7 @@ Guide complet pour utiliser l'API externe de FactureX avec n8n, Discord, et autr
 
 ## 🎯 Introduction
 
-L'API FactureX permet d'accéder à vos données de manière programmatique pour créer des automatisations, des dashboards personnalisés, ou des intégrations avec des outils tiers comme n8n, Discord, Slack, etc.
+L'API FactureSmart permet d'accéder à vos données de manière programmatique pour créer des automatisations, des dashboards personnalisés, ou des intégrations avec des outils tiers comme n8n, Discord, Slack, etc.
 
 ### Caractéristiques
 
@@ -48,7 +48,7 @@ https://ddnxtuhswmewoxrwswzg.supabase.co/functions/v1
 
 ### Créer une Clé API
 
-1. Connectez-vous à FactureX
+1. Connectez-vous à FactureSmart
 2. Allez dans **Paramètres** > **API**
 3. Cliquez sur **Générer une clé**
 4. Choisissez le type et les permissions
@@ -250,7 +250,7 @@ Récupère les statistiques du tableau de bord.
 
 ## 🔔 Webhooks
 
-Les webhooks permettent de recevoir des notifications en temps réel lorsque des événements se produisent dans FactureX.
+Les webhooks permettent de recevoir des notifications en temps réel lorsque des événements se produisent dans FactureSmart.
 
 ### Événements Disponibles
 
@@ -422,7 +422,7 @@ function verifyWebhookSignature(payload, signature, secret) {
 
 1. Créez un node **Webhook** dans n8n
 2. Copiez l'URL du webhook
-3. Configurez le webhook dans FactureX avec cette URL
+3. Configurez le webhook dans FactureSmart avec cette URL
 4. Format : `n8n`
 
 ---
@@ -433,10 +433,10 @@ function verifyWebhookSignature(payload, signature, secret) {
 
 1. Dans Discord, allez dans **Paramètres du Serveur** > **Intégrations**
 2. Cliquez sur **Webhooks** > **Nouveau Webhook**
-3. Nommez-le (ex: "FactureX Bot")
+3. Nommez-le (ex: "FactureSmart Bot")
 4. Copiez l'URL du webhook
 
-### Étape 2 : Configurer dans FactureX
+### Étape 2 : Configurer dans FactureSmart
 
 ```bash
 curl -X POST "https://ddnxtuhswmewoxrwswzg.supabase.co/functions/v1/api-webhooks" \

@@ -17,7 +17,7 @@ Ce guide vous explique comment appliquer les corrections de sécurité critiques
 ### 1.1 Connexion à Supabase
 
 1. Allez sur https://supabase.com/dashboard
-2. Sélectionnez votre projet **FactureX**
+2. Sélectionnez votre projet **FactureSmart**
 3. Cliquez sur **SQL Editor** dans le menu de gauche
 
 ### 1.2 Appliquer la Migration Admin Role
@@ -200,7 +200,7 @@ git push origin main
 ssh votre-user@votre-vps
 
 # Pull les changements
-cd /chemin/vers/FactureX
+cd /chemin/vers/FactureSmart
 git pull origin main
 
 # Rebuild

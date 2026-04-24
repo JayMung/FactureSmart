@@ -149,7 +149,7 @@ feat: v1.0.3 - Security fixes + TypeScript corrections
 
 ---
 
-**FactureX v1.0.3 - Sécurité, Stabilité & Performance** ✨
+**FactureSmart v1.0.3 - Sécurité, Stabilité & Performance** ✨
 
 ---
 

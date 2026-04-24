@@ -1,6 +1,6 @@
-# 🔔 Guide Complet des Webhooks - FactureX
+# 🔔 Guide Complet des Webhooks - FactureSmart
 
-Guide détaillé sur le fonctionnement, la configuration et le test des webhooks dans FactureX.
+Guide détaillé sur le fonctionnement, la configuration et le test des webhooks dans FactureSmart.
 
 ## 📋 Table des Matières
 
@@ -20,7 +20,7 @@ Guide détaillé sur le fonctionnement, la configuration et le test des webhooks
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│  1. Action dans FactureX                                    │
+│  1. Action dans FactureSmart                                    │
 │     (Créer transaction, valider facture, livrer colis...)   │
 └────────────────────┬────────────────────────────────────────┘
                      │
@@ -87,7 +87,7 @@ Les webhooks se déclenchent **automatiquement** grâce aux triggers PostgreSQL 
 
 ## ⚙️ Configuration
 
-### 1. Via l'Interface FactureX (Recommandé)
+### 1. Via l'Interface FactureSmart (Recommandé)
 
 1. **Accéder aux Webhooks**
    - Allez dans **Paramètres > Webhooks**
@@ -157,7 +157,7 @@ SELECT test_webhook('webhook_id_ici');
 
 ### Méthode 2 : Créer une Transaction de Test
 
-1. **Via l'Interface FactureX** :
+1. **Via l'Interface FactureSmart** :
    - Allez dans **Finances > Opérations Financières**
    - Créez une nouvelle transaction
    - Montant : `1000 USD` (si vous avez un filtre >= 500)
@@ -173,7 +173,7 @@ SELECT test_webhook('webhook_id_ici');
 
 1. Allez sur [https://webhook.site](https://webhook.site)
 2. Copiez l'URL unique générée
-3. Créez un webhook dans FactureX avec cette URL
+3. Créez un webhook dans FactureSmart avec cette URL
 4. Déclenchez un événement (créer transaction)
 5. Retournez sur webhook.site pour voir le payload reçu
 
@@ -185,7 +185,7 @@ SELECT test_webhook('webhook_id_ici');
    - Créez un nouveau webhook
    - Copiez l'URL
 
-2. **Configurer dans FactureX** :
+2. **Configurer dans FactureSmart** :
    - Nom : `Test Discord`
    - URL : Collez l'URL Discord
    - Format : `Discord`
@@ -288,11 +288,11 @@ SELECT test_webhook('webhook_id_ici');
       }
     ],
     "footer": {
-      "text": "FactureX API"
+      "text": "FactureSmart API"
     },
     "timestamp": "2025-01-13T12:00:00Z"
   }],
-  "username": "FactureX Bot"
+  "username": "FactureSmart Bot"
 }
 ```
 
@@ -400,7 +400,7 @@ id | event_type | status | triggered_at | sent_at | response_status | error_mess
 ...| transaction.validated | success | 2025-01-13 12:00 | 2025-01-13 12:00 | 200 | null
 ```
 
-### Via l'Interface FactureX
+### Via l'Interface FactureSmart
 
 1. Allez dans **Paramètres > Webhooks**
 2. Cliquez sur un webhook
@@ -520,4 +520,4 @@ LIMIT 1;
 
 ---
 
-**Questions ? Besoin d'aide ?** Contactez le support FactureX ! 🚀
+**Questions ? Besoin d'aide ?** Contactez le support FactureSmart ! 🚀

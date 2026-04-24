@@ -236,7 +236,7 @@ npx eslint src/pages/Factures-Protected.tsx src/pages/Index-Protected.tsx
 ---
 
 **Auteur** : Cascade AI  
-**Projet** : FactureX  
+**Projet** : FactureSmart  
 **Module** : Corrections TypeScript  
 **Statut** : ✅ **ERREURS CORRIGÉES**
 
@@ -246,4 +246,4 @@ npx eslint src/pages/Factures-Protected.tsx src/pages/Index-Protected.tsx
 
 **Le code compile maintenant sans aucune erreur tout en préservant 100% des fonctionnalités de sécurité !** 🛡️
 
-#FactureX #TypeScript #ErrorsFixed #Security
+#FactureSmart #TypeScript #ErrorsFixed #Security

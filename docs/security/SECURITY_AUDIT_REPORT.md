@@ -1,8 +1,8 @@
-# FactureX - Pre-Deployment Security Audit Report
+# FactureSmart - Pre-Deployment Security Audit Report
 
 **Date:** January 26, 2025  
 **Auditor:** Security Expert  
-**Application:** FactureX - Invoice Management System  
+**Application:** FactureSmart - Invoice Management System  
 **Stack:** React + Vite + Supabase (PostgreSQL)
 
 ---
@@ -638,7 +638,7 @@ If handling EU data (GDPR):
 
 ## Conclusion
 
-FactureX has a solid architectural foundation but requires immediate security hardening before production deployment. The **4 CRITICAL** issues pose significant risks and must be resolved immediately. The **6 HIGH** severity issues should be addressed within the first week of deployment.
+FactureSmart has a solid architectural foundation but requires immediate security hardening before production deployment. The **4 CRITICAL** issues pose significant risks and must be resolved immediately. The **6 HIGH** severity issues should be addressed within the first week of deployment.
 
 **Recommendation:** **DO NOT DEPLOY** to production until at least all CRITICAL and HIGH severity issues are resolved.
 

@@ -291,5 +291,5 @@ Page Mouvements de Comptes:
 
 **Date d'implémentation** : 1er novembre 2025, 22:30
 **Développeur** : Cascade AI
-**Projet** : FactureX
+**Projet** : FactureSmart
 **Statut** : ✅ Production Ready

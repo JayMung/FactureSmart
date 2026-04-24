@@ -1,12 +1,12 @@
-# 🚀 Guide d'Implémentation de l'API FactureX
+# 🚀 Guide d'Implémentation de l'API FactureSmart
 
-Guide étape par étape pour déployer et utiliser l'API FactureX.
+Guide étape par étape pour déployer et utiliser l'API FactureSmart.
 
 ## 📋 Prérequis
 
 - ✅ Compte Supabase actif
-- ✅ Projet FactureX déployé
-- ✅ Accès administrateur à FactureX
+- ✅ Projet FactureSmart déployé
+- ✅ Accès administrateur à FactureSmart
 - ✅ (Optionnel) Compte Upstash Redis pour rate limiting avancé
 
 ---
@@ -27,7 +27,7 @@ mcp2_apply_migration({
 ### Via Supabase CLI
 
 ```bash
-cd c:\Users\jkmun\dyad-apps\FactureX
+cd c:\Users\jkmun\dyad-apps\FactureSmart
 supabase db push
 ```
 
@@ -94,9 +94,9 @@ curl -X GET "https://ddnxtuhswmewoxrwswzg.supabase.co/functions/v1/api-transacti
 
 ## 🔑 Étape 3 : Créer votre Première Clé API
 
-### Via l'Interface FactureX (À Développer)
+### Via l'Interface FactureSmart (À Développer)
 
-1. Connectez-vous à FactureX
+1. Connectez-vous à FactureSmart
 2. Allez dans **Paramètres** > **API**
 3. Cliquez sur **Générer une clé**
 4. Configurez :
@@ -240,7 +240,7 @@ curl -X POST "https://ddnxtuhswmewoxrwswzg.supabase.co/functions/v1/api-webhooks
 
 ### Tester le Webhook
 
-1. Créez une transaction dans FactureX
+1. Créez une transaction dans FactureSmart
 2. Vérifiez que le webhook est déclenché
 3. Consultez les logs dans `webhook_logs`
 
@@ -509,4 +509,4 @@ LIMIT 10;
 
 ---
 
-**Félicitations ! Votre API FactureX est prête à l'emploi ! 🎉**
+**Félicitations ! Votre API FactureSmart est prête à l'emploi ! 🎉**

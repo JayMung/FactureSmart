@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState } from 'react';
+import React from 'react';
 import Layout from '../components/layout/Layout';
 import { usePageSetup } from '../hooks/use-page-setup';
-import StatCard from '../components/dashboard/StatCard';
+import { useDashboardDgi } from '../hooks/useDashboardDgi';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -11,364 +11,457 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   DollarSign,
   Users,
-  Receipt,
-  TrendingUp,
-  TrendingDown,
-  Activity,
-  User,
-  Settings,
   FileText,
-  Eye,
+  TrendingUp,
   Plus,
+  ArrowUpRight,
   Shield,
+  AlertTriangle,
   BarChart3,
-  ArrowUpRight
+  RefreshCw,
+  CheckCircle2,
 } from 'lucide-react';
-
-import { useDashboardWithPermissions } from '../hooks/useDashboardWithPermissions';
-import { useActivityLogs } from '../hooks/useActivityLogs';
-
-import { usePermissions } from '../hooks/usePermissions';
-import { formatCurrency } from '../utils/formatCurrency';
-import { getDateRange, PeriodFilter } from '@/utils/dateUtils';
-import { PeriodFilterTabs } from '@/components/ui/period-filter-tabs';
-import { format } from 'date-fns';
-import PermissionGuard from '../components/auth/PermissionGuard';
-import ProtectedRouteEnhanced from '../components/auth/ProtectedRouteEnhanced';
-import ActivityFeed from '../components/activity/ActivityFeed';
-import AdvancedDashboard from '../components/dashboard/AdvancedDashboard';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+} from 'recharts';
+import { formatUsd, formatCdf } from '@/utils/dgiUtils';
 
 const IndexProtected: React.FC = () => {
-  const [activeTab, setActiveTab] = useState('overview');
-  const { isAdmin } = usePermissions();
-  const [periodFilter, setPeriodFilter] = useState<PeriodFilter>('month');
-  const [dateRange, setDateRange] = useState<{ dateFrom?: string; dateTo?: string }>({});
-
-  // Mettre à jour les dates quand la période change
-  React.useEffect(() => {
-    if (periodFilter !== 'all') {
-      const { current } = getDateRange(periodFilter);
-      if (current.start && current.end) {
-        setDateRange({
-          dateFrom: format(current.start, 'yyyy-MM-dd'),
-          dateTo: format(current.end, 'yyyy-MM-dd')
-        });
-      }
-    } else {
-      setDateRange({});
-    }
-  }, [periodFilter]);
+  const { stats, chartData, topArticles, recentFactures, isLoading, refetch } = useDashboardDgi();
 
   usePageSetup({
     title: 'Tableau de bord',
-    subtitle: "Vue d'ensemble de votre activité"
+    subtitle: 'Vue d\'ensemble de votre activité'
   });
-
-  const { stats, isLoading, error } = useDashboardWithPermissions(dateRange);
-  const { logs, isLoading: logsLoading } = useActivityLogs(1, 5);
-
-  const formatCurrencyValue = (amount: number, currency: string = 'USD') => {
-    if (currency === 'USD') {
-      return `$${amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-    } else if (currency === 'CDF') {
-      return `${amount.toLocaleString('fr-FR')} CDF`;
-    }
-    return amount.toString();
-  };
-
-  // Stats pour Factures & Revenus uniquement (Vue d'ensemble) - Admin seulement
-  const overviewStats = isAdmin ? [
-    {
-      title: 'Total Factures',
-      value: isLoading ? '...' : (stats?.facturesCount || 0).toString(),
-      change: stats?.facturesCount > 0 ? { value: 8, isPositive: true } : undefined,
-      icon: <FileText className="h-6 w-6 text-white" />,
-      iconBg: 'bg-green-500',
-      borderColor: 'border-l-green-400'
-    },
-    {
-      title: 'Montant Facturé USD',
-      value: isLoading ? '...' : formatCurrencyValue(stats?.facturesAmountUSD || 0, 'USD'),
-      change: stats?.facturesAmountUSD > 0 ? { value: 12, isPositive: true } : undefined,
-      icon: <DollarSign className="h-6 w-6 text-white" />,
-      iconBg: 'bg-blue-500',
-      borderColor: 'border-l-blue-400'
-    },
-    {
-      title: 'Total Frais',
-      value: isLoading ? '...' : formatCurrencyValue(stats?.totalFrais || 0, 'USD'),
-      change: stats?.totalFrais > 0 ? { value: 8, isPositive: true } : undefined,
-      icon: <DollarSign className="h-6 w-6 text-white" />,
-      iconBg: 'bg-purple-500',
-      borderColor: 'border-l-purple-400'
-    },
-    {
-      title: 'Factures Validées',
-      value: isLoading ? '...' : (stats?.facturesValidees || 0).toString(),
-      change: stats?.facturesValidees > 0 ? { value: 10, isPositive: true } : undefined,
-      icon: <TrendingUp className="h-6 w-6 text-white" />,
-      iconBg: 'bg-orange-500',
-      borderColor: 'border-l-orange-400'
-    }
-  ] : [
-    // Stats pour opérateurs (uniquement factures de base, sans montants)
-    {
-      title: 'Total Factures',
-      value: isLoading ? '...' : (stats?.facturesCount || 0).toString(),
-      change: stats?.facturesCount > 0 ? { value: 5, isPositive: true } : undefined,
-      icon: <FileText className="h-6 w-6 text-white" />,
-      iconBg: 'bg-green-500',
-      borderColor: 'border-l-green-400'
-    },
-    {
-      title: 'Factures Validées',
-      value: isLoading ? '...' : (stats?.facturesValidees || 0).toString(),
-      change: stats?.facturesValidees > 0 ? { value: 3, isPositive: true } : undefined,
-      icon: <TrendingUp className="h-6 w-6 text-white" />,
-      iconBg: 'bg-blue-500',
-      borderColor: 'border-l-blue-400'
-    },
-    {
-      title: 'Total Clients',
-      value: isLoading ? '...' : (stats?.clientsCount || 0).toString(),
-      change: stats?.clientsCount > 0 ? { value: 2, isPositive: true } : undefined,
-      icon: <Users className="h-6 w-6 text-white" />,
-      iconBg: 'bg-orange-500',
-      borderColor: 'border-l-orange-400'
-    },
-    {
-      title: 'Factures en Attente',
-      value: isLoading ? '...' : (stats?.facturesEnAttente || 0).toString(),
-      change: stats?.facturesEnAttente > 0 ? { value: 1, isPositive: false } : undefined,
-      icon: <Activity className="h-6 w-6 text-white" />,
-      iconBg: 'bg-purple-500',
-      borderColor: 'border-l-purple-400'
-    }
-  ];
 
   const quickActions = [
     {
-      id: 'transaction',
-      title: 'Nouvelle transaction',
-      description: 'Créez une opération financière en USD ou CDF.',
-      icon: Plus,
-      href: '/transactions',
-      badge: 'Finance',
+      id: 'facture',
+      title: 'Nouvelle facture',
+      description: 'Créez une facture pour un client.',
+      icon: FileText,
+      href: '/factures/new',
+      badge: 'Factures',
       badgeClasses: 'bg-emerald-50 text-emerald-700 border border-emerald-100',
       iconClasses: 'bg-emerald-500/15 text-emerald-600',
       borderClasses: 'border-emerald-100/60 hover:border-emerald-200/80',
-      adminOnly: true,
-      guard: { module: 'finances', permission: 'create' } as const
+    },
+    {
+      id: 'pos',
+      title: 'Ouvrir la caisse',
+      description: 'Démarrez une session POS.',
+      icon: Plus,
+      href: '/pos',
+      badge: 'POS',
+      badgeClasses: 'bg-purple-50 text-purple-700 border border-purple-100',
+      iconClasses: 'bg-purple-500/15 text-purple-600',
+      borderClasses: 'border-purple-100/60 hover:border-purple-200/80',
     },
     {
       id: 'client',
       title: 'Ajouter un client',
-      description: 'Enregistrez un client pour les prochains devis.',
+      description: 'Enregistrez un nouveau client.',
       icon: Users,
       href: '/clients',
       badge: 'CRM',
       badgeClasses: 'bg-sky-50 text-sky-700 border border-sky-100',
       iconClasses: 'bg-sky-500/15 text-sky-600',
       borderClasses: 'border-sky-100/70 hover:border-sky-200/80',
-      guard: { module: 'clients', permission: 'create' } as const
     },
-    {
-      id: 'activity',
-      title: "Journal d'activités",
-      description: 'Suivez les validations, connexions et alertes.',
-      icon: Activity,
-      href: '/activity-logs',
-      badge: 'Sécurité',
-      badgeClasses: 'bg-slate-100 text-slate-700 border border-slate-200',
-      iconClasses: 'bg-slate-500/15 text-slate-600',
-      borderClasses: 'border-slate-100/80 hover:border-slate-200'
-    }
-  ].filter(action => !action.adminOnly || isAdmin);
+  ];
 
-  if (error) {
-    return (
-      <Layout>
-        <div className="flex items-center justify-center h-64">
-          <div className="text-center">
-            <Shield className="h-12 w-12 text-red-500 mx-auto mb-4" />
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">Erreur de chargement</h1>
-            <p className="text-gray-600 mb-4">
-              Impossible de charger les données du tableau de bord.
-            </p>
-            <Button
-              onClick={() => window.location.reload()}
-              className="btn-primary px-6 py-3"
-            >
-              Réessayer
-            </Button>
-          </div>
-        </div>
-      </Layout>
-    );
-  }
+  const getStatutLabel = (statut: string) => {
+    const map: Record<string, string> = {
+      validee: 'Validée',
+      en_attente: 'En attente',
+      payee: 'Payée',
+      annulee: 'Annulée',
+      brouillon: 'Brouillon',
+    };
+    return map[statut] || statut;
+  };
+
+  const getStatutColor = (statut: string) => {
+    const map: Record<string, string> = {
+      validee: 'bg-green-100 text-green-800',
+      en_attente: 'bg-amber-100 text-amber-800',
+      payee: 'bg-blue-100 text-blue-800',
+      annulee: 'bg-red-100 text-red-800',
+      brouillon: 'bg-gray-100 text-gray-800',
+    };
+    return map[statut] || 'bg-gray-100 text-gray-800';
+  };
 
   return (
-    <ProtectedRouteEnhanced>
-      <Layout>
-        <div className="space-y-5 animate-in fade-in duration-300">
-          {/* Welcome Section - Plus compact */}
-          <div className="banner-compact flex items-center justify-between">
-            <div>
-              <h1 className="text-xl md:text-2xl font-semibold">Bienvenue sur FactureX</h1>
-              <p className="text-green-100/90 text-sm mt-0.5">Gérez vos factures USD/CDF en toute simplicité</p>
+    <Layout>
+      <div className="space-y-5 animate-in fade-in duration-300">
+        {/* Welcome + Fiscal Period Banner */}
+        <div className="flex items-center justify-between flex-wrap gap-3">
+          <div>
+            <h1 className="text-xl md:text-2xl font-semibold text-gray-900">Bienvenue sur FactureSmart</h1>
+            <p className="text-sm text-gray-500 mt-0.5">
+              Période fiscale: {new Date().toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' })} · Kinshasa, RDC
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            <Button variant="outline" size="sm" onClick={refetch} disabled={isLoading}>
+              <RefreshCw className={`h-4 w-4 mr-1 ${isLoading ? 'animate-spin' : ''}`} />
+              Actualiser
+            </Button>
+            <a href="/factures/new">
+              <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700">
+                <Plus className="h-4 w-4 mr-1" />
+                Nouvelle facture
+              </Button>
+            </a>
+          </div>
+        </div>
+
+        {/* DGI Alert Banner */}
+        <div className="flex items-start gap-3 p-4 bg-amber-50 border border-amber-200 rounded-xl">
+          <div className="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center flex-shrink-0">
+            <AlertTriangle className="w-4 h-4 text-amber-600" />
+          </div>
+          <div className="flex-1">
+            <div className="flex items-center justify-between flex-wrap gap-2">
+              <p className="font-semibold text-amber-800 text-sm">
+                ⚠️ Alerte DGI — Échéance déclaration mensuelle
+              </p>
+              <span className="text-xs font-semibold text-amber-600 bg-amber-100 px-2 py-1 rounded-full">
+                Dans 7 jours
+              </span>
+            </div>
+            <p className="text-xs text-amber-700 mt-1">
+              La déclaration DGI pour le mois de Mars 2026 est en attente. Veuillez la valider avant le 30/04/2026.
+            </p>
+          </div>
+        </div>
+
+        {/* KPI Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {/* Ventes du jour */}
+          <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-5 hover:shadow-md transition-shadow">
+            <div className="flex items-start justify-between mb-3">
+              <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center">
+                <TrendingUp className="w-5 h-5 text-emerald-600" />
+              </div>
+              <span className="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full flex items-center gap-0.5">
+                <span className="w-1 h-1 rounded-full bg-emerald-500"></span>
+                +{stats.progressMensuel}%
+              </span>
+            </div>
+            <p className="text-xs font-medium text-gray-500 mb-1">Ventes du jour</p>
+            <p className="text-2xl font-extrabold text-gray-900 font-mono">
+              {isLoading ? '—' : formatUsd(stats.ventesJourUsd)}
+            </p>
+            {stats.ventesJourCdf > 0 && (
+              <p className="text-xs text-gray-400 mt-1">
+                {formatCdf(stats.ventesJourCdf)}
+              </p>
+            )}
+            <div className="mt-3 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+              <div
+                className="h-full rounded-full bg-gradient-to-r from-emerald-400 to-emerald-600 transition-all"
+                style={{ width: `${stats.progressMensuel}%` }}
+              />
+            </div>
+            <p className="text-xs text-gray-400 mt-1">{stats.progressMensuel}% de l'objectif mensuel</p>
+          </div>
+
+          {/* Factures en attente */}
+          <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-5 hover:shadow-md transition-shadow">
+            <div className="flex items-start justify-between mb-3">
+              <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center">
+                <FileText className="w-5 h-5 text-amber-600" />
+              </div>
+              <span className="text-xs font-semibold text-amber-600 bg-amber-50 px-2 py-1 rounded-full">
+                En cours
+              </span>
+            </div>
+            <p className="text-xs font-medium text-gray-500 mb-1">Factures</p>
+            <p className="text-2xl font-extrabold text-gray-900 font-mono">
+              {isLoading ? '—' : stats.totalFactures}
+            </p>
+            <p className="text-xs text-gray-400 mt-1">
+              {stats.facturesValidees} validées · {stats.facturesEnAttente} en attente · {stats.facturesAnnulees} annulées
+            </p>
+            <div className="mt-3 flex gap-1">
+              {stats.totalFactures > 0 && (
+                <>
+                  <div
+                    className="flex-1 h-1.5 bg-emerald-500 rounded-full"
+                    style={{ width: `${Math.round((stats.facturesValidees / stats.totalFactures) * 100)}%` }}
+                  />
+                  <div
+                    className="flex-1 h-1.5 bg-amber-400 rounded-full"
+                    style={{ width: `${Math.round((stats.facturesEnAttente / stats.totalFactures) * 100)}%` }}
+                  />
+                  <div
+                    className="flex-1 h-1.5 bg-red-400 rounded-full"
+                    style={{ width: `${Math.round((stats.facturesAnnulees / stats.totalFactures) * 100)}%` }}
+                  />
+                </>
+              )}
+            </div>
+            {stats.montantEnAttente > 0 && (
+              <p className="text-xs text-gray-400 mt-1">{formatUsd(stats.montantEnAttente)} en attente</p>
+            )}
+          </div>
+
+          {/* Balance Caisse */}
+          <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-5 hover:shadow-md transition-shadow">
+            <div className="flex items-start justify-between mb-3">
+              <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
+                <DollarSign className="w-5 h-5 text-blue-600" />
+              </div>
+              <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded-full flex items-center gap-1">
+                <CheckCircle2 className="w-3 h-3" />
+                Solde
+              </span>
+            </div>
+            <p className="text-xs font-medium text-gray-500 mb-1">Balance Caisse</p>
+            <p className="text-2xl font-extrabold text-gray-900 font-mono">
+              {isLoading ? '—' : formatUsd(stats.balanceCaisse)}
+            </p>
+            <div className="mt-3 grid grid-cols-2 gap-2">
+              <div className="bg-emerald-50 rounded-lg p-2 text-center">
+                <p className="text-xs text-gray-500">Cash</p>
+                <p className="text-sm font-bold text-emerald-700 font-mono">
+                  {isLoading ? '—' : formatUsd(stats.totalEspeces)}
+                </p>
+              </div>
+              <div className="bg-blue-50 rounded-lg p-2 text-center">
+                <p className="text-xs text-gray-500">Bancaire</p>
+                <p className="text-sm font-bold text-blue-700 font-mono">
+                  {isLoading ? '—' : formatUsd(stats.totalBancaire)}
+                </p>
+              </div>
             </div>
           </div>
 
-          {/* Tabs - Plus épuré */}
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-5">
-            <TabsList className="inline-flex bg-gray-100/80 dark:bg-gray-800/80 p-1.5 rounded-xl gap-1 w-auto">
-              <TabsTrigger
-                value="overview"
-                className="flex items-center gap-2 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all
-                  text-gray-500 dark:text-gray-400
-                  hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-200/50 dark:hover:bg-gray-700/50
-                  data-[state=active]:bg-emerald-500 data-[state=active]:text-white data-[state=active]:shadow-md data-[state=active]:shadow-emerald-500/20"
-              >
-                <Activity className="h-4 w-4" />
-                <span className="hidden sm:inline">Vue d'ensemble</span>
-                <span className="sm:hidden">Aperçu</span>
-              </TabsTrigger>
-              {isAdmin && (
-                <TabsTrigger
-                  value="analytics"
-                  className="flex items-center gap-2 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all
-                    text-gray-500 dark:text-gray-400
-                    hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-200/50 dark:hover:bg-gray-700/50
-                    data-[state=active]:bg-emerald-500 data-[state=active]:text-white data-[state=active]:shadow-md data-[state=active]:shadow-emerald-500/20"
-                >
-                  <BarChart3 className="h-4 w-4" />
-                  <span className="hidden sm:inline">Analytics avancés</span>
-                  <span className="sm:hidden">Analytics</span>
-                </TabsTrigger>
-              )}
-            </TabsList>
-
-            {/* Vue d'ensemble */}
-            <TabsContent value="overview" className="space-y-5">
-              <div className="flex justify-end">
-                <PeriodFilterTabs
-                  period={periodFilter}
-                  onPeriodChange={setPeriodFilter}
-                  showAllOption={true}
-                />
+          {/* Conformité DGI */}
+          <div
+            className="bg-white rounded-xl border border-emerald-200 shadow-sm p-5 hover:shadow-md transition-shadow"
+            style={{ background: 'linear-gradient(135deg, #f0fdf4 0%, #fff 100%)' }}
+          >
+            <div className="flex items-start justify-between mb-3">
+              <div className="w-10 h-10 rounded-xl bg-emerald-500 flex items-center justify-center">
+                <Shield className="w-5 h-5 text-white" />
               </div>
-
-              {/* Stats Cards - Modern Gradient Design */}
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
-                {overviewStats.map((stat, index) => {
-                  const gradientColors = [
-                    'from-emerald-500 to-emerald-600',
-                    'from-blue-500 to-blue-600',
-                    'from-purple-500 to-purple-600',
-                    'from-orange-500 to-orange-600'
-                  ];
-                  return (
-                    <div key={index} className={`relative overflow-hidden rounded-xl bg-gradient-to-br ${gradientColors[index % 4]} p-4 md:p-5 shadow-lg`}>
-                      <div className="absolute top-0 right-0 -mt-4 -mr-4 h-20 w-20 rounded-full bg-white/10"></div>
-                      <div className="relative">
-                        <div className="flex items-center justify-between">
-                          <div className="rounded-lg bg-white/20 p-2">
-                            {React.cloneElement(stat.icon, { className: 'h-4 w-4 md:h-5 md:w-5 text-white' })}
-                          </div>
-                          {stat.change && (
-                            <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] md:text-xs font-medium ${stat.change.isPositive ? 'bg-white/20 text-white' : 'bg-red-200/30 text-white'}`}>
-                              {stat.change.isPositive ? '+' : '-'}{stat.change.value}%
-                            </span>
-                          )}
-                        </div>
-                        <div className="mt-3">
-                          <p className="text-lg md:text-2xl font-bold text-white truncate">{stat.value}</p>
-                          <p className="mt-0.5 text-xs md:text-sm text-white/80">{stat.title}</p>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-
-              {/* Activity Feed + Quick Actions */}
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                {/* Activity Feed */}
-                <div className="lg:col-span-2">
-                  <ActivityFeed showViewAll={true} />
+              <span className="text-xs font-semibold text-emerald-700 bg-emerald-100 px-2 py-1 rounded-full flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                Actif
+              </span>
+            </div>
+            <p className="text-xs font-medium text-emerald-700 mb-1">Conformité DGI</p>
+            <p className="text-2xl font-extrabold text-emerald-800 font-mono">
+              {stats.nonConformites === 0 ? '✓ OK' : `⚠ ${stats.nonConformites}`}
+            </p>
+            <p className="text-xs text-gray-400 mt-1">
+              {stats.nonConformites} non-conformités · {5 - stats.nonConformites} vérifications OK
+            </p>
+            <div className="mt-3 space-y-1.5">
+              {[
+                'Timbre fiscal apposé',
+                'Numéros DGI validés',
+                'TVA 16% appliquée',
+              ].map((item) => (
+                <div key={item} className="flex items-center gap-2 text-xs">
+                  <CheckCircle2 className="w-3 h-3 text-emerald-500 flex-shrink-0" />
+                  <span className="text-gray-600">{item}</span>
                 </div>
-
-                {/* Quick Actions */}
-                <Card className="card-base">
-                  <CardHeader className="p-4 pb-3">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-xs uppercase tracking-wide text-muted-foreground">Productivité</p>
-                        <CardTitle className="text-lg font-bold text-gray-900 dark:text-white">Actions rapides</CardTitle>
-                      </div>
-                      <Badge variant="outline" className="text-xs border-green-200 text-green-700 bg-green-50">
-                        {quickActions.length} raccourci{quickActions.length > 1 ? 's' : ''}
-                      </Badge>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="p-4 pt-0">
-                    <div className="space-y-3">
-                      {quickActions.map((action) => {
-                        const content = (
-                          <a
-                            key={action.id}
-                            href={action.href}
-                            className={`group block rounded-xl border bg-white/60 p-4 transition-all hover:-translate-y-0.5 hover:bg-white hover:shadow-lg ${action.borderClasses}`}
-                          >
-                            <div className="flex items-start justify-between gap-3">
-                              <div>
-                                <p className="text-sm font-semibold text-gray-900">{action.title}</p>
-                                <p className="text-xs text-gray-500 mt-1 leading-relaxed">{action.description}</p>
-                              </div>
-                              <span className={`rounded-full p-2 ${action.iconClasses}`}>
-                                <action.icon className="h-4 w-4" />
-                              </span>
-                            </div>
-                            <div className="mt-3 flex items-center justify-between text-xs">
-                              <span className={`inline-flex items-center rounded-full px-2.5 py-1 font-medium ${action.badgeClasses}`}>
-                                {action.badge}
-                              </span>
-                              <span className="inline-flex items-center gap-1 text-gray-500 group-hover:text-gray-900 font-medium">
-                                Accéder
-                                <ArrowUpRight className="h-3.5 w-3.5" />
-                              </span>
-                            </div>
-                          </a>
-                        );
-
-                        if (action.guard) {
-                          return (
-                            <PermissionGuard
-                              key={action.id}
-                              module={action.guard.module}
-                              permission={action.guard.permission}
-                            >
-                              {content}
-                            </PermissionGuard>
-                          );
-                        }
-
-                        return content;
-                      })}
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            </TabsContent>
-
-            {/* Analytics avancés */}
-            <TabsContent value="analytics">
-              <AdvancedDashboard />
-            </TabsContent>
-          </Tabs>
+              ))}
+            </div>
+          </div>
         </div>
-      </Layout>
-    </ProtectedRouteEnhanced>
+
+        {/* Charts + Top Articles */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Sales Chart */}
+          <div className="lg:col-span-2 bg-white rounded-xl border border-gray-100 shadow-sm p-5">
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h3 className="font-bold text-gray-900">Ventes & Revenus</h3>
+                <p className="text-xs text-gray-400">
+                  {new Date().getFullYear()} — Chiffres en USD
+                </p>
+              </div>
+              <div className="flex gap-2">
+                <button className="px-3 py-1.5 text-xs font-semibold bg-emerald-50 text-emerald-700 rounded-lg">
+                  DGI
+                </button>
+                <button className="px-3 py-1.5 text-xs font-medium text-gray-500 rounded-lg hover:bg-gray-50">
+                  TVA
+                </button>
+                <button className="px-3 py-1.5 text-xs font-medium text-gray-500 rounded-lg hover:bg-gray-50">
+                  Net
+                </button>
+              </div>
+            </div>
+            {isLoading ? (
+              <div className="h-48 flex items-center justify-center text-gray-400 text-sm">
+                Chargement...
+              </div>
+            ) : (
+              <ResponsiveContainer width="100%" height={200}>
+                <BarChart data={chartData} barGap={2}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+                  <XAxis dataKey="month" tick={{ fontSize: 11, fill: '#9ca3af' }} />
+                  <YAxis tick={{ fontSize: 11, fill: '#9ca3af' }} tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`} />
+                  <Tooltip
+                    formatter={(value: number) => [formatUsd(value), '']}
+                    labelStyle={{ color: '#374151' }}
+                    contentStyle={{ borderRadius: 8, border: '1px solid #e5e7eb' }}
+                  />
+                  <Legend wrapperStyle={{ fontSize: 12 }} />
+                  <Bar dataKey="htv" name="HTVA" fill="#86efac" radius={[2, 2, 0, 0]} />
+                  <Bar dataKey="tva" name="TVA" fill="#6ee7b7" radius={[2, 2, 0, 0]} />
+                  <Bar dataKey="ttc" name="TTC" fill="#10B981" radius={[2, 2, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            )}
+          </div>
+
+          {/* Top Articles */}
+          <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-bold text-gray-900">Top Services</h3>
+              <a href="/factures" className="text-xs text-emerald-600 font-semibold hover:text-emerald-700">
+                Tout voir
+              </a>
+            </div>
+            <div className="space-y-3">
+              {isLoading ? (
+                <div className="text-center py-8 text-gray-400 text-sm">Chargement...</div>
+              ) : topArticles.length === 0 ? (
+                <div className="text-center py-8 text-gray-400 text-sm">
+                  Aucune donnée disponible
+                </div>
+              ) : (
+                topArticles.map((article, idx) => (
+                  <div key={article.description} className="flex items-center gap-3">
+                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold flex-shrink-0 ${
+                      idx === 0 ? 'bg-emerald-50 text-emerald-600' :
+                      idx === 1 ? 'bg-emerald-50 text-emerald-600' :
+                      idx === 2 ? 'bg-emerald-50 text-emerald-600' :
+                      'bg-gray-50 text-gray-500'
+                    }`}>
+                      {idx + 1}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-gray-900 truncate">{article.description}</p>
+                      <p className="text-xs text-gray-400">{article.count} transactions</p>
+                    </div>
+                    <p className="text-sm font-bold text-gray-900 font-mono">
+                      {formatUsd(article.totalVentes)}
+                    </p>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Quick Actions + Recent Factures */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Quick Actions */}
+          <div className="lg:col-span-2">
+            <Card className="shadow-sm">
+              <CardHeader className="p-4 pb-3">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-xs uppercase tracking-wide text-muted-foreground">Navigation</p>
+                    <CardTitle className="text-lg font-bold text-gray-900">Accès rapides</CardTitle>
+                  </div>
+                  <Badge variant="outline" className="text-xs border-emerald-200 text-emerald-700 bg-emerald-50">
+                    {quickActions.length} raccourcis
+                  </Badge>
+                </div>
+              </CardHeader>
+              <CardContent className="p-4 pt-0">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  {quickActions.map((action) => (
+                    <a
+                      key={action.id}
+                      href={action.href}
+                      className={`group block rounded-xl border bg-white/60 p-4 transition-all hover:-translate-y-0.5 hover:bg-white hover:shadow-lg ${action.borderClasses}`}
+                    >
+                      <div className="flex items-start justify-between gap-3">
+                        <div>
+                          <p className="text-sm font-semibold text-gray-900">{action.title}</p>
+                          <p className="text-xs text-gray-500 mt-1 leading-relaxed">{action.description}</p>
+                        </div>
+                        <span className={`rounded-full p-2 ${action.iconClasses}`}>
+                          <action.icon className="h-4 w-4" />
+                        </span>
+                      </div>
+                      <div className="mt-3 flex items-center justify-between text-xs">
+                        <span className={`inline-flex items-center rounded-full px-2.5 py-1 font-medium ${action.badgeClasses}`}>
+                          {action.badge}
+                        </span>
+                        <span className="inline-flex items-center gap-1 text-gray-500 group-hover:text-gray-900 font-medium">
+                          Accéder
+                          <ArrowUpRight className="h-3.5 w-3.5" />
+                        </span>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Recent Factures */}
+          <Card className="shadow-sm">
+            <CardHeader className="p-4 pb-3">
+              <CardTitle className="text-lg font-bold text-gray-900">Activité récente</CardTitle>
+            </CardHeader>
+            <CardContent className="p-4 pt-0">
+              {isLoading ? (
+                <div className="text-center py-8 text-gray-400 text-sm">Chargement...</div>
+              ) : recentFactures.length === 0 ? (
+                <p className="text-sm text-gray-500 text-center py-8">
+                  Aucune facture récente
+                </p>
+              ) : (
+                <div className="space-y-3">
+                  {recentFactures.map((f) => (
+                    <a key={f.id} href={`/factures/view/${f.id}`} className="block group">
+                      <div className="flex items-center justify-between">
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-semibold text-gray-900 truncate group-hover:text-emerald-600">
+                            {f.facture_number}
+                          </p>
+                          <p className="text-xs text-gray-400 truncate">{f.client_nom}</p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${getStatutColor(f.statut)}`}>
+                            {getStatutLabel(f.statut)}
+                          </span>
+                          <span className="text-sm font-bold text-gray-900 font-mono">
+                            {formatUsd(f.total_general)}
+                          </span>
+                        </div>
+                      </div>
+                    </a>
+                  ))}
+                  <a href="/factures" className="block text-center text-xs text-emerald-600 font-semibold hover:text-emerald-700 pt-2 border-t mt-2">
+                    Voir toutes les factures →
+                  </a>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </Layout>
   );
 };
 

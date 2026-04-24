@@ -14,7 +14,7 @@ Ajouter les webhooks pour les **Encaissements** (table `paiements`) qui gèrent 
 
 ## 📊 Analyse Initiale
 
-### Tables Financières dans FactureX
+### Tables Financières dans FactureSmart
 
 | Table | Description | Webhook Avant | Webhook Après |
 |-------|-------------|---------------|---------------|
@@ -339,10 +339,10 @@ Ajout des 3 nouveaux événements dans la liste :
 
 1. **Créer le canal** `#encaissements`
 2. **Paramètres** → Intégrations → Créer un webhook
-3. **Nom** : `FactureX - Encaissements`
+3. **Nom** : `FactureSmart - Encaissements`
 4. **Copier l'URL**
 
-### Configurer dans FactureX
+### Configurer dans FactureSmart
 
 1. **Aller dans** Webhooks
 2. **Créer un webhook** :

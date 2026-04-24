@@ -1,13 +1,13 @@
-# 🚀 FactureX External API
+# 🚀 FactureSmart External API
 
-API RESTful sécurisée pour intégrer FactureX avec n8n, Discord, et autres outils d'automatisation.
+API RESTful sécurisée pour intégrer FactureSmart avec n8n, Discord, et autres outils d'automatisation.
 
 ## ⚡ Quick Start
 
 ### 1. Créer une Clé API
 
 ```bash
-# Via l'interface FactureX
+# Via l'interface FactureSmart
 Paramètres > API > Générer une clé
 ```
 
@@ -66,7 +66,7 @@ X-Organization-ID: 00000000-0000-0000-0000-000000000001
 
 **Important** : 
 - `apikey` et `Authorization` : Clé anon Supabase (pour passer la validation JWT)
-- `X-API-Key` : Votre clé API FactureX (créée dans Paramètres > Clés API)
+- `X-API-Key` : Votre clé API FactureSmart (créée dans Paramètres > Clés API)
 - `X-Organization-ID` : Votre organization ID (toujours `00000000-0000-0000-0000-000000000001`)
 
 ### Types de Clés
@@ -107,7 +107,7 @@ Recevez des notifications en temps réel pour :
 
 ### Gestion des Webhooks
 
-**Via l'Interface FactureX** :
+**Via l'Interface FactureSmart** :
 1. Allez dans **Paramètres > Webhooks**
 2. Cliquez sur **"Nouveau Webhook"**
 3. Configurez : nom, URL, événements, format, filtres
@@ -382,11 +382,11 @@ SELECT * FROM webhook_logs ORDER BY triggered_at DESC LIMIT 50;
 
 - 🎉 Lancement initial de l'API
 - ✅ **6 Endpoints déployés** : transactions, clients, factures, colis, stats, webhooks
-- ✅ **Interface de gestion des clés API** : Création, modification, suppression via FactureX
+- ✅ **Interface de gestion des clés API** : Création, modification, suppression via FactureSmart
 - ✅ **Interface de gestion des webhooks** : Configuration visuelle complète
 - ✅ **11 événements webhooks** : Transactions, factures, clients, colis
 - ✅ **4 formats supportés** : JSON, Discord, Slack, n8n
-- ✅ **Authentification multi-couches** : Clé Supabase anon + Clé API FactureX
+- ✅ **Authentification multi-couches** : Clé Supabase anon + Clé API FactureSmart
 - ✅ **RLS policies** : Sécurité multi-tenant complète
 - ✅ **Rate limiting** : Protection avec Upstash Redis (optionnel)
 - ✅ **Audit logs** : Traçabilité complète des requêtes
@@ -396,7 +396,7 @@ SELECT * FROM webhook_logs ORDER BY triggered_at DESC LIMIT 50;
 
 ## 📄 Licence
 
-Propriétaire - FactureX © 2025
+Propriétaire - FactureSmart © 2025
 
 ---
 

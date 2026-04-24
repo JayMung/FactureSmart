@@ -1,6 +1,6 @@
-# 📚 Documentation FactureX
+# 📚 Documentation FactureSmart
 
-Bienvenue dans la documentation complète de FactureX v2.0
+Bienvenue dans la documentation complète de FactureSmart v2.0
 
 > 💡 **Nouveau** : Consultez [`INDEX.md`](./INDEX.md) pour un index complet et détaillé de toute la documentation.
 
@@ -253,6 +253,6 @@ Pour toute question sur la documentation :
 
 ---
 
-**FactureX Documentation v2.0** - Complète et Organisée ✨
+**FactureSmart Documentation v2.0** - Complète et Organisée ✨
 
 > 📖 Pour un index détaillé : [`INDEX.md`](./INDEX.md)

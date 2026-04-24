@@ -4,8 +4,8 @@
   "scope": "codebase",
   "localEndpoint": "http://localhost:8080",
   "executionArgs": {
-    "projectName": "FactureX",
-    "projectPath": "C:\\Users\\jkmun\\dyad-apps\\FactureX",
+    "projectName": "FactureSmart",
+    "projectPath": "C:\\Users\\jkmun\\dyad-apps\\FactureSmart",
     "testIds": [],
     "additionalInstruction": "",
     "envs": {

@@ -1,8 +1,8 @@
-# Référence des Rôles - FactureX
+# Référence des Rôles - FactureSmart
 
 ## 📋 Vue d'ensemble
 
-L'application FactureX utilise **3 rôles prédéfinis** pour gérer les permissions des utilisateurs :
+L'application FactureSmart utilise **3 rôles prédéfinis** pour gérer les permissions des utilisateurs :
 
 1. **Super Admin** - Accès complet à tout
 2. **Admin** - Gestion complète limitée  

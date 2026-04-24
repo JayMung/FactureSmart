@@ -1,4 +1,4 @@
-# 🚀 FactureX v2.0 - Guide de Déploiement
+# 🚀 FactureSmart v2.0 - Guide de Déploiement
 
 **Version** : 2.0.0  
 **Date** : 14 novembre 2025  
@@ -140,7 +140,7 @@ WHERE trigger_name LIKE '%webhook%';
 
 ```bash
 # Se positionner dans le projet
-cd c:\Users\jkmun\dyad-apps\FactureX
+cd c:\Users\jkmun\dyad-apps\FactureSmart
 
 # Vérifier la connexion
 supabase status
@@ -236,7 +236,7 @@ ssh user@server "sudo systemctl restart nginx"
 1. Aller sur https://cron-job.org
 2. Créer un compte (gratuit)
 3. Créer un nouveau cron job :
-   - **Titre** : FactureX Webhook Processor
+   - **Titre** : FactureSmart Webhook Processor
    - **URL** : `https://ddnxtuhswmewoxrwswzg.supabase.co/functions/v1/webhook-processor`
    - **Fréquence** : Chaque minute (`* * * * *`)
    - **Method** : POST
@@ -270,7 +270,7 @@ git push origin dev
 #### Test 1 : API REST
 
 ```bash
-# Créer une clé API via l'interface FactureX
+# Créer une clé API via l'interface FactureSmart
 # Puis tester :
 
 # Test endpoint clients
@@ -284,7 +284,7 @@ curl -X GET \
 #### Test 2 : Webhooks
 
 ```bash
-# 1. Créer un webhook Discord dans FactureX
+# 1. Créer un webhook Discord dans FactureSmart
 # 2. Créer une facture test
 # 3. Attendre 1-2 minutes
 # 4. Vérifier Discord
@@ -333,7 +333,7 @@ done
 
 ### Checklist de Vérification
 
-- [ ] Dashboard FactureX accessible
+- [ ] Dashboard FactureSmart accessible
 - [ ] Page `/api-keys` fonctionne
 - [ ] Page `/webhooks` fonctionne
 - [ ] Création de clé API fonctionne
@@ -534,7 +534,7 @@ WHERE key_hash = encode(digest('YOUR_KEY', 'sha256'), 'hex');
 
 3. **Contacter le support** :
    - Email : support@facturex.com
-   - GitHub Issues : https://github.com/JayMung/FactureX/issues
+   - GitHub Issues : https://github.com/JayMung/FactureSmart/issues
 
 ---
 
@@ -542,7 +542,7 @@ WHERE key_hash = encode(digest('YOUR_KEY', 'sha256'), 'hex');
 
 Si tous les tests passent, félicitations ! 🎉
 
-FactureX v2.0 est maintenant en production avec :
+FactureSmart v2.0 est maintenant en production avec :
 - ✅ API REST complète
 - ✅ Système de webhooks
 - ✅ Intégrations Discord/n8n

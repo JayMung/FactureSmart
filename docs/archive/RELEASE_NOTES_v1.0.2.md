@@ -1,4 +1,4 @@
-# 🚀 FactureX v1.0.2 - Améliorations UX et Corrections
+# 🚀 FactureSmart v1.0.2 - Améliorations UX et Corrections
 
 ## 📅 Date de sortie : 25 octobre 2025
 
@@ -101,8 +101,8 @@ npm run build
 
 ### Installation fraîche
 ```bash
-git clone https://github.com/JayMung/FactureX.git
-cd FactureX
+git clone https://github.com/JayMung/FactureSmart.git
+cd FactureSmart
 npm install
 npm run build
 ```
@@ -119,7 +119,7 @@ Merci à tous les utilisateurs pour leurs retours et suggestions qui ont permis 
 
 Pour toute question ou problème :
 - 📧 Email : support@facturex.com
-- 🐛 Issues : [GitHub Issues](https://github.com/JayMung/FactureX/issues)
+- 🐛 Issues : [GitHub Issues](https://github.com/JayMung/FactureSmart/issues)
 
 ---
 

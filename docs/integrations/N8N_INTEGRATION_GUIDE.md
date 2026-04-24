@@ -1,6 +1,6 @@
-# 🔗 Guide d'Intégration n8n - FactureX API
+# 🔗 Guide d'Intégration n8n - FactureSmart API
 
-Guide complet pour intégrer FactureX avec n8n et créer des workflows d'automatisation puissants.
+Guide complet pour intégrer FactureSmart avec n8n et créer des workflows d'automatisation puissants.
 
 ## 📋 Table des Matières
 
@@ -13,9 +13,9 @@ Guide complet pour intégrer FactureX avec n8n et créer des workflows d'automat
 
 ## ⚙️ Configuration Initiale
 
-### 1. Créer une Clé API dans FactureX
+### 1. Créer une Clé API dans FactureSmart
 
-1. Connectez-vous à FactureX
+1. Connectez-vous à FactureSmart
 2. Allez dans **Paramètres > Clés API**
 3. Cliquez sur **"Nouvelle Clé API"**
 4. Configurez :
@@ -34,7 +34,7 @@ Vous aurez besoin de 3 éléments :
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRkbnh0dWhzd21ld294cndzd3pnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA5NjYyMDAsImV4cCI6MjA3NjU0MjIwMH0.8Yz606cdYr3W5vmoRADppwMyAg2dCRglfEtlOVKoGwk
 ```
 
-#### B. Votre Clé API FactureX
+#### B. Votre Clé API FactureSmart
 ```
 sk_live_VOTRE_CLÉ_ICI
 ```
@@ -103,7 +103,7 @@ Discord (Webhook)
 **Configuration Discord** :
 ```json
 {
-  "content": "📊 **Rapport Quotidien FactureX**",
+  "content": "📊 **Rapport Quotidien FactureSmart**",
   "embeds": [{
     "title": "Statistiques du {{$now.format('DD/MM/YYYY')}}",
     "color": 3066993,
@@ -176,7 +176,7 @@ Filter (Only new clients)
 HTTP Request (POST to CRM API)
 ```
 
-**Configuration HTTP Request (FactureX)** :
+**Configuration HTTP Request (FactureSmart)** :
 - **URL** : `https://ddnxtuhswmewoxrwswzg.supabase.co/functions/v1/api-clients?limit=100`
 - **Headers** : (voir template)
 
@@ -186,7 +186,7 @@ HTTP Request (POST to CRM API)
 
 **Objectif** : Créer un webhook pour recevoir des notifications instantanées
 
-**Méthode 1 : Via l'Interface FactureX**
+**Méthode 1 : Via l'Interface FactureSmart**
 
 1. Allez dans **Paramètres > Webhooks**
 2. Cliquez sur **"Nouveau Webhook"**
@@ -249,7 +249,7 @@ const stats = $('HTTP Request').item.json.data.stats;
 const transactions = $('HTTP Request1').item.json.data.transactions;
 
 const html = `
-  <h1>Rapport Hebdomadaire FactureX</h1>
+  <h1>Rapport Hebdomadaire FactureSmart</h1>
   <h2>Statistiques</h2>
   <ul>
     <li>Total USD: $${stats.total_usd}</li>
@@ -284,7 +284,7 @@ return { html };
 **Solution** :
 1. Vérifiez que vous avez bien ajouté les 4 headers requis
 2. Assurez-vous que `apikey` et `Authorization` contiennent la clé anon Supabase
-3. Vérifiez que `X-API-Key` contient votre clé FactureX
+3. Vérifiez que `X-API-Key` contient votre clé FactureSmart
 
 ### Erreur : "Invalid JWT"
 
@@ -299,11 +299,11 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRkbnh0dWh
 
 ### Erreur : "Invalid or expired API key"
 
-**Cause** : Votre clé API FactureX est invalide ou expirée
+**Cause** : Votre clé API FactureSmart est invalide ou expirée
 
 **Solution** :
 1. Vérifiez que votre clé commence par `sk_live_` ou `ak_live_`
-2. Créez une nouvelle clé dans FactureX si nécessaire
+2. Créez une nouvelle clé dans FactureSmart si nécessaire
 3. Vérifiez que la clé n'est pas expirée
 
 ### Erreur : "Rate limit exceeded"
@@ -322,7 +322,7 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRkbnh0dWh
 **Solution** :
 1. Vérifiez que `X-Organization-ID` est `00000000-0000-0000-0000-000000000001`
 2. Testez sans filtres d'abord
-3. Vérifiez que des données existent dans FactureX
+3. Vérifiez que des données existent dans FactureSmart
 
 ---
 
@@ -350,11 +350,11 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRkbnh0dWh
 - ✅ **Ajoutez des retry** : Pour les requêtes critiques
 - ✅ **Loggez les erreurs** : Pour le debugging
 - ✅ **Testez en local** : Avant de déployer en production
-- ✅ **Surveillez les logs** : Dans FactureX > Paramètres > Logs d'activité
+- ✅ **Surveillez les logs** : Dans FactureSmart > Paramètres > Logs d'activité
 
 ### 4. Monitoring
 
-- ✅ **Vérifiez l'utilisation** : Dans FactureX > Paramètres > Clés API
+- ✅ **Vérifiez l'utilisation** : Dans FactureSmart > Paramètres > Clés API
 - ✅ **Surveillez les webhooks** : Vérifiez `last_triggered_at`
 - ✅ **Alertes de quota** : Configurez des alertes si proche de la limite
 - ✅ **Logs d'audit** : Consultez régulièrement les logs
@@ -379,7 +379,7 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRkbnh0dWh
 - **[Documentation API Complète](./API_README.md)**
 - **[Guide des Clés API](./API_KEYS_INTERFACE_GUIDE.md)**
 - **[Exemples de Code](./API_README.md#exemples-de-code)**
-- **[Support FactureX](mailto:support@facturex.com)**
+- **[Support FactureSmart](mailto:support@facturex.com)**
 
 ---
 

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reçu — Facture Smart POS</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Manrope', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] },
+          colors: {
+            primary: { 50: '#ecfdf5', 100: '#d1fae5', 200: '#a7f3d0', 300: '#6ee7b7', 400: '#34d399', 500: '#10b981', 600: '#059669', 700: '#059669', 800: '#065f46', 900: '#064e3b' },
+            fx: { blue: '#10b981', 'blue-dark': '#059669', 'blue-light': '#E8F0FE', gray: '#F8FAFC', 'gray-100': '#F1F5F9', 'gray-200': '#E2E8F0', 'gray-300': '#CBD5E1', 'gray-500': '#64748B', 'gray-700': '#334155', 'gray-900': '#0F172A', success: '#10b981', warning: '#F59E0B', danger: '#EF4444' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Manrope', sans-serif; }
+    .thermal { width: 80mm; font-size: 12px; }
+    @media print {
+      body { background: white; }
+      .no-print { display: none !important; }
+      .thermal { width: 100%; box-shadow: none; margin: 0; border: none; }
+    }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-6">
+
+  <!-- Actions (no print) -->
+  <div class="no-print fixed top-6 left-1/2 -translate-x-1/2 flex gap-3 z-10">
+    <button onclick="window.print()" class="px-6 py-3 rounded-2xl bg-white border border-gray-200 text-fx-gray-700 font-bold text-sm flex items-center gap-2 hover:bg-gray-50 transition-colors shadow-lg">
+      <i class="ri-printer-line text-lg"></i>
+      Imprimer
+    </button>
+    <a href="screen-G1-pos-caisse.html" class="px-6 py-3 rounded-2xl bg-gradient-to-br from-primary-500 to-primary-600 text-white font-bold text-sm flex items-center gap-2 hover:bg-primary-600 transition-colors shadow-lg">
+      <i class="ri-add-circle-line text-lg"></i>
+      Nouvelle vente
+    </a>
+  </div>
+
+  <!-- Receipt -->
+  <div class="thermal bg-white shadow-2xl rounded-lg mx-auto overflow-hidden" id="receipt">
+
+    <!-- Header -->
+    <div class="text-center pt-6 pb-4 px-4 border-b-2 border-dashed border-gray-300">
+      <div class="flex items-center justify-center gap-2 mb-2">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center">
+          <i class="ri-file-chart-line text-white text-sm"></i>
+        </div>
+        <span class="font-extrabold text-base text-fx-gray-900">Facture<span class="text-primary-600">X</span></span>
+      </div>
+      <div class="text-xs font-semibold text-fx-gray-700">Ma Boutique SARL</div>
+      <div class="text-[10px] text-fx-gray-400">Avenue du Commerce, Kinshasa</div>
+      <div class="text-[10px] text-fx-gray-400">NIF: 0123456789 | RCCM: CD/KIN/2024/12345</div>
+      <div class="text-[10px] text-fx-gray-400">Tel: +243 81 234 5678</div>
+    </div>
+
+    <!-- Ticket info -->
+    <div class="px-4 py-3 border-b border-dashed border-gray-200">
+      <div class="flex justify-between text-[10px] text-fx-gray-500 mb-1">
+        <span>Ticket N°</span>
+        <span class="font-mono font-bold text-fx-gray-900">#0042</span>
+      </div>
+      <div class="flex justify-between text-[10px] text-fx-gray-500 mb-1">
+        <span>Date</span>
+        <span class="font-semibold text-fx-gray-900">23/04/2026</span>
+      </div>
+      <div class="flex justify-between text-[10px] text-fx-gray-500 mb-1">
+        <span>Heure</span>
+        <span class="font-semibold text-fx-gray-900">14:32</span>
+      </div>
+      <div class="flex justify-between text-[10px] text-fx-gray-500">
+        <span>Caissier(e)</span>
+        <span class="font-semibold text-fx-gray-900">Marie K.</span>
+      </div>
+    </div>
+
+    <!-- Items header -->
+    <div class="px-4 py-2 border-b border-dashed border-gray-200">
+      <div class="grid grid-cols-12 text-[9px] font-bold text-fx-gray-400 uppercase tracking-wider">
+        <div class="col-span-7">Article</div>
+        <div class="col-span-2 text-center">Qté</div>
+        <div class="col-span-3 text-right">Montant</div>
+      </div>
+    </div>
+
+    <!-- Items -->
+    <div class="px-4 py-2 space-y-1 border-b border-dashed border-gray-200">
+      <div class="grid grid-cols-12 text-[10px]">
+        <div class="col-span-7 text-fx-gray-700">Café expresso</div>
+        <div class="col-span-2 text-center text-fx-gray-600">2</div>
+        <div class="col-span-3 text-right font-mono font-semibold text-fx-gray-900">3.00 $</div>
+      </div>
+      <div class="grid grid-cols-12 text-[10px]">
+        <div class="col-span-7 text-fx-gray-700">Pain au chocolat</div>
+        <div class="col-span-2 text-center text-fx-gray-600">1</div>
+        <div class="col-span-3 text-right font-mono font-semibold text-fx-gray-900">2.00 $</div>
+      </div>
+      <div class="grid grid-cols-12 text-[10px]">
+        <div class="col-span-7 text-fx-gray-700">Eau minérale 50cl</div>
+        <div class="col-span-2 text-center text-fx-gray-600">3</div>
+        <div class="col-span-3 text-right font-mono font-semibold text-fx-gray-900">2.25 $</div>
+      </div>
+      <div class="grid grid-cols-12 text-[10px]">
+        <div class="col-span-7 text-fx-gray-700">Chocapic Granola</div>
+        <div class="col-span-2 text-center text-fx-gray-600">1</div>
+        <div class="col-span-3 text-right font-mono font-semibold text-fx-gray-900">3.50 $</div>
+      </div>
+    </div>
+
+    <!-- Totals -->
+    <div class="px-4 py-3 border-b border-dashed border-gray-200 space-y-1">
+      <div class="flex justify-between text-[10px] text-fx-gray-500">
+        <span>HT</span>
+        <span class="font-mono">9.50 $</span>
+      </div>
+      <div class="flex justify-between text-[10px] text-fx-gray-500">
+        <span>TVA 18%</span>
+        <span class="font-mono">1.71 $</span>
+      </div>
+      <div class="flex justify-between text-sm font-extrabold text-fx-gray-900">
+        <span>TTC</span>
+        <span class="font-mono text-primary-600">11.21 $</span>
+      </div>
+      <div class="flex justify-between text-[10px] text-fx-gray-500 pt-1 border-t border-dashed border-gray-200">
+        <span>Espèces reçu</span>
+        <span class="font-mono">20.00 $</span>
+      </div>
+      <div class="flex justify-between text-[10px] font-bold text-green-700">
+        <span>Monnaie rendue</span>
+        <span class="font-mono">8.79 $</span>
+      </div>
+    </div>
+
+    <!-- Payment -->
+    <div class="px-4 py-2 border-b border-dashed border-gray-200">
+      <div class="flex justify-between text-[10px] text-fx-gray-500">
+        <span>Paiement</span>
+        <span class="font-semibold text-fx-gray-900">Espèces (USD)</span>
+      </div>
+    </div>
+
+    <!-- DGI Code -->
+    <div class="px-4 py-3 text-center border-b border-dashed border-gray-200">
+      <div class="text-[9px] text-fx-gray-400 mb-1.5">Code DGI</div>
+      <div class="font-mono text-[10px] font-bold text-fx-gray-700">DGI-2026-K8M2-NP3X</div>
+      <div class="mt-2 mx-auto w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center">
+        <!-- QR placeholder -->
+        <div class="w-12 h-12 grid grid-cols-5 gap-px">
+          <div class="bg-gray-900 rounded-sm"></div><div class="bg-white rounded-sm"></div><div class="bg-gray-900 rounded-sm"></div><div class="bg-white rounded-sm"></div><div class="bg-gray-900 rounded-sm"></div>
+          <div class="bg-white rounded-sm"></div><div class="bg-gray-900 rounded-sm"></div><div class="bg-white rounded-sm"></div><div class="bg-gray-900 rounded-sm"></div><div class="bg-white rounded-sm"></div>
+          <div class="bg-gray-900 rounded-sm"></div><div class="bg-white rounded-sm"></div><div class="bg-gray-900 rounded-sm"></div><div class="bg-white rounded-sm"></div><div class="bg-gray-900 rounded-sm"></div>
+          <div class="bg-white rounded-sm"></div><div class="bg-gray-900 rounded-sm"></div><div class="bg-white rounded-sm"></div><div class="bg-gray-900 rounded-sm"></div><div class="bg-white rounded-sm"></div>
+          <div class="bg-gray-900 rounded-sm"></div><div class="bg-white rounded-sm"></div><div class="bg-gray-900 rounded-sm"></div><div class="bg-white rounded-sm"></div><div class="bg-gray-900 rounded-sm"></div>
+        </div>
+      </div>
+      <div class="text-[8px] text-fx-gray-400 mt-1">Scannez pour vérifier</div>
+    </div>
+
+    <!-- Footer -->
+    <div class="px-4 py-4 text-center">
+      <div class="text-xs font-semibold text-fx-gray-700 mb-1">Merci — À bientôt !</div>
+      <div class="text-[9px] text-fx-gray-400 leading-relaxed">
+        Article non échangeable sans ticket.<br>
+        Conforme DGI — RDC
+      </div>
+      <!-- DRC flag subtle -->
+      <div class="mt-3 flex items-center justify-center gap-1.5">
+        <div class="flex w-4 h-2.5 overflow-hidden rounded-sm">
+          <div class="w-1/3 bg-blue-500"></div>
+          <div class="w-1/3 bg-yellow-400"></div>
+          <div class="w-1/3 bg-red-500"></div>
+        </div>
+        <span class="text-[8px] text-fx-gray-400">République Démocratique du Congo</span>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>

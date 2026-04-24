@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Facture — {{facture_number}}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] },
+          colors: {
+            primary: { 50: '#f0fdf4', 100: '#dcfce7', 200: '#bbf7d0', 300: '#86efac', 400: '#4ade80', 500: '#22c55e', 600: '#16a34a', 700: '#15803d', 800: '#166534', 900: '#14532d' },
+            fx: { blue: '#10B981', 'blue-dark': '#15803d', 'blue-light': '#E8F0FE', gray: '#F8FAFC', 'gray-100': '#F1F5F9', 'gray-200': '#E2E8F0', 'gray-300': '#CBD5E1', 'gray-500': '#64748B', 'gray-700': '#334155', 'gray-900': '#0F172A', success: '#10B981', warning: '#F59E0B', danger: '#EF4444' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', system-ui, sans-serif; background: #ffffff; }
+    @page { size: A4; margin: 0; }
+  </style>
+</head>
+<body>
+
+<!-- Invoice Paper — A4 format, matches screen-04 design -->
+<div style="
+  width: 210mm;
+  min-height: 297mm;
+  padding: 20mm;
+  box-sizing: border-box;
+  font-size: 11pt;
+  position: relative;
+  background: white;
+  margin: 0 auto;
+">
+
+  <!-- ── HEADER ─────────────────────────────────────────────── -->
+  <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 2px solid #16a34a;">
+
+    <!-- Company info -->
+    <div>
+      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+        <div style="width: 40px; height: 40px; background-color: #16a34a; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+          <i class="ri-file-paper-2-line" style="color: white; font-size: 20px;"></i>
+        </div>
+        <span style="font-size: 24px; font-weight: 800; color: #111827; letter-spacing: -0.02em;">Facture Smart</span>
+      </div>
+      <div style="font-size: 12px; color: #6b7280; line-height: 1.6; margin-top: 12px;">
+        <p style="font-weight: 600; color: #374151;">{{raison_sociale}}</p>
+        {{#each adresse_lines}}
+        <p>{{this}}</p>
+        {{/each}}
+        <p>NIF : {{nif}}</p>
+        {{#if rccm}}<p>RCCM : {{rccm}}</p>{{/if}}
+      </div>
+    </div>
+
+    <!-- FACTURE title + info box -->
+    <div style="text-align: right;">
+      <h2 style="font-size: 28px; font-weight: 800; margin-bottom: 8px; color: #16a34a;">FACTURE</h2>
+      <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; padding: 12px; display: inline-block; text-align: left;">
+        <p style="font-size: 10px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;">N° Facture</p>
+        <p style="font-size: 14px; font-weight: 700; font-family: 'JetBrains Mono', monospace; color: #16a34a;">{{facture_number}}</p>
+        <p style="font-size: 10px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 8px; margin-bottom: 4px;">Date d'émission</p>
+        <p style="font-size: 13px; font-weight: 500; color: #374151;">{{date_emission}}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CLIENT INFO ────────────────────────────────────────── -->
+  <div style="margin-bottom: 16px; padding: 16px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;">
+    <p style="font-size: 10px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">Client</p>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+      <div>
+        <p style="font-weight: 600; color: #111827;">{{client_nom}}</p>
+        {{#if client_nif}}<p style="font-size: 11px; color: #6b7280;">NIF : {{client_nif}}</p>{{/if}}
+        {{#if client_adresse}}<p style="font-size: 11px; color: #6b7280;">{{client_adresse}}</p>{{/if}}
+        {{#if client_ville}}<p style="font-size: 11px; color: #6b7280;">{{client_ville}}, RDC</p>{{/if}}
+      </div>
+      <div style="text-align: right;">
+        <p style="font-size: 10px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;">Statut DGI</p>
+        {{#if dgi_status_valid}}
+        <span style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 12px; background: #dcfce7; color: #15803d; font-size: 11px; font-weight: 600; border-radius: 9999px;">
+          <span style="width: 6px; height: 6px; background: #22c55e; border-radius: 9999px;"></span>
+          Validée — Code reçu
+        </span>
+        {{else}}
+        <span style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 12px; background: #fef9c3; color: #854d0e; font-size: 11px; font-weight: 600; border-radius: 9999px;">
+          <span style="width: 6px; height: 6px; background: #eab308; border-radius: 9999px;"></span>
+          En attente
+        </span>
+        {{/if}}
+        {{#if date_validation}}<p style="font-size: 10px; color: #9ca3af; margin-top: 4px;">{{date_validation}}</p>{{/if}}
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ITEMS TABLE ───────────────────────────────────────── -->
+  <div style="margin-bottom: 16px;">
+    <table style="width: 100%; font-size: 11px; border-collapse: collapse;">
+      <thead>
+        <tr style="background: #16a34a; color: white;">
+          <th style="padding: 10px 12px; text-align: left; font-weight: 600; border-top-left-radius: 8px;">Désignation</th>
+          <th style="padding: 10px 12px; text-align: center; font-weight: 600;">Qté</th>
+          <th style="padding: 10px 12px; text-align: right; font-weight: 600;">Prix unitaire HT</th>
+          <th style="padding: 10px 12px; text-align: right; font-weight: 600; border-top-right-radius: 8px;">Montant HT</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each items}}
+        <tr style="border-bottom: 1px solid #f1f5f9; {{#if @odd}}background: #f9fafb;{{/if}}">
+          <td style="padding: 10px 12px; color: #374151;">{{description}}</td>
+          <td style="padding: 10px 12px; text-align: center; color: #374151;">{{quantite}}</td>
+          <td style="padding: 10px 12px; text-align: right; font-family: 'JetBrains Mono', monospace; color: #374151;">{{prix_unitaire_formatted}}</td>
+          <td style="padding: 10px 12px; text-align: right; font-weight: 600; font-family: 'JetBrains Mono', monospace; color: #111827;">{{montant_total_formatted}}</td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── TOTALS ─────────────────────────────────────────────── -->
+  <div style="display: flex; justify-content: flex-end; margin-bottom: 24px;">
+    <div style="width: 200px;">
+      <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f1f5f9;">
+        <span style="font-size: 11px; color: #4b5563;">Total HT</span>
+        <span style="font-size: 11px; font-weight: 600; font-family: 'JetBrains Mono', monospace; color: #111827;">{{devise_symbol}} {{total_ht_formatted}}</span>
+      </div>
+      <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f1f5f9;">
+        <span style="font-size: 11px; color: #4b5563;">TVA ({{taux_tva}}%)</span>
+        <span style="font-size: 11px; font-weight: 600; font-family: 'JetBrains Mono', monospace; color: #111827;">{{devise_symbol}} {{total_tva_formatted}}</span>
+      </div>
+      <div style="display: flex; justify-content: space-between; padding: 12px 16px; background: #16a34a; border-radius: 8px; margin-top: 4px;">
+        <span style="font-size: 13px; font-weight: 700; color: white;">Total TTC</span>
+        <span style="font-size: 13px; font-weight: 700; font-family: 'JetBrains Mono', monospace; color: white;">{{devise_symbol}} {{total_ttc_formatted}}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── QR CODE + AUTH INFO ────────────────────────────────── -->
+  <div style="display: flex; align-items: flex-end; justify-content: space-between; padding-top: 20px; border-top: 2px solid #e2e8f0;">
+
+    <!-- QR Code -->
+    <div style="font-size: 11px; color: #6b7280;">
+      <p style="font-weight: 600; color: #374151; margin-bottom: 8px;">QR Code — Facture Smart DGI</p>
+      <div style="width: 96px; height: 96px; background: white; border: 1px solid #e2e8f0; border-radius: 12px; display: flex; align-items: center; justify-content: center; padding: 4px;">
+        {{#if qr_code_data_url}}
+        <img src="{{qr_code_data_url}}" alt="QR Code DGI" style="width: 100%; height: 100%;">
+        {{else}}
+        <div style="width: 88px; height: 88px; background: #f3f4f6; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+          <span style="font-size: 10px; color: #9ca3af;">QR</span>
+        </div>
+        {{/if}}
+      </div>
+      <p style="font-size: 9px; color: #d1d5db; margin-top: 4px;">Scanner pour vérifier l'authenticité</p>
+    </div>
+
+    <!-- Auth info -->
+    <div style="text-align: right; line-height: 1.8;">
+      <div>
+        <p style="font-size: 9px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em;">Code d'authentification DGI</p>
+        <p style="font-size: 13px; font-weight: 700; font-family: 'JetBrains Mono', monospace; background: #f0fdf4; border: 1px solid #bbf7d0; color: #16a34a; border-radius: 8px; padding: 4px 12px; display: inline-block; margin-top: 2px;">{{code_auth}}</p>
+      </div>
+      <div>
+        <p style="font-size: 9px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em;">Signature numérique</p>
+        <p style="font-size: 10px; font-family: 'JetBrains Mono', monospace; color: #374151; background: #f1f5f9; border-radius: 6px; padding: 2px 8px; display: inline-block; margin-top: 2px;">{{content_hash}}</p>
+      </div>
+      {{#if numero_dgi}}
+      <div>
+        <p style="font-size: 9px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em;">N° DGI</p>
+        <p style="font-size: 11px; color: #374151;">{{numero_dgi}}</p>
+      </div>
+      {{/if}}
+      <div>
+        <p style="font-size: 9px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em;">Transmise le</p>
+        <p style="font-size: 11px; color: #374151;">{{date_validation}}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── DRC STAMP (watermark) ─────────────────────────────── -->
+  <div style="position: absolute; bottom: 48px; left: 80px; pointer-events: none; opacity: 0.04;">
+    <svg width="160" height="106" viewBox="0 0 160 106" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="53" height="35" fill="#10B981"/>
+      <rect y="35" width="53" height="36" fill="#FFD100"/>
+      <rect y="71" width="53" height="35" fill="#10B981"/>
+      <rect x="53" width="54" height="106" fill="#10B981"/>
+      <circle cx="80" cy="53" r="16" fill="none" stroke="#10B981" stroke-width="2.5"/>
+      <circle cx="80" cy="53" r="8" fill="#FFD100"/>
+    </svg>
+  </div>
+
+</div>
+
+</body>
+</html>

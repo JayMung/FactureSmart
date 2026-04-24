@@ -347,6 +347,20 @@ export const generateFacturePDF = async (facture: Facture, previewMode: boolean 
             doc.setTextColor(COLORS.textMedium[0], COLORS.textMedium[1], COLORS.textMedium[2]);
             doc.text(client.nom, MARGIN + 17, y);
             
+            // NIF Client if available
+            const clientNif = client.nif || facture.client_nif || '';
+            if (clientNif) {
+                y += 4.5;
+                doc.setFillColor(COLORS.primary[0], COLORS.primary[1], COLORS.primary[2]);
+                doc.circle(MARGIN + 6, y - 1, 0.8, 'F');
+                setFont('bold');
+                doc.setTextColor(COLORS.textBody[0], COLORS.textBody[1], COLORS.textBody[2]);
+                doc.text("NIF:", MARGIN + 8.5, y);
+                setFont('normal');
+                doc.setTextColor(COLORS.textMedium[0], COLORS.textMedium[1], COLORS.textMedium[2]);
+                doc.text(clientNif, MARGIN + 17, y);
+            }
+            
             y += 4.5;
             doc.setFillColor(COLORS.primary[0], COLORS.primary[1], COLORS.primary[2]);
             doc.circle(MARGIN + 6, y - 1, 0.8, 'F');
@@ -690,6 +704,34 @@ export const generateFacturePDF = async (facture: Facture, previewMode: boolean 
         y += 4; // Réduit de 5 à 4
         doc.setFillColor(COLORS.primary[0], COLORS.primary[1], COLORS.primary[2]);
         doc.rect(0, y, PAGE_WIDTH, 3, 'F'); // Réduit de 4 à 3
+
+        // --- QR CODE DGI (si disponible) ---
+        if (facture.qr_code_data || facture.numero_dgi) {
+            const qrData = facture.qr_code_data || `FACTURE:${facture.facture_number}|DGI:${facture.numero_dgi || ''}|DATE:${facture.date_emission}|MONTANT:${grandTotal}`;
+            // Dessiner un QR code simulé (vignette grise avec motif)
+            const qrSize = 20;
+            const qrX = PAGE_WIDTH - MARGIN - qrSize - 2;
+            const qrY = y - qrSize - 2;
+            
+            doc.setFillColor(240, 240, 240);
+            doc.rect(qrX, qrY, qrSize, qrSize, 'F');
+            doc.rect(qrX + 1, qrY + 1, qrSize - 2, qrSize - 2, 'F');
+            
+            // Pattern simulé du QR code (3x3 blocks)
+            doc.setFillColor(30, 30, 30);
+            const b = 4; // block size
+            const gap = 2;
+            const sx = qrX + 3;
+            const sy = qrY + 3;
+            doc.rect(sx, sy, b, b, 'F'); doc.rect(sx + b + gap, sy, b, b, 'F'); doc.rect(sx + (b+gap)*2, sy, b, b, 'F');
+            doc.rect(sx, sy + b + gap, b, b, 'F'); doc.rect(sx + b + gap, sy + b + gap, b, b, 'F'); doc.rect(sx + (b+gap)*2, sy + b + gap, b, b, 'F');
+            doc.rect(sx, sy + (b+gap)*2, b, b, 'F'); doc.rect(sx + b + gap, sy + (b+gap)*2, b, b, 'F'); doc.rect(sx + (b+gap)*2, sy + (b+gap)*2, b, b, 'F');
+            
+            // Label QR
+            doc.setFontSize(5);
+            doc.setTextColor(120, 120, 120);
+            doc.text("QR DGI", qrX + qrSize/2, qrY + qrSize + 3, { align: 'center' });
+        }
 
         // --- SAUVEGARDE DU FICHIER ---
         const fileName = `${facture.type}_${facture.facture_number}.pdf`;

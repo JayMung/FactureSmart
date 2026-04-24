@@ -4,7 +4,7 @@ This file provides guidance to WARP (warp.dev) when working with code in this re
 
 ## Project Overview
 
-FactureX is a React/TypeScript application for managing USD/CDF currency exchange transactions and clients. Built with Vite, React Router, shadcn/ui, and Supabase backend.
+FactureSmart is a React/TypeScript application for managing USD/CDF currency exchange transactions and clients. Built with Vite, React Router, shadcn/ui, and Supabase backend.
 
 ## Development Commands
 

@@ -240,4 +240,4 @@ permissionsCache.delete(userId);
 
 **Les utilisateurs peuvent maintenant voir le menu Finances dès qu'ils ont la permission "Lire" et l'architecture des permissions est enfin unifiée !** 💼✨
 
-#FactureX #Permissions #Finances #Menu #Sécurité
+#FactureSmart #Permissions #Finances #Menu #Sécurité

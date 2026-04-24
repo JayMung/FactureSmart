@@ -158,4 +158,4 @@ const GhostButton = ({ children, ...props }) => (
 
 ---
 
-#FactureX #React #DOM #Warning #Performance
+#FactureSmart #React #DOM #Warning #Performance

@@ -307,7 +307,7 @@ function formatDiscordEmbed(event: string, data: any) {
       title: config.title,
       description: description || 'Aucune information disponible',
       color: config.color,
-      footer: { text: 'FactureX' },
+      footer: { text: 'FactureSmart' },
       timestamp: new Date().toISOString(),
     }],
   };
@@ -338,7 +338,7 @@ async function sendWebhook(log: WebhookLog): Promise<{ success: boolean; status?
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'User-Agent': 'FactureX-Webhook/1.0',
+        'User-Agent': 'FactureSmart-Webhook/1.0',
       },
       body: JSON.stringify(formattedPayload),
     });

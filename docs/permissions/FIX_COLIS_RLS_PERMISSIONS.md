@@ -293,4 +293,4 @@ Si le problème persiste après avoir suivi toutes les étapes :
 ---
 
 **Auteur** : Cascade AI  
-**Projet** : FactureX
+**Projet** : FactureSmart

@@ -1,4 +1,4 @@
-# 🚀 FactureX v1.0.3 - Release Notes
+# 🚀 FactureSmart v1.0.3 - Release Notes
 
 **Date** : 5 novembre 2025  
 **Type** : Patch Release (Sécurité + Corrections)  
@@ -198,7 +198,7 @@ vercel --prod  # ou autre commande de déploiement
 
 ---
 
-**FactureX v1.0.3 - Sécurité, Stabilité & Performance** ✨
+**FactureSmart v1.0.3 - Sécurité, Stabilité & Performance** ✨
 
 ---
 

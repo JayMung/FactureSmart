@@ -167,7 +167,7 @@ feat: v1.0.3 - Complete TypeScript errors resolution
 
 ---
 
-**FactureX v1.0.3 - TypeScript Errors Resolved** ✨
+**FactureSmart v1.0.3 - TypeScript Errors Resolved** ✨
 
 ---
 

@@ -1,4 +1,4 @@
-# 🎉 API FactureX - Résumé Final Complet
+# 🎉 API FactureSmart - Résumé Final Complet
 
 ## ✅ Tout est Terminé et Opérationnel !
 
@@ -333,7 +333,7 @@ curl -X GET "https://ddnxtuhswmewoxrwswzg.supabase.co/functions/v1/api-stats?per
 
 ## 🎉 Conclusion
 
-Votre système API FactureX est maintenant **100% opérationnel** !
+Votre système API FactureSmart est maintenant **100% opérationnel** !
 
 ### ✅ Ce qui fonctionne
 - ✅ 6 endpoints API déployés et testés

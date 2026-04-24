@@ -1,4 +1,4 @@
-# 🚀 FactureX v1.1.0 - Security Enhancements
+# 🚀 FactureSmart v1.1.0 - Security Enhancements
 
 **Date de release**: 26 janvier 2025  
 **Type**: Major Security Update  
@@ -187,8 +187,8 @@ Cette version est **100% rétrocompatible** avec la version précédente.
 ### Installation
 ```bash
 # Cloner et installer
-git clone https://github.com/JayMung/FactureX.git
-cd FactureX
+git clone https://github.com/JayMung/FactureSmart.git
+cd FactureSmart
 npm install
 
 # Variables d'environnement
@@ -239,14 +239,14 @@ npm run dev
 
 ## 📝 Licence
 
-Propriétaire - FactureX © 2025
+Propriétaire - FactureSmart © 2025
 
 ---
 
 ## 🔗 Liens utiles
 
-- **Repository**: https://github.com/JayMung/FactureX
-- **Issues**: https://github.com/JayMung/FactureX/issues
+- **Repository**: https://github.com/JayMung/FactureSmart
+- **Issues**: https://github.com/JayMung/FactureSmart/issues
 - **Documentation**: Voir fichiers `*.md` dans le repo
 
 ---
@@ -257,4 +257,4 @@ Pour toute question ou problème, ouvrez une issue sur GitHub.
 
 ---
 
-**Merci d'utiliser FactureX!** 🎉
+**Merci d'utiliser FactureSmart!** 🎉

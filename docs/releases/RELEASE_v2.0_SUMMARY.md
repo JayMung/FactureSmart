@@ -1,4 +1,4 @@
-# 🎉 FactureX v2.0.0 - Release Summary
+# 🎉 FactureSmart v2.0.0 - Release Summary
 
 **Date** : 14 novembre 2025, 10:00 UTC+2  
 **Version** : 2.0.0  
@@ -178,7 +178,7 @@ api (feature) → dev (development) → main (production)
 
 ### Tag
 ```
-v2.0.0 - FactureX v2.0.0 - API REST & Webhooks
+v2.0.0 - FactureSmart v2.0.0 - API REST & Webhooks
 ```
 
 ---
@@ -287,8 +287,8 @@ curl -X GET \
 - **Index Complet** : `docs/INDEX.md`
 
 ### Liens
-- **GitHub** : https://github.com/JayMung/FactureX
-- **Tag v2.0.0** : https://github.com/JayMung/FactureX/releases/tag/v2.0.0
+- **GitHub** : https://github.com/JayMung/FactureSmart
+- **Tag v2.0.0** : https://github.com/JayMung/FactureSmart/releases/tag/v2.0.0
 - **Supabase Project** : ddnxtuhswmewoxrwswzg
 
 ---
@@ -297,7 +297,7 @@ curl -X GET \
 
 ### Équipe
 - **Jeaney Mungedi** - Développement principal
-- **Équipe FactureX** - Tests et feedback
+- **Équipe FactureSmart** - Tests et feedback
 
 ### Technologies
 - **Supabase** - Backend as a Service
@@ -389,9 +389,9 @@ curl -X GET \
 
 ## 🎊 Conclusion
 
-**FactureX v2.0.0** est maintenant en production ! 🚀
+**FactureSmart v2.0.0** est maintenant en production ! 🚀
 
-Cette release majeure transforme FactureX en une plateforme **intégrable** et **extensible** avec :
+Cette release majeure transforme FactureSmart en une plateforme **intégrable** et **extensible** avec :
 - ✅ API REST complète et documentée
 - ✅ Système de webhooks robuste
 - ✅ Intégrations tierces (Discord, n8n)
@@ -405,4 +405,4 @@ Cette release majeure transforme FactureX en une plateforme **intégrable** et *
 **Release Date** : 14 novembre 2025, 10:00 UTC+2  
 **Version** : 2.0.0  
 **Status** : ✅ Production Ready  
-**GitHub** : https://github.com/JayMung/FactureX/releases/tag/v2.0.0
+**GitHub** : https://github.com/JayMung/FactureSmart/releases/tag/v2.0.0

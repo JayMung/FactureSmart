@@ -244,4 +244,4 @@ const isValidVariant = (variant: string): variant is ButtonVariant => {
 
 **Toutes les erreurs sont corrigées et le design unifié EnhancedTable fonctionne parfaitement !** 🚀
 
-#FactureX #TypeScript #EnhancedTable #DesignUnifié
+#FactureSmart #TypeScript #EnhancedTable #DesignUnifié

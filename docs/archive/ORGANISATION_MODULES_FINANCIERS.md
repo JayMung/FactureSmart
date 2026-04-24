@@ -1,4 +1,4 @@
-# 💰 Organisation des Modules Financiers - FactureX
+# 💰 Organisation des Modules Financiers - FactureSmart
 
 ## 📋 Vue d'Ensemble
 

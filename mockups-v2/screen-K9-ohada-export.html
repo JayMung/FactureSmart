@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exports SYSCOHADA — Facture Smart</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Manrope', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] },
+          colors: {
+            primary: { 50: '#ecfdf5', 100: '#d1fae5', 200: '#a7f3d0', 300: '#6ee7b7', 400: '#34d399', 500: '#10b981', 600: '#059669', 700: '#059669', 800: '#065f46', 900: '#064e3b' },
+            fx: { gray: '#F8FAFC', 'gray-100': '#F1F5F9', 'gray-200': '#E2E8F0', 'gray-300': '#CBD5E1', 'gray-500': '#64748B', 'gray-700': '#334155', 'gray-900': '#0F172A', success: '#10b981', warning: '#F59E0B', danger: '#EF4444' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Manrope', sans-serif; }
+    .rdc-bg { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Crect width='40' height='40' fill='%2310B981' fill-opacity='0.025'/%3E%3Crect x='40' y='40' width='40' height='40' fill='%2310B981' fill-opacity='0.025'/%3E%3C/svg%3E"); background-size: 80px 80px; }
+    .fade-in { animation: fadeIn 0.3s ease-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen rdc-bg">
+
+  <header class="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
+    <div class="flex items-center justify-between px-6 py-3">
+      <div class="flex items-center gap-3">
+        <a href="index.html" class="w-9 h-9 rounded-xl bg-gray-100 flex items-center justify-center text-fx-gray-500 hover:bg-gray-200 transition-colors">
+          <i class="ri-arrow-left-line text-lg"></i>
+        </a>
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center shadow-sm">
+            <i class="ri-file-chart-line text-white text-sm"></i>
+          </div>
+          <span class="text-base font-extrabold text-fx-gray-900">Facture<span class="text-primary-600">X</span></span>
+          <span class="text-xs bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full font-bold">Exports</span>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <div class="flex items-center gap-1.5 text-xs font-semibold text-primary-600 bg-primary-50 px-3 py-1.5 rounded-lg">
+          <i class="ri-shield-check-line text-sm"></i>
+          Conforme SYSCOHADA
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="p-6 space-y-6">
+
+    <!-- Header info -->
+    <div class="bg-gradient-to-r from-indigo-600 to-primary-600 rounded-2xl p-6 text-white shadow-lg">
+      <div class="flex items-center gap-3 mb-3">
+        <i class="ri-file-chart-3-line text-3xl text-white/80"></i>
+        <div>
+          <div class="text-xl font-extrabold">Génération des fichiers SYSCOHADA</div>
+          <div class="text-white/70 text-sm">Exports normalisés pour expert-comptable et IGF</div>
+        </div>
+      </div>
+      <div class="flex flex-wrap gap-6 mt-4">
+        <div>
+          <div class="text-[10px] text-white/50 uppercase tracking-wider">Entreprise</div>
+          <div class="text-sm font-bold">Ma Société SARL</div>
+        </div>
+        <div>
+          <div class="text-[10px] text-white/50 uppercase tracking-wider">NIF</div>
+          <div class="text-sm font-bold font-mono">0123456789</div>
+        </div>
+        <div>
+          <div class="text-[10px] text-white/50 uppercase tracking-wider">Exercice</div>
+          <div class="text-sm font-bold">2026</div>
+        </div>
+        <div>
+          <div class="text-[10px] text-white/50 uppercase tracking-wider">Dernière export</div>
+          <div class="text-sm font-bold">31/03/2026</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Export options -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+
+      <!-- Balance -->
+      <div class="card-hover bg-white rounded-2xl border border-gray-100 p-6 shadow-sm fade-in">
+        <div class="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center mb-4">
+          <i class="ri-table-line text-blue-600 text-2xl"></i>
+        </div>
+        <div class="text-base font-bold text-fx-gray-900 mb-1">Balance générale</div>
+        <div class="text-xs text-fx-gray-400 mb-4">Tous les comptes avec soldes débit/crédit pour la période</div>
+        <div class="text-xs text-fx-gray-400 mb-4 bg-gray-50 rounded-lg p-2 font-mono">
+          <div class="text-[10px] text-fx-gray-500 mb-1">Format: SYSCOHADA_BAL_2026.txt</div>
+          <div class="text-[10px] text-fx-gray-500">247 comptes • 1 247 850 $ total</div>
+        </div>
+        <div class="flex items-center gap-2 mb-3">
+          <div class="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+            <div class="h-full bg-blue-500 rounded-full" style="width: 100%"></div>
+          </div>
+          <span class="text-[10px] text-green-600 font-semibold">Prêt</span>
+        </div>
+        <button class="w-full py-2.5 rounded-xl bg-blue-500 text-white text-sm font-bold flex items-center justify-center gap-2 hover:bg-blue-600 transition-colors">
+          <i class="ri-download-line"></i>
+          Télécharger .TXT
+        </button>
+      </div>
+
+      <!-- Journal -->
+      <div class="card-hover bg-white rounded-2xl border border-gray-100 p-6 shadow-sm fade-in" style="animation-delay: 0.1s">
+        <div class="w-12 h-12 rounded-2xl bg-green-50 flex items-center justify-center mb-4">
+          <i class="ri-book-2-line text-green-600 text-2xl"></i>
+        </div>
+        <div class="text-base font-bold text-fx-gray-900 mb-1">Journal SYSCOHADA</div>
+        <div class="text-xs text-fx-gray-400 mb-4">Écritures chronologiques avec ventilations complètes</div>
+        <div class="text-xs text-fx-gray-400 mb-4 bg-gray-50 rounded-lg p-2 font-mono">
+          <div class="text-[10px] text-fx-gray-500 mb-1">Format: SYSCOHADA_JNL_2026.txt</div>
+          <div class="text-[10px] text-fx-gray-500">1 428 écritures • Jan — Avril 2026</div>
+        </div>
+        <div class="flex items-center gap-2 mb-3">
+          <div class="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+            <div class="h-full bg-green-500 rounded-full" style="width: 100%"></div>
+          </div>
+          <span class="text-[10px] text-green-600 font-semibold">Prêt</span>
+        </div>
+        <button class="w-full py-2.5 rounded-xl bg-green-500 text-white text-sm font-bold flex items-center justify-center gap-2 hover:bg-green-600 transition-colors">
+          <i class="ri-download-line"></i>
+          Télécharger .TXT
+        </button>
+      </div>
+
+      <!-- Grand livre -->
+      <div class="card-hover bg-white rounded-2xl border border-gray-100 p-6 shadow-sm fade-in" style="animation-delay: 0.2s">
+        <div class="w-12 h-12 rounded-2xl bg-purple-50 flex items-center justify-center mb-4">
+          <i class="ri-file-book-line text-purple-600 text-2xl"></i>
+        </div>
+        <div class="text-base font-bold text-fx-gray-900 mb-1">Grand livre</div>
+        <div class="text-xs text-fx-gray-400 mb-4">Mouvements détaillés par compte pour l'expert-comptable</div>
+        <div class="text-xs text-fx-gray-400 mb-4 bg-gray-50 rounded-lg p-2 font-mono">
+          <div class="text-[10px] text-fx-gray-500 mb-1">Format: SYSCOHADA_GL_2026.txt</div>
+          <div class="text-[10px] text-fx-gray-500">247 comptes • 3 142 lignes</div>
+        </div>
+        <div class="flex items-center gap-2 mb-3">
+          <div class="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+            <div class="h-full bg-purple-500 rounded-full" style="width: 100%"></div>
+          </div>
+          <span class="text-[10px] text-green-600 font-semibold">Prêt</span>
+        </div>
+        <button class="w-full py-2.5 rounded-xl bg-purple-500 text-white text-sm font-bold flex items-center justify-center gap-2 hover:bg-purple-600 transition-colors">
+          <i class="ri-download-line"></i>
+          Télécharger .TXT
+        </button>
+      </div>
+
+      <!-- Compte de résultat -->
+      <div class="card-hover bg-white rounded-2xl border border-gray-100 p-6 shadow-sm fade-in" style="animation-delay: 0.3s">
+        <div class="w-12 h-12 rounded-2xl bg-teal-50 flex items-center justify-center mb-4">
+          <i class="ri-bar-chart-2-line text-teal-600 text-2xl"></i>
+        </div>
+        <div class="text-base font-bold text-fx-gray-900 mb-1">Compte de résultat</div>
+        <div class="text-xs text-fx-gray-400 mb-4">États financiers — Résultat de l'exercice N</div>
+        <div class="text-xs text-fx-gray-400 mb-4 bg-gray-50 rounded-lg p-2 font-mono">
+          <div class="text-[10px] text-fx-gray-500 mb-1">Format: SYSCOHADA_CR_2026.pdf</div>
+          <div class="text-[10px] text-fx-gray-500">Résultat: +124 750 $ (bénéfice)</div>
+        </div>
+        <div class="flex items-center gap-2 mb-3">
+          <div class="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+            <div class="h-full bg-teal-500 rounded-full" style="width: 100%"></div>
+          </div>
+          <span class="text-[10px] text-green-600 font-semibold">Prêt</span>
+        </div>
+        <button class="w-full py-2.5 rounded-xl bg-teal-500 text-white text-sm font-bold flex items-center justify-center gap-2 hover:bg-teal-600 transition-colors">
+          <i class="ri-download-line"></i>
+          Télécharger .PDF
+        </button>
+      </div>
+
+      <!-- Bilan -->
+      <div class="card-hover bg-white rounded-2xl border border-gray-100 p-6 shadow-sm fade-in" style="animation-delay: 0.4s">
+        <div class="w-12 h-12 rounded-2xl bg-orange-50 flex items-center justify-center mb-4">
+          <i class="ri-bar-chart-box-line text-orange-600 text-2xl"></i>
+        </div>
+        <div class="text-base font-bold text-fx-gray-900 mb-1">Bilan simplifié</div>
+        <div class="text-xs text-fx-gray-400 mb-4">Actif = Passif — Équilibre vérifié 747 450 $</div>
+        <div class="text-xs text-fx-gray-400 mb-4 bg-gray-50 rounded-lg p-2 font-mono">
+          <div class="text-[10px] text-fx-gray-500 mb-1">Format: SYSCOHADA_BILAN_2026.pdf</div>
+          <div class="text-[10px] text-fx-gray-500">Total bilan: 747 450 $</div>
+        </div>
+        <div class="flex items-center gap-2 mb-3">
+          <div class="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+            <div class="h-full bg-orange-500 rounded-full" style="width: 100%"></div>
+          </div>
+          <span class="text-[10px] text-green-600 font-semibold">Prêt</span>
+        </div>
+        <button class="w-full py-2.5 rounded-xl bg-orange-500 text-white text-sm font-bold flex items-center justify-center gap-2 hover:bg-orange-600 transition-colors">
+          <i class="ri-download-line"></i>
+          Télécharger .PDF
+        </button>
+      </div>
+
+      <!-- Pack complet -->
+      <div class="card-hover bg-gradient-to-br from-primary-600 to-primary-700 rounded-2xl border-2 border-primary-400 p-6 shadow-lg fade-in" style="animation-delay: 0.5s">
+        <div class="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center mb-4">
+          <i class="ri-folder-zip-line text-white text-2xl"></i>
+        </div>
+        <div class="text-base font-extrabold text-white mb-1">Pack Complet IGF</div>
+        <div class="text-xs text-primary-100 mb-4">Tous les fichiers SYSCOHADA en une archive ZIP</div>
+        <div class="text-xs text-primary-100/80 mb-4 bg-white/10 rounded-lg p-2">
+          <div class="text-[10px] text-primary-200 mb-1">包含: Balance + Journal + GL + CR + Bilan</div>
+          <div class="text-[10px] text-primary-200">Format: SYSCOHADA_PACK_2026.zip</div>
+        </div>
+        <div class="flex items-center gap-2 mb-3">
+          <div class="flex-1 h-1.5 bg-white/30 rounded-full overflow-hidden">
+            <div class="h-full bg-white rounded-full" style="width: 100%"></div>
+          </div>
+          <span class="text-[10px] text-white font-semibold">Prêt</span>
+        </div>
+        <button class="w-full py-2.5 rounded-xl bg-white text-primary-700 text-sm font-extrabold flex items-center justify-center gap-2 hover:bg-primary-50 transition-colors shadow-lg">
+          <i class="ri-download-cloud-line"></i>
+          Télécharger Pack ZIP
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Recent exports -->
+    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+      <div class="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
+        <span class="text-sm font-bold text-fx-gray-900">Historique des exports</span>
+      </div>
+      <table class="w-full text-xs">
+        <thead>
+          <tr class="text-fx-gray-400 uppercase tracking-wider text-[10px] font-bold bg-gray-50 border-b border-gray-100">
+            <th class="text-left px-4 py-3">Date</th>
+            <th class="text-left px-4 py-3">Type</th>
+            <th class="text-left px-4 py-3">Période</th>
+            <th class="text-left px-4 py-3">Fichier</th>
+            <th class="text-left px-4 py-3">Taille</th>
+            <th class="text-center px-4 py-3">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-50">
+          <tr class="hover:bg-gray-50 transition-colors">
+            <td class="px-4 py-3 font-mono font-semibold text-fx-gray-900 whitespace-nowrap">31/03/2026</td>
+            <td class="px-4 py-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-100 text-indigo-700">Pack IGF</span></td>
+            <td class="px-4 py-3 text-fx-gray-500">T1 2026</td>
+            <td class="px-4 py-3 font-mono text-fx-gray-500">SYSCOHADA_PACK_T1_2026.zip</td>
+            <td class="px-4 py-3 text-fx-gray-500">1.2 MB</td>
+            <td class="px-4 py-3 text-center"><button class="text-primary-600 hover:text-primary-700 font-semibold"><i class="ri-download-line"></i> Re-télécharger</button></td>
+          </tr>
+          <tr class="hover:bg-gray-50 transition-colors">
+            <td class="px-4 py-3 font-mono font-semibold text-fx-gray-900 whitespace-nowrap">31/12/2025</td>
+            <td class="px-4 py-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-100 text-indigo-700">Pack IGF</span></td>
+            <td class="px-4 py-3 text-fx-gray-500">Exercice 2025</td>
+            <td class="px-4 py-3 font-mono text-fx-gray-500">SYSCOHADA_PACK_2025.zip</td>
+            <td class="px-4 py-3 text-fx-gray-500">4.7 MB</td>
+            <td class="px-4 py-3 text-center"><button class="text-primary-600 hover:text-primary-700 font-semibold"><i class="ri-download-line"></i> Re-télécharger</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+</body>
+</html>

@@ -36,7 +36,7 @@ Améliorer le SEO et l'apparence des liens partagés sur les réseaux sociaux (F
 #### `index.html`
 - Changement de `lang="en"` à `lang="fr"`
 - Ajout de 30+ lignes de métadonnées SEO
-- Amélioration du titre de "FactureX" à "FactureX - Gestion de facturation moderne et intuitive"
+- Amélioration du titre de "FactureSmart" à "FactureSmart - Gestion de facturation moderne et intuitive"
 
 #### `public/robots.txt`
 - Ajout de la référence au sitemap
@@ -46,13 +46,13 @@ Améliorer le SEO et l'apparence des liens partagés sur les réseaux sociaux (F
 ### 📊 Impact
 
 #### Avant
-- Titre basique : "FactureX"
+- Titre basique : "FactureSmart"
 - Pas de description
 - Pas d'image de preview
 - Partage de lien = URL simple
 
 #### Après
-- Titre optimisé : "FactureX - Gestion de facturation moderne et intuitive"
+- Titre optimisé : "FactureSmart - Gestion de facturation moderne et intuitive"
 - Description engageante de 130 caractères
 - Image de preview personnalisée
 - Partage de lien = Belle carte avec image, titre et description
@@ -61,7 +61,7 @@ Améliorer le SEO et l'apparence des liens partagés sur les réseaux sociaux (F
 
 L'image Open Graph (`og-image.svg`) inclut :
 - Gradient violet moderne (#667eea → #764ba2)
-- Logo FactureX stylisé
+- Logo FactureSmart stylisé
 - Titre et slogan
 - Liste de 3 fonctionnalités clés avec icônes
 - URL du site en bas

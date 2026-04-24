@@ -305,5 +305,5 @@ Si vous rencontrez des problèmes :
 ---
 
 **Auteur** : Cascade AI  
-**Projet** : FactureX  
+**Projet** : FactureSmart  
 **Version** : 1.0.0

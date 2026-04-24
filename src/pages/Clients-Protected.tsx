@@ -15,6 +15,8 @@ import {
   Edit,
   Trash2,
   Users,
+  FileText,
+  TrendingUp,
   DollarSign,
   MapPin,
   CheckSquare,
@@ -29,7 +31,6 @@ import ClientHistoryModal from '../components/clients/ClientHistoryModal';
 import MergeClientsDialog from '../components/clients/MergeClientsDialog';
 import ConfirmDialog from '@/components/ui/confirm-dialog';
 import PermissionGuard from '../components/auth/PermissionGuard';
-import ProtectedRouteEnhanced from '../components/auth/ProtectedRouteEnhanced';
 import { usePermissions } from '../hooks/usePermissions';
 import { UnifiedDataTable, type TableColumn } from '@/components/ui/unified-data-table';
 import { FilterTabs, type FilterTab } from '@/components/ui/filter-tabs';
@@ -65,12 +66,11 @@ const ClientsProtected: React.FC = () => {
   const [selectedClients, setSelectedClients] = useState<string[]>([]);
   const [viewMode, setViewMode] = useState<'table' | 'cards'>('table');
   const [columnsConfig, setColumnsConfig] = useState<ColumnConfig[]>([
-    { key: 'id', label: 'ID', visible: true, required: true },
+    { key: 'nif', label: 'NIF', visible: true, required: true },
     { key: 'nom', label: 'Nom', visible: true, required: true },
-    { key: 'telephone', label: 'Téléphone', visible: true },
-    { key: 'ville', label: 'Ville', visible: true },
-    { key: 'total_paye', label: 'Total Payé', visible: true },
-    { key: 'created_at', label: 'Date', visible: true }
+    { key: 'adresse', label: 'Adresse', visible: true },
+    { key: 'total_paye', label: 'CA total', visible: true },
+    { key: 'created_at', label: 'Date', visible: false }
   ]);
 
   // États pour les modales
@@ -238,97 +238,52 @@ const ClientsProtected: React.FC = () => {
     );
   }
   return (
-    <ProtectedRouteEnhanced requiredModule="clients" requiredPermission="read">
-      <Layout>
-        <div className="space-y-6 animate-in fade-in duration-300">
-          {/* Stats Cards - Modern Gradient Design */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+    <Layout><div className="space-y-6 animate-in fade-in duration-300">
+          {/* Stats Cards - Mockup对齐: Total clients, Nouveaux 30j, CA total */}
+          <div className="grid grid-cols-3 gap-5 mb-5">
             {/* Total Clients Card */}
-            <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-600 p-4 md:p-5 shadow-lg">
-              <div className="absolute top-0 right-0 -mt-4 -mr-4 h-20 w-20 rounded-full bg-white/10"></div>
-              <div className="relative">
-                <div className="flex items-center justify-between">
-                  <div className="rounded-lg bg-white/20 p-2">
-                    <Users className="h-4 w-4 md:h-5 md:w-5 text-white" />
-                  </div>
-                  <span className="inline-flex items-center rounded-full bg-white/20 px-2 py-0.5 text-[10px] md:text-xs font-medium text-white">
-                    Total
-                  </span>
+            <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-green-100 flex items-center justify-center">
+                  <Users className="text-green-600 text-lg" />
                 </div>
-                <div className="mt-3">
-                  <p className="text-lg md:text-2xl font-bold text-white">{globalTotals.totalCount || 0}</p>
-                  <p className="mt-0.5 text-xs md:text-sm text-emerald-100">Clients</p>
+                <div>
+                  <p className="text-xs text-gray-400 uppercase tracking-wide font-semibold">Total clients</p>
+                  <p className="text-xl font-bold text-gray-900">{globalTotals.totalCount || 0}</p>
                 </div>
               </div>
             </div>
 
-            {/* Carte conditionnelle - Admin voit Total Payé, Opérateurs voit Pays */}
-            {isAdmin ? (
-              <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 p-4 md:p-5 shadow-lg">
-                <div className="absolute top-0 right-0 -mt-4 -mr-4 h-20 w-20 rounded-full bg-white/10"></div>
-                <div className="relative">
-                  <div className="flex items-center justify-between">
-                    <div className="rounded-lg bg-white/20 p-2">
-                      <DollarSign className="h-4 w-4 md:h-5 md:w-5 text-white" />
-                    </div>
-                    <span className="text-[10px] md:text-xs font-medium text-blue-100">USD</span>
-                  </div>
-                  <div className="mt-3">
-                    <p className="text-lg md:text-2xl font-bold text-white truncate">{formatCurrency(globalTotals.totalPaye)}</p>
-                    <p className="mt-0.5 text-xs md:text-sm text-blue-100">Total Payé</p>
-                  </div>
+            {/* Nouveaux 30j Card */}
+            <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-green-100 flex items-center justify-center">
+                  <TrendingUp className="text-green-600 text-lg" />
                 </div>
-              </div>
-            ) : (
-              <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 p-4 md:p-5 shadow-lg">
-                <div className="absolute top-0 right-0 -mt-4 -mr-4 h-20 w-20 rounded-full bg-white/10"></div>
-                <div className="relative">
-                  <div className="flex items-center justify-between">
-                    <div className="rounded-lg bg-white/20 p-2">
-                      <MapPin className="h-4 w-4 md:h-5 md:w-5 text-white" />
-                    </div>
-                  </div>
-                  <div className="mt-3">
-                    <p className="text-lg md:text-2xl font-bold text-white">{new Set(sortedData.map((c: Client) => c.pays)).size}</p>
-                    <p className="mt-0.5 text-xs md:text-sm text-blue-100">Pays</p>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Villes Card */}
-            <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 p-4 md:p-5 shadow-lg">
-              <div className="absolute top-0 right-0 -mt-4 -mr-4 h-20 w-20 rounded-full bg-white/10"></div>
-              <div className="relative">
-                <div className="flex items-center justify-between">
-                  <div className="rounded-lg bg-white/20 p-2">
-                    <MapPin className="h-4 w-4 md:h-5 md:w-5 text-white" />
-                  </div>
-                </div>
-                <div className="mt-3">
-                  <p className="text-lg md:text-2xl font-bold text-white">{new Set(sortedData.map((c: Client) => c.ville)).size}</p>
-                  <p className="mt-0.5 text-xs md:text-sm text-purple-100">Villes</p>
+                <div>
+                  <p className="text-xs text-gray-400 uppercase tracking-wide font-semibold">Nouveaux (30j)</p>
+                  <p className="text-xl font-bold text-gray-900">
+                    {clients.filter((c: Client) => {
+                      if (!c.created_at) return false;
+                      const created = new Date(c.created_at);
+                      const thirtyDaysAgo = new Date();
+                      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+                      return created >= thirtyDaysAgo;
+                    }).length}
+                  </p>
                 </div>
               </div>
             </div>
 
-            {/* Sélectionnés Card */}
-            <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-orange-500 to-orange-600 p-4 md:p-5 shadow-lg">
-              <div className="absolute top-0 right-0 -mt-4 -mr-4 h-20 w-20 rounded-full bg-white/10"></div>
-              <div className="relative">
-                <div className="flex items-center justify-between">
-                  <div className="rounded-lg bg-white/20 p-2">
-                    <CheckSquare className="h-4 w-4 md:h-5 md:w-5 text-white" />
-                  </div>
-                  {selectedClients.length > 0 && (
-                    <span className="inline-flex items-center rounded-full bg-white/20 px-2 py-0.5 text-[10px] md:text-xs font-medium text-white">
-                      Actif
-                    </span>
-                  )}
+            {/* CA Total Clients Card */}
+            <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center">
+                  <DollarSign className="text-amber-600 text-lg" />
                 </div>
-                <div className="mt-3">
-                  <p className="text-lg md:text-2xl font-bold text-white">{selectedClients.length}</p>
-                  <p className="mt-0.5 text-xs md:text-sm text-orange-100">Sélectionnés</p>
+                <div>
+                  <p className="text-xs text-gray-400 uppercase tracking-wide font-semibold">CA total clients</p>
+                  <p className="text-xl font-bold text-gray-900">{(globalTotals.totalPaye || 0) >= 1000 ? `CDF ${((globalTotals.totalPaye || 0) / 1000000).toFixed(1)}M` : `CDF ${(globalTotals.totalPaye || 0).toLocaleString()}`}</p>
                 </div>
               </div>
             </div>
@@ -426,7 +381,7 @@ const ClientsProtected: React.FC = () => {
             <CardContent>
               <UnifiedDataTable<Client>
                 data={sortedData}
-                loading={isLoading && clients.length === 0}
+                loading={isLoading && clients?.length === 0}
                 emptyMessage="Aucun client"
                 emptySubMessage="Commencez par ajouter votre premier client"
                 emptyIcon={<Users className="h-8 w-8 text-gray-400" />}
@@ -519,14 +474,15 @@ const ClientsProtected: React.FC = () => {
                 }}
                 columns={[
                   {
-                    key: 'id',
-                    title: 'ID',
+                    key: 'nif',
+                    title: 'NIF',
                     sortable: true,
-                    className: 'min-w-[120px]',
-                    render: (value: any, client: Client, index: number) => (
-                      <span className="font-medium">
-                        {generateReadableId(client.id, index)}
+                    render: (value: any) => value ? (
+                      <span className="text-xs font-mono text-gray-600 bg-gray-100 px-2 py-1 rounded-lg">
+                        {value}
                       </span>
+                    ) : (
+                      <span className="text-xs text-gray-400">—</span>
                     )
                   },
                   {
@@ -546,34 +502,22 @@ const ClientsProtected: React.FC = () => {
                     )
                   },
                   {
-                    key: 'telephone',
-                    title: 'Téléphone',
-                    sortable: true,
-                    render: (value: any) => (
-                      <div className="flex items-center space-x-1">
-                        <Phone className="h-4 w-4 text-gray-400" />
-                        <span>{sanitizePhoneNumber(value || '')}</span>
-                      </div>
-                    )
-                  },
-                  {
-                    key: 'ville',
-                    title: 'Ville',
-                    sortable: true,
-                    render: (value: any) => (
-                      <div className="flex items-center space-x-1">
-                        <MapPin className="h-4 w-4 text-gray-400" />
-                        <span>{sanitizeCityName(value || '')}</span>
-                      </div>
+                    key: 'adresse',
+                    title: 'Adresse',
+                    sortable: false,
+                    render: (value: any) => value ? (
+                      <span className="text-sm text-gray-600">{value}</span>
+                    ) : (
+                      <span className="text-xs text-gray-400">—</span>
                     )
                   },
                   ...(isAdmin ? [{
                     key: 'total_paye',
-                    title: 'Total Payé',
+                    title: 'CA total',
                     sortable: true,
                     align: 'right' as const,
                     render: (value: any) => (
-                      <span className="font-medium text-green-500">
+                      <span className="font-medium text-gray-900">
                         {formatCurrency(value || 0)}
                       </span>
                     )
@@ -582,6 +526,7 @@ const ClientsProtected: React.FC = () => {
                     key: 'created_at',
                     title: 'Date',
                     sortable: true,
+                    visible: false,
                     render: (value: any) => (
                       <span className="text-sm text-gray-600">
                         {new Date(value).toLocaleDateString('fr-FR')}
@@ -677,9 +622,7 @@ const ClientsProtected: React.FC = () => {
             isConfirming={isDeleting}
             type="delete"
           />
-        </div>
-      </Layout>
-    </ProtectedRouteEnhanced>
+        </div></Layout>
   );
 };
 

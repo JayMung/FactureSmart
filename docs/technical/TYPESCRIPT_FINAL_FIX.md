@@ -190,7 +190,7 @@ git push origin main --tags
 
 ---
 
-**FactureX TypeScript Resolution - Mission Accomplie** ✨
+**FactureSmart TypeScript Resolution - Mission Accomplie** ✨
 
 ---
 

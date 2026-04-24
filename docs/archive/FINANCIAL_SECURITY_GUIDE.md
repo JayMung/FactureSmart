@@ -1,4 +1,4 @@
-# Guide de Sécurité Financière - FactureX
+# Guide de Sécurité Financière - FactureSmart
 
 ## 🛡️ Contraintes Actives
 
@@ -93,7 +93,7 @@
 3. **Discrepancies** : Écarts > 1% entre calculs et enregistrements
 
 ### Sécurité des Rapports
-- **Watermark dynamique** : "Généré par [email] le [date] - FactureX"
+- **Watermark dynamique** : "Généré par [email] le [date] - FactureSmart"
 - **Checksum SHA256** : Intégrité vérifiable
 - **Isolation stricte** : Une organisation ne voit que ses données
 - **Expiration** : Rapports expirent après 7 jours

@@ -2,7 +2,7 @@
 
 ## ✅ Implémentation Complète
 
-Les webhooks sont maintenant déclenchés pour **toutes les suppressions** dans FactureX.
+Les webhooks sont maintenant déclenchés pour **toutes les suppressions** dans FactureSmart.
 
 ---
 
@@ -31,7 +31,7 @@ Les webhooks sont maintenant déclenchés pour **toutes les suppressions** dans 
 
 **Effectué par:** Daniel Muyela
 
-FactureX • Aujourd'hui à 14:32
+FactureSmart • Aujourd'hui à 14:32
 ```
 
 ### Exemple : Client Supprimé
@@ -45,7 +45,7 @@ FactureX • Aujourd'hui à 14:32
 
 **Effectué par:** Jeaney Mungedi
 
-FactureX • Aujourd'hui à 14:33
+FactureSmart • Aujourd'hui à 14:33
 ```
 
 ### Exemple : Transaction Supprimée
@@ -60,7 +60,7 @@ FactureX • Aujourd'hui à 14:33
 
 **Effectué par:** Daniel Muyela
 
-FactureX • Aujourd'hui à 14:34
+FactureSmart • Aujourd'hui à 14:34
 ```
 
 ---
@@ -244,7 +244,7 @@ Si une suppression déclenche des suppressions en cascade (ex: supprimer un clie
 
 ### 3. Soft Delete vs Hard Delete
 
-Actuellement, FactureX utilise **hard delete** (suppression définitive). Si vous implémentez un **soft delete** (marquage comme supprimé) :
+Actuellement, FactureSmart utilise **hard delete** (suppression définitive). Si vous implémentez un **soft delete** (marquage comme supprimé) :
 - Les triggers DELETE ne se déclencheront plus
 - Il faudra créer des événements UPDATE spécifiques (ex: `facture.archived`)
 

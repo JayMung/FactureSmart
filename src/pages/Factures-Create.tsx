@@ -13,16 +13,18 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ClientCombobox } from '@/components/ui/client-combobox';
 import { Badge } from '@/components/ui/badge';
-import { 
-  Plus, 
-  Trash2, 
-  Save, 
+import {
+  Plus,
+  Trash2,
+  Save,
   ArrowLeft,
   Package,
   Calculator,
   FileText,
   RotateCcw,
-  Clock
+  Clock,
+  ShieldCheck,
+  QrCode
 } from 'lucide-react';
 import { useAllClients } from '../hooks/useClients';
 import { useFactures } from '../hooks/useFactures';
@@ -32,7 +34,30 @@ import { showSuccess, showError } from '@/utils/toast';
 import ImagePreview from '@/components/ui/ImagePreview';
 import { supabase } from '@/integrations/supabase/client';
 import { sanitizeHtml, sanitizeUrl } from '@/lib/xss-protection';
-import type { Client, CreateFactureData, FactureItem } from '@/types';
+// DGI TVA rates (RDC)
+export const TVA_RATES: Record<string, number> = {
+  A: 0,
+  B: 0.08,
+  C: 0.16,
+};
+
+export const TVA_LABELS: Record<string, string> = {
+  A: 'Exonéré (0%)',
+  B: 'Réduit (8%)',
+  C: 'Standard (16%)',
+};
+
+// DGI invoice type codes (RDC)
+export const DGI_INVOICE_TYPES = [
+  { value: 'FV', label: 'FV - Facture de Vente' },
+  { value: 'EV', label: 'EV - Facture d\'Avoir (retour)' },
+  { value: 'FT', label: 'FT - Facture de Travail (service)' },
+  { value: 'ET', label: 'ET - Export Tax' },
+  { value: 'FA', label: 'FA - Facture d\'Acompte' },
+  { value: 'EA', label: 'EA - Encaissement Anticipé' },
+] as const;
+
+import type { CreateFactureData, FactureItem } from '@/types';
 
 const FacturesCreate: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -60,7 +85,10 @@ const FacturesCreate: React.FC = () => {
     conditions_vente: '',
     notes: '',
     informations_bancaires: '',
-    items: []
+    items: [],
+    // DGI fields
+    type_facture_dgi: 'FV',
+    groupe_tva: 'C',
   });
 
   const [items, setItems] = useState<FactureItem[]>([]);
@@ -356,29 +384,35 @@ const FacturesCreate: React.FC = () => {
     // Calculer en USD d'abord
     const subtotalUSD = items.reduce((sum, item) => sum + item.montant_total, 0);
     const totalPoids = items.reduce((sum, item) => sum + item.poids, 0);
-    
+
     // Frais (15% du sous-total) depuis les settings ou custom
     const fraisPercentage = customFraisPercentage !== null ? customFraisPercentage : (fees?.commande || 15);
     const fraisUSD = subtotalUSD * (fraisPercentage / 100);
-    
+
     // Get shipping rates from settings or custom value
     const fraisAerien = 16; // Default value
     const fraisMaritime = 450; // Default value
-    
+
     // Appliquer la conversion si la devise est CDF
     const tauxUSDtoCDF = rates?.usdToCdf || 2100;
     const conversionRate = formData.devise === 'CDF' ? tauxUSDtoCDF : 1;
-    
+
     // Use custom transport fee if set, otherwise calculate normally
     // IMPORTANT: customTransportFee is always stored in USD
-    const fraisTransportDouaneUSD = customTransportFee !== null 
+    const fraisTransportDouaneUSD = customTransportFee !== null
       ? customTransportFee  // Already in USD
-      : (formData.mode_livraison === 'aerien' 
-        ? totalPoids * fraisAerien 
+      : (formData.mode_livraison === 'aerien'
+        ? totalPoids * fraisAerien
         : totalPoids * fraisMaritime);
-    
+
     const totalGeneralUSD = subtotalUSD + fraisUSD + fraisTransportDouaneUSD;
-    
+
+    // DGI TVA calculation
+    const groupeTva = (formData.groupe_tva || 'C') as 'A' | 'B' | 'C';
+    const tauxTva = TVA_RATES[groupeTva] || 0.16;
+    const montantTvaUSD = subtotalUSD * tauxTva;
+    const montantTtcUSD = subtotalUSD + montantTvaUSD;
+
     return {
       subtotal: subtotalUSD * conversionRate,
       totalPoids,
@@ -387,7 +421,13 @@ const FacturesCreate: React.FC = () => {
       fraisTransportDouane: fraisTransportDouaneUSD * conversionRate,
       customTransportFee,
       totalGeneral: totalGeneralUSD * conversionRate,
-      tauxConversion: conversionRate
+      tauxConversion: conversionRate,
+      // DGI fields
+      tauxTva,
+      groupeTva,
+      montantTva: montantTvaUSD * conversionRate,
+      montantHt: subtotalUSD * conversionRate,
+      montantTtc: montantTtcUSD * conversionRate,
     };
   };
 
@@ -401,6 +441,19 @@ const FacturesCreate: React.FC = () => {
 
     if (items.length === 0) {
       showError('Veuillez ajouter au moins un article');
+      return;
+    }
+
+    // === DGI Validation ===
+    if (!formData.groupe_tva) {
+      showError('Groupe TVA DGI requis — sélectionnez A (exonéré), B (8%) ou C (16%)');
+      return;
+    }
+
+    // Calculer les totaux pour validation DGI
+    const dgiTotals = calculateTotals();
+    if (dgiTotals.subtotal <= 0) {
+      showError('La base HT DGI doit être supérieure à 0');
       return;
     }
 
@@ -419,6 +472,12 @@ const FacturesCreate: React.FC = () => {
           frais_transport_douane: finalTotals.fraisTransportDouane,
           total_poids: finalTotals.totalPoids,
           total_general: finalTotals.totalGeneral,
+          // DGI fields
+          type_facture_dgi: formData.type_facture_dgi,
+          groupe_tva: formData.groupe_tva,
+          montant_ht: finalTotals.montantHt,
+          montant_tva: finalTotals.montantTva,
+          montant_ttc: finalTotals.montantTtc,
           items: items.map(({ tempId, id: itemId, ...item }) => item)
         });
         // Toast déjà affiché par le hook
@@ -432,6 +491,12 @@ const FacturesCreate: React.FC = () => {
           frais_transport_douane: finalTotals.fraisTransportDouane,
           total_poids: finalTotals.totalPoids,
           total_general: finalTotals.totalGeneral,
+          // DGI fields
+          type_facture_dgi: formData.type_facture_dgi,
+          groupe_tva: formData.groupe_tva,
+          montant_ht: finalTotals.montantHt,
+          montant_tva: finalTotals.montantTva,
+          montant_ttc: finalTotals.montantTtc,
           items: items.map(({ tempId, ...item }) => item)
         };
         const newFacture = await createFacture(factureData);
@@ -527,7 +592,7 @@ const FacturesCreate: React.FC = () => {
                       <Label htmlFor="type">Type</Label>
                       <Select
                         value={formData.type}
-                        onValueChange={(value: 'devis' | 'facture') => 
+                        onValueChange={(value: 'devis' | 'facture') =>
                           setFormData({ ...formData, type: value })
                         }
                       >
@@ -540,6 +605,37 @@ const FacturesCreate: React.FC = () => {
                         </SelectContent>
                       </Select>
                     </div>
+
+                    {/* DGI Invoice Type */}
+                    <div>
+                      <Label htmlFor="type_dgi" className="flex items-center gap-1">
+                        <ShieldCheck className="h-3 w-3 text-green-600" />
+                        Type DGI
+                      </Label>
+                      <Select
+                        value={formData.type_facture_dgi || 'FV'}
+                        onValueChange={(value: string) =>
+                          setFormData({ ...formData, type_facture_dgi: value })
+                        }
+                      >
+                        <SelectTrigger className="border-green-200 bg-green-50">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {DGI_INVOICE_TYPES.map(t => (
+                            <SelectItem key={t.value} value={t.value}>
+                              {t.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <p className="text-xs text-gray-400 mt-1">
+                        Code DGI RDC — {TVA_LABELS[formData.groupe_tva || 'C']}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="date_emission">Date d'émission</Label>
                       <Input
@@ -906,6 +1002,55 @@ const FacturesCreate: React.FC = () => {
                         {totals.totalPoids.toFixed(2)} {formData.mode_livraison === 'aerien' ? 'Kg' : 'CBM'}
                       </span>
                     </div>
+
+                    {/* DGI TVA Section */}
+                    <div className="border-t pt-2 space-y-1">
+                      <div className="flex items-center gap-1 mb-1">
+                        <ShieldCheck className="h-3 w-3 text-green-600" />
+                        <span className="text-xs font-semibold text-green-700">Conformité DGI RDC</span>
+                      </div>
+
+                      {/* Groupe TVA selector */}
+                      <div className="flex justify-between items-center text-sm">
+                        <span className="text-gray-600">Groupe TVA:</span>
+                        <select
+                          value={totals.groupeTva}
+                          onChange={(e) => setFormData({ ...formData, groupe_tva: e.target.value })}
+                          className="text-xs border rounded px-1 py-0.5 bg-green-50 border-green-200"
+                        >
+                          <option value="A">A - Exonoré (0%)</option>
+                          <option value="B">B - Réduit (8%)</option>
+                          <option value="C">C - Standard (16%)</option>
+                        </select>
+                      </div>
+
+                      {/* DGI amounts */}
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">Montant HTVA:</span>
+                        <span className="font-medium">
+                          {formData.devise === 'USD' ? '$' : ''}{totals.montantHt.toFixed(2)}
+                          {formData.devise === 'CDF' ? ' CDF' : ''}
+                        </span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">TVA ({totals.tauxTva * 100}%):</span>
+                        <span className="font-medium">
+                          {formData.devise === 'USD' ? '$' : ''}{totals.montantTva.toFixed(2)}
+                          {formData.devise === 'CDF' ? ' CDF' : ''}
+                        </span>
+                      </div>
+                      <div className="flex justify-between text-sm font-bold text-green-700">
+                        <span className="flex items-center gap-1">
+                          <QrCode className="h-3 w-3" />
+                          Montant TTC:
+                        </span>
+                        <span>
+                          {formData.devise === 'USD' ? '$' : ''}{totals.montantTtc.toFixed(2)}
+                          {formData.devise === 'CDF' ? ' CDF' : ''}
+                        </span>
+                      </div>
+                    </div>
+
                     <div className="border-t pt-2">
                       <div className="flex justify-between text-lg font-bold">
                         <span>Total général:</span>
@@ -915,6 +1060,7 @@ const FacturesCreate: React.FC = () => {
                         </span>
                       </div>
                     </div>
+
                   </div>
                 </CardContent>
               </Card>

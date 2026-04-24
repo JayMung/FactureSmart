@@ -32,7 +32,9 @@ import {
   ArrowLeft,
   AlertCircle,
   CheckCircle,
-  DollarSign
+  DollarSign,
+  QrCode,
+  ShieldCheck
 } from 'lucide-react';
 import { PaiementDialog } from '@/components/paiements/PaiementDialog';
 import { formatCurrency } from '@/utils/formatCurrency';
@@ -40,7 +42,6 @@ import ImagePreview from '@/components/ui/ImagePreview';
 import { generateFacturePDF } from '@/utils/pdfGenerator';
 import { showSuccess, showError } from '@/utils/toast';
 import { useFactures } from '../hooks/useFactures';
-import ProtectedRouteEnhanced from '../components/auth/ProtectedRouteEnhanced';
 import PermissionGuard from '../components/auth/PermissionGuard';
 import { supabase } from '@/integrations/supabase/client';
 import { encodeHtml } from '@/lib/xss-protection';
@@ -59,6 +60,7 @@ const FacturesView: React.FC = () => {
   const [pdfDialogOpen, setPdfDialogOpen] = useState(false);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
   const [paiementDialogOpen, setPaiementDialogOpen] = useState(false);
+  const [dgiEntry, setDgiEntry] = useState<any>(null);
 
   usePageSetup({
     title: facture ? `${facture.type === 'devis' ? 'Devis' : 'Facture'} #${facture.facture_number}` : 'Détails',
@@ -81,6 +83,20 @@ const FacturesView: React.FC = () => {
       }
       setFacture(data);
       
+      // Charger le DGI registry entry si c'est une facture (pas un devis)
+      if (data.type === 'facture') {
+        try {
+          const { data: dgiData } = await supabase
+            .from('dgi_invoice_registry')
+            .select('*')
+            .eq('facture_id', id)
+            .single();
+          setDgiEntry(dgiData || null);
+        } catch {
+          setDgiEntry(null);
+        }
+      }
+
       // Charger le nom du créateur (utiliser l'utilisateur actuel comme fallback)
       try {
         let creatorId = (data as any).created_by;
@@ -233,40 +249,30 @@ const FacturesView: React.FC = () => {
 
   if (loading) {
     return (
-      <ProtectedRouteEnhanced requiredModule="factures" requiredPermission="read">
-        <Layout>
-          <div className="flex items-center justify-center h-64">
+      <Layout><div className="flex items-center justify-center h-64">
             <div className="text-center">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500 mx-auto mb-4"></div>
               <p className="text-gray-600">Chargement...</p>
             </div>
-          </div>
-        </Layout>
-      </ProtectedRouteEnhanced>
+          </div></Layout>
     );
   }
 
   if (!facture) {
     return (
-      <ProtectedRouteEnhanced requiredModule="factures" requiredPermission="read">
-        <Layout>
-          <div className="flex items-center justify-center h-64">
+      <Layout><div className="flex items-center justify-center h-64">
             <div className="text-center">
               <AlertCircle className="h-12 w-12 text-red-600 mx-auto mb-4" />
               <p className="text-red-600">Facture introuvable</p>
             </div>
-          </div>
-        </Layout>
-      </ProtectedRouteEnhanced>
+          </div></Layout>
     );
   }
 
   const items = facture.items || [];
 
   return (
-    <ProtectedRouteEnhanced requiredModule="factures" requiredPermission="read">
-      <Layout>
-        <div className="space-y-6">
+    <Layout><div className="space-y-6">
           {/* Header */}
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
             <Button
@@ -629,6 +635,59 @@ const FacturesView: React.FC = () => {
             </CardContent>
           </Card>
 
+          {/* DGI Compliance Info */}
+          {facture.type === 'facture' && dgiEntry && (
+            <Card className="border-emerald-200 bg-emerald-50/30">
+              <CardContent className="pt-6">
+                <div className="flex items-center gap-2 mb-4">
+                  <ShieldCheck className="h-5 w-5 text-emerald-600" />
+                  <CardTitle className="text-lg text-emerald-800">Conformité DGI</CardTitle>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div className="space-y-1">
+                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                      N° DGI
+                    </label>
+                    <p className="font-bold text-emerald-700 text-lg">{dgiEntry.numero_dgi}</p>
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                      Code d'autorisation
+                    </label>
+                    <p className="font-mono font-semibold text-gray-800">{dgiEntry.code_auth}</p>
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                      QR Code
+                    </label>
+                    <div className="flex items-center gap-2">
+                      <QrCode className="h-5 w-5 text-gray-400" />
+                      <span className="text-xs text-gray-600 font-mono truncate max-w-[180px]">{dgiEntry.qr_code_data}</span>
+                    </div>
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                      Total HTVA
+                    </label>
+                    <p className="font-semibold text-gray-800">{dgiEntry.total_htva?.toFixed(2)} $</p>
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                      TVA ({((dgiEntry.taux_tva || 0) * 100).toFixed(0)}%)
+                    </label>
+                    <p className="font-semibold text-gray-800">{dgiEntry.montant_tva?.toFixed(2)} $</p>
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                      Total TTC
+                    </label>
+                    <p className="font-bold text-emerald-700">{dgiEntry.total_ttc?.toFixed(2)} $</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
           {/* Notes et conditions */}
           {(facture.conditions_vente || facture.notes) && (
             <Card>
@@ -763,9 +822,7 @@ const FacturesView: React.FC = () => {
               </div>
             </DialogContent>
           </Dialog>
-        </div>
-      </Layout>
-    </ProtectedRouteEnhanced>
+        </div></Layout>
   );
 };
 

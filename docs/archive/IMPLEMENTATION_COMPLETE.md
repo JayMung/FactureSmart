@@ -1,4 +1,4 @@
-# ✅ Design System FactureX - Implémentation Complète
+# ✅ Design System FactureSmart - Implémentation Complète
 
 ## 📊 Résumé de l'implémentation
 

@@ -299,7 +299,7 @@ Les permissions peuvent être configurées dans la page des paramètres :
 ---
 
 **Auteur** : Cascade AI  
-**Projet** : FactureX  
+**Projet** : FactureSmart  
 **Module** : Permissions & Sécurité  
 **Statut** : ✅ **RESTRICTIONS FINANCIÈRES APPLIQUÉES**
 
@@ -309,4 +309,4 @@ Les permissions peuvent être configurées dans la page des paramètres :
 
 **Les opérateurs n'ont plus accès aux informations financières, seul les administrateurs peuvent gérer les transactions et factures !** 🛡️
 
-#FactureX #Permissions #Security #AdminOnly
+#FactureSmart #Permissions #Security #AdminOnly

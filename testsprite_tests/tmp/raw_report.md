@@ -4,7 +4,7 @@
 ---
 
 ## 1️⃣ Document Metadata
-- **Project Name:** FactureX
+- **Project Name:** FactureSmart
 - **Date:** 2025-10-25
 - **Prepared by:** TestSprite AI Team
 

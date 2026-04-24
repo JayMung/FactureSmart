@@ -2,7 +2,7 @@
 
 ## 🎯 Vue d'Ensemble
 
-La fonctionnalité de gestion des colis permet de suivre les colis des clients depuis la Chine jusqu'à la livraison finale au Congo. Elle s'intègre parfaitement dans l'écosystème FactureX existant avec une gestion séparée pour les livraisons aériennes et maritimes.
+La fonctionnalité de gestion des colis permet de suivre les colis des clients depuis la Chine jusqu'à la livraison finale au Congo. Elle s'intègre parfaitement dans l'écosystème FactureSmart existant avec une gestion séparée pour les livraisons aériennes et maritimes.
 
 ---
 
@@ -402,4 +402,4 @@ can_export_colis
 **Document préparé par :** Cascade AI Assistant  
 **Date :** 29 Octobre 2025  
 **Version :** 1.0  
-**Projet :** FactureX - Module Colis/PARCEL
+**Projet :** FactureSmart - Module Colis/PARCEL

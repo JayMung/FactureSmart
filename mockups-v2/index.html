@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maquettes — Facture Smart</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Manrope', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] },
+          colors: {
+            primary: { 50: '#ecfdf5', 100: '#d1fae5', 200: '#a7f3d0', 300: '#6ee7b7', 400: '#34d399', 500: '#10b981', 600: '#059669', 700: '#059669', 800: '#065f46', 900: '#064e3b' },
+            fx: { blue: '#10b981', 'blue-dark': '#059669', 'blue-light': '#E8F0FE', gray: '#F8FAFC', 'gray-100': '#F1F5F9', 'gray-200': '#E2E8F0', 'gray-300': '#CBD5E1', 'gray-500': '#64748B', 'gray-700': '#334155', 'gray-900': '#0F172A', success: '#10b981', warning: '#F59E0B', danger: '#EF4444' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Manrope', sans-serif; }
+    .rdc-bg { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Crect width='40' height='40' fill='%2310B981' fill-opacity='0.025'/%3E%3Crect x='40' y='40' width='40' height='40' fill='%2310B981' fill-opacity='0.025'/%3E%3Crect x='40' width='40' height='40' fill='none' stroke='%2310B981' stroke-opacity='0.03' stroke-width='1'/%3E%3Crect y='40' width='40' height='40' fill='none' stroke='%2310B981' stroke-opacity='0.03' stroke-width='1'/%3E%3Cpath d='M0 40 L40 0' stroke='%2310B981' stroke-opacity='0.015' stroke-width='1' fill='none'/%3E%3Cpath d='M40 80 L80 40' stroke='%2310B981' stroke-opacity='0.015' stroke-width='1' fill='none'/%3E%3C/svg%3E"); background-size: 80px 80px; }
+    .card-hover { transition: all 0.2s ease; }
+    .card-hover:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(16,185,129,0.15); }
+    .fade-in { animation: fadeIn 0.4s ease-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    .module-section { display: none; }
+    .module-section.active { display: block; }
+  </style>
+</head>
+<body class="bg-fx-gray min-h-screen rdc-bg">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-50 glass border-b border-gray-200/60">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center shadow-lg shadow-primary-500/25">
+          <i class="ri-file-chart-line text-white text-lg"></i>
+        </div>
+        <div>
+          <h1 class="text-lg font-bold text-fx-gray-900">Facture Smart</h1>
+          <p class="text-xs text-fx-gray-500">Maquettes v2 — Avril 2026</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-4">
+        <span class="text-xs font-mono text-fx-gray-500 bg-fx-gray-100 px-3 py-1.5 rounded-lg">59 écrans</span>
+        <a href="landing.html" class="text-sm font-semibold text-primary-600 hover:text-primary-700 flex items-center gap-1.5 transition-colors">
+          <i class="ri-external-link-line text-base"></i>
+          Landing page
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <div class="max-w-7xl mx-auto px-6 py-10">
+
+    <!-- Stats bar -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10 fade-in">
+      <div class="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm">
+        <div class="text-2xl font-extrabold text-fx-gray-900">59</div>
+        <div class="text-sm text-fx-gray-500">Total écrans</div>
+      </div>
+      <div class="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm">
+        <div class="text-2xl font-extrabold text-green-600">13</div>
+        <div class="text-sm text-fx-gray-500">Modules</div>
+      </div>
+      <div class="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm">
+        <div class="text-2xl font-extrabold text-fx-gray-900">v2</div>
+        <div class="text-sm text-fx-gray-500">Version</div>
+      </div>
+      <div class="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm">
+        <div class="text-2xl font-extrabold text-primary-600">67%</div>
+        <div class="text-sm text-fx-gray-500">Couverture</div>
+      </div>
+    </div>
+
+    <!-- Module Navigation -->
+    <div class="flex flex-wrap gap-2 mb-8 fade-in" style="animation-delay: 0.1s">
+      <button onclick="showModule('all')" class="module-btn px-4 py-2 rounded-xl text-sm font-semibold bg-primary-500 text-white shadow-sm transition-all" data-module="all">
+        Tous
+      </button>
+      <button onclick="showModule('core')" class="module-btn px-4 py-2 rounded-xl text-sm font-semibold bg-white text-fx-gray-700 border border-gray-200 hover:bg-gray-50 transition-all" data-module="core">
+        <i class="ri-dashboard-line mr-1"></i>Core
+      </button>
+      <button onclick="showModule('onboarding')" class="module-btn px-4 py-2 rounded-xl text-sm font-semibold bg-white text-fx-gray-700 border border-gray-200 hover:bg-gray-50 transition-all" data-module="onboarding">
+        <i class="ri-rocket-line mr-1"></i>Onboarding
+      </button>
+      <button onclick="showModule('account')" class="module-btn px-4 py-2 rounded-xl text-sm font-semibold bg-white text-fx-gray-700 border border-gray-200 hover:bg-gray-50 transition-all" data-module="account">
+        <i class="ri-user-add-line mr-1"></i>Compte
+      </button>
+      <button onclick="showModule('modals')" class="module-btn px-4 py-2 rounded-xl text-sm font-semibold bg-white text-fx-gray-700 border border-gray-200 hover:bg-gray-50 transition-all" data-module="modals">
+        <i class="ri-window-line mr-1"></i>Modales
+      </button>
+      <button onclick="showModule('notifications')" class="module-btn px-4 py-2 rounded-xl text-sm font-semibold bg-white text-fx-gray-700 border border-gray-200 hover:bg-gray-50 transition-all" data-module="notifications">
+        <i class="ri-notification-3-line mr-1"></i>Notifications
+      </button>
+      <button onclick="showModule('roles')" class="module-btn px-4 py-2 rounded-xl text-sm font-semibold bg-white text-fx-gray-700 border border-gray-200 hover:bg-gray-50 transition-all" data-module="roles">
+        <i class="ri-shield-user-line mr-1"></i>Rôles
+      </button>
+      <button onclick="showModule('billing')" class="module-btn px-4 py-2 rounded-xl text-sm font-semibold bg-white text-fx-gray-700 border border-gray-200 hover:bg-gray-50 transition-all" data-module="billing">
+        <i class="ri-bank-card-line mr-1"></i>Facturation
+      </button>
+      <button onclick="showModule('pos')" class="module-btn px-4 py-2 rounded-xl text-sm font-semibold bg-white text-fx-gray-700 border border-gray-200 hover:bg-gray-50 transition-all" data-module="pos">
+        <i class="ri-printer-line mr-1"></i>POS
+      </button>
+      <button onclick="showModule('finance')" class="module-btn px-4 py-2 rounded-xl text-sm font-semibold bg-white text-fx-gray-700 border border-gray-200 hover:bg-gray-50 transition-all" data-module="finance">
+        <i class="ri-coins-line mr-1"></i>Finance
+      </button>
+      <button onclick="showModule('caisse')" class="module-btn px-4 py-2 rounded-xl text-sm font-semibold bg-white text-fx-gray-700 border border-gray-200 hover:bg-gray-50 transition-all" data-module="caisse">
+        <i class="ri-money-dollar-circle-line mr-1"></i>Caisse
+      </button>
+      <button onclick="showModule('mobile')" class="module-btn px-4 py-2 rounded-xl text-sm font-semibold bg-white text-fx-gray-700 border border-gray-200 hover:bg-gray-50 transition-all" data-module="mobile">
+        <i class="ri-smartphone-line mr-1"></i>Mobile
+      </button>
+      <button onclick="showModule('detail')" class="module-btn px-4 py-2 rounded-xl text-sm font-semibold bg-white text-fx-gray-700 border border-gray-200 hover:bg-gray-50 transition-all" data-module="detail">
+        <i class="ri-file-list-3-line mr-1"></i>Détail
+      </button>
+    </div>
+
+    <!-- MODULE: Core -->
+    <div class="module-section active" data-section="core">
+      <div class="flex items-center gap-2 mb-4">
+        <div class="w-8 h-8 rounded-lg bg-primary-500 flex items-center justify-center"><i class="ri-dashboard-line text-white"></i></div>
+        <h2 class="text-lg font-bold text-fx-gray-900">Core — Écrans principaux</h2>
+        <span class="text-xs bg-primary-100 text-primary-700 px-2 py-0.5 rounded-full font-semibold">9 écrans</span>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mb-10">
+        <a href="screen-00-login.html" target="_blank" class="card-hover bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm group">
+          <div class="aspect-video bg-gradient-to-br from-primary-500/5 to-primary-600/10 flex items-center justify-center p-4">
+            <div class="w-full h-full bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-2 p-3">
+              <i class="ri-lock-password-line text-primary-500 text-xl"></i>
+              <span class="text-[10px] font-semibold text-fx-gray-700">Connexion</span>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-mono text-fx-gray-500 mb-0.5">screen-00</div>
+            <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-primary-600 transition-colors">Login</div>
+            <div class="text-xs text-fx-gray-500">Authentification</div>
+          </div>
+        </a>
+        <a href="screen-01-dashboard.html" target="_blank" class="card-hover bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm group">
+          <div class="aspect-video bg-gradient-to-br from-primary-500/5 to-primary-600/10 flex items-center justify-center p-4">
+            <div class="w-full h-full bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-1 p-3">
+              <i class="ri-bar-chart-box-line text-primary-500 text-lg"></i>
+              <span class="text-[10px] font-semibold text-fx-gray-700">Dashboard</span>
+              <div class="flex gap-1 mt-1">
+                <div class="h-2 w-3 bg-primary-200 rounded-sm"></div>
+                <div class="h-2 w-4 bg-primary-400 rounded-sm"></div>
+                <div class="h-2 w-5 bg-primary-600 rounded-sm"></div>
+              </div>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-mono text-fx-gray-500 mb-0.5">screen-01</div>
+            <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-primary-600 transition-colors">Dashboard</div>
+            <div class="text-xs text-fx-gray-500">Tableau de bord</div>
+          </div>
+        </a>
+        <a href="screen-02-factures.html" target="_blank" class="card-hover bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm group">
+          <div class="aspect-video bg-gradient-to-br from-primary-500/5 to-primary-600/10 flex items-center justify-center p-4">
+            <div class="w-full h-full bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-1 p-3">
+              <i class="ri-file-list-2-line text-primary-500 text-lg"></i>
+              <span class="text-[10px] font-semibold text-fx-gray-700">Factures</span>
+              <div class="w-8 h-1.5 bg-gray-100 rounded mt-1"></div>
+              <div class="w-8 h-1.5 bg-gray-100 rounded"></div>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-mono text-fx-gray-500 mb-0.5">screen-02</div>
+            <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-primary-600 transition-colors">Factures</div>
+            <div class="text-xs text-fx-gray-500">Liste des factures</div>
+          </div>
+        </a>
+        <a href="screen-03-creation-facture.html" target="_blank" class="card-hover bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm group">
+          <div class="aspect-video bg-gradient-to-br from-primary-500/5 to-primary-600/10 flex items-center justify-center p-4">
+            <div class="w-full h-full bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-1 p-3">
+              <i class="ri-file-add-line text-primary-500 text-lg"></i>
+              <span class="text-[10px] font-semibold text-fx-gray-700">Création</span>
+              <div class="w-7 h-1 bg-gray-200 rounded mt-1"></div>
+              <div class="w-5 h-1 bg-primary-200 rounded"></div>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-mono text-fx-gray-500 mb-0.5">screen-03</div>
+            <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-primary-600 transition-colors">Création facture</div>
+            <div class="text-xs text-fx-gray-500">Formulaire création</div>
+          </div>
+        </a>
+        <a href="screen-03b-facture-detail.html" target="_blank" class="card-hover bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm group">
+          <div class="aspect-video bg-gradient-to-br from-primary-500/5 to-primary-600/10 flex items-center justify-center p-4">
+            <div class="w-full h-full bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-1 p-3">
+              <i class="ri-file-text-line text-primary-500 text-lg"></i>
+              <span class="text-[10px] font-semibold text-fx-gray-700">Détail</span>
+              <div class="flex gap-0.5 mt-1">
+                <div class="w-2 h-2 bg-primary-200 rounded-sm"></div>
+                <div class="w-2 h-2 bg-primary-400 rounded-sm"></div>
+                <div class="w-2 h-2 bg-primary-600 rounded-sm"></div>
+              </div>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-mono text-fx-gray-500 mb-0.5">screen-03b</div>
+            <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-primary-600 transition-colors">Détail facture</div>
+            <div class="text-xs text-fx-gray-500">Vue détaillée</div>
+          </div>
+        </a>
+        <a href="screen-04-preview-facture.html" target="_blank" class="card-hover bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm group">
+          <div class="aspect-video bg-gradient-to-br from-primary-500/5 to-primary-600/10 flex items-center justify-center p-4">
+            <div class="w-full h-full bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-1 p-3">
+              <i class="ri-qr-code-line text-primary-500 text-lg"></i>
+              <span class="text-[10px] font-semibold text-fx-gray-700">Preview</span>
+              <div class="w-5 h-5 border-2 border-primary-300 rounded flex items-center justify-center mt-1">
+                <div class="w-2 h-2 bg-primary-500 rounded-sm"></div>
+              </div>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-mono text-fx-gray-500 mb-0.5">screen-04</div>
+            <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-primary-600 transition-colors">Preview facture</div>
+            <div class="text-xs text-fx-gray-500">Prévisualisation + QR</div>
+          </div>
+        </a>
+        <a href="screen-05-dgi-status.html" target="_blank" class="card-hover bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm group">
+          <div class="aspect-video bg-gradient-to-br from-primary-500/5 to-primary-600/10 flex items-center justify-center p-4">
+            <div class="w-full h-full bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-1 p-3">
+              <i class="ri-government-line text-primary-500 text-lg"></i>
+              <span class="text-[10px] font-semibold text-fx-gray-700">DGI</span>
+              <div class="w-4 h-2 bg-green-100 rounded mt-1 flex items-center gap-0.5 px-1">
+                <div class="w-1 h-1 bg-green-500 rounded-full"></div>
+              </div>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-mono text-fx-gray-500 mb-0.5">screen-05</div>
+            <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-primary-600 transition-colors">Statut DGI</div>
+            <div class="text-xs text-fx-gray-500">Transmission DGI</div>
+          </div>
+        </a>
+        <a href="screen-06-clients.html" target="_blank" class="card-hover bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm group">
+          <div class="aspect-video bg-gradient-to-br from-primary-500/5 to-primary-600/10 flex items-center justify-center p-4">
+            <div class="w-full h-full bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-1 p-3">
+              <i class="ri-group-line text-primary-500 text-lg"></i>
+              <span class="text-[10px] font-semibold text-fx-gray-700">Clients</span>
+              <div class="flex -space-x-1 mt-1">
+                <div class="w-3 h-3 rounded-full bg-primary-200 border border-white"></div>
+                <div class="w-3 h-3 rounded-full bg-primary-400 border border-white"></div>
+                <div class="w-3 h-3 rounded-full bg-primary-600 border border-white"></div>
+              </div>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-mono text-fx-gray-500 mb-0.5">screen-06</div>
+            <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-primary-600 transition-colors">Clients</div>
+            <div class="text-xs text-fx-gray-500">Gestion clients</div>
+          </div>
+        </a>
+        <a href="screen-07-rapports.html" target="_blank" class="card-hover bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm group">
+          <div class="aspect-video bg-gradient-to-br from-primary-500/5 to-primary-600/10 flex items-center justify-center p-4">
+            <div class="w-full h-full bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-1 p-3">
+              <i class="ri-file-chart-2-line text-primary-500 text-lg"></i>
+              <span class="text-[10px] font-semibold text-fx-gray-700">Rapports</span>
+              <div class="flex gap-0.5 mt-1">
+                <div class="w-1.5 h-4 bg-primary-200 rounded-sm"></div>
+                <div class="w-1.5 h-3 bg-primary-400 rounded-sm"></div>
+                <div class="w-1.5 h-5 bg-primary-600 rounded-sm"></div>
+              </div>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-mono text-fx-gray-500 mb-0.5">screen-07</div>
+            <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-primary-600 transition-colors">Rapports</div>
+            <div class="text-xs text-fx-gray-500">Rapports fiscaux</div>
+          </div>
+        </a>
+        <a href="screen-08-settings.html" target="_blank" class="card-hover bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm group">
+          <div class="aspect-video bg-gradient-to-br from-primary-500/5 to-primary-600/10 flex items-center justify-center p-4">
+            <div class="w-full h-full bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-1 p-3">
+              <i class="ri-settings-3-line text-primary-500 text-lg"></i>
+              <span class="text-[10px] font-semibold text-fx-gray-700">Settings</span>
+              <div class="flex gap-1 mt-1">
+                <div class="w-2 h-2 bg-gray-200 rounded-sm"></div>
+                <div class="w-2 h-2 bg-gray-200 rounded-sm"></div>
+                <div class="w-2 h-2 bg-primary-300 rounded-sm"></div>
+              </div>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-mono text-fx-gray-500 mb-0.5">screen-08</div>
+            <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-primary-600 transition-colors">Paramètres</div>
+            <div class="text-xs text-fx-gray-500">Settings</div>
+          </div>
+        </a>
+        <a href="screen-09-devis.html" target="_blank" class="card-hover bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm group">
+          <div class="aspect-video bg-gradient-to-br from-primary-500/5 to-primary-600/10 flex items-center justify-center p-4">
+            <div class="w-full h-full bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-1 p-3">
+              <i class="ri-bill-line text-primary-500 text-lg"></i>
+              <span class="text-[10px] font-semibold text-fx-gray-700">Devis</span>
+              <div class="w-5 h-2 bg-gray-100 rounded mt-1"></div>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-mono text-fx-gray-500 mb-0.5">screen-09</div>
+            <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-primary-600 transition-colors">Devis</div>
+            <div class="text-xs text-fx-gray-500">Gestion devis</div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- MODULE: Onboarding -->
+    <div class="module-section" data-section="onboarding">
+      <div class="flex items-center gap-2 mb-4">
+        <div class="w-8 h-8 rounded-lg bg-purple-500 flex items-center justify-center"><i class="ri-rocket-line text-white"></i></div>
+        <h2 class="text-lg font-bold text-fx-gray-900">Onboarding</h2>
+        <span class="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full font-semibold">5 écrans</span>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mb-10">
+        <a href="screen-A1-onboarding.html" target="_blank" class="card-hover bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm group">
+          <div class="aspect-video bg-gradient-to-br from-purple-500/5 to-purple-600/10 flex items-center justify-center p-4">
+            <div class="w-full h-full bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-1 p-3">
+              <i class="ri-sparkling-line text-purple-500 text-lg"></i>
+              <span class="text-[10px] font-semibold text-fx-gray-700">Welcome</span>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-mono text-fx-gray-500 mb-0.5">A1</div>
+            <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-purple-600 transition-colors">Welcome</div>
+            <div class="text-xs text-fx-gray-500">Proposition de valeur</div>
+          </div>
+        </a>
+        <a href="screen-A2-onboarding-create.html" target="_blank" class="card-hover bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm group">
+          <div class="aspect-video bg-gradient-to-br from-purple-500/5 to-purple-600/10 flex items-center justify-center p-4">
+            <div class="w-full h-full bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-1 p-3">
+              <i class="ri-file-add-line text-purple-500 text-lg"></i>
+              <span class="text-[10px] font-semibold text-fx-gray-700">Créer</span>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-mono text-fx-gray-500 mb-0.5">A2</div>
+            <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-purple-600 transition-colors">Créer facture</div>
+            <div class="text-xs text-fx-gray-500">Comment créer</div>
+          </div>
+        </a>
+        <a href="screen-A3-onboarding-dgi.html" target="_blank" class="card-hover bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm group">
+          <div class="aspect-video bg-gradient-to-br from-purple-500/5 to-purple-600/10 flex items-center justify-center p-4">
+            <div class="w-full h-full bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-1 p-3">
+              <i class="ri-government-line text-purple-500 text-lg"></i>
+              <span class="text-[10px] font-semibold text-fx-gray-700">DGI</span>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-mono text-fx-gray-500 mb-0.5">A3</div>
+            <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-purple-600 transition-colors">DGI expliquée</div>
+            <div class="text-xs text-fx-gray-500">Transmission DGI</div>
+          </div>
+        </a>
+        <a href="screen-A4-onboarding-complete.html" target="_blank" class="card-hover bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm group">
+          <div class="aspect-video bg-gradient-to-br from-purple-500/5 to-purple-600/10 flex items-center justify-center p-4">
+            <div class="w-full h-full bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-1 p-3">
+              <i class="ri-checkbox-circle-line text-purple-500 text-lg"></i>
+              <span class="text-[10px] font-semibold text-fx-gray-700">Complet</span>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-mono text-fx-gray-500 mb-0.5">A4</div>
+            <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-purple-600 transition-colors">Félicitations</div>
+            <div class="text-xs text-fx-gray-500">Onboarding complete</div>
+          </div>
+        </a>
+        <a href="screen-A5-setup-wizard.html" target="_blank" class="card-hover bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm group">
+          <div class="aspect-video bg-gradient-to-br from-purple-500/5 to-purple-600/10 flex items-center justify-center p-4">
+            <div class="w-full h-full bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-1 p-3">
+              <i class="ri-tools-line text-purple-500 text-lg"></i>
+              <span class="text-[10px] font-semibold text-fx-gray-700">Setup</span>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-mono text-fx-gray-500 mb-0.5">A5</div>
+            <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-purple-600 transition-colors">Setup Wizard</div>
+            <div class="text-xs text-fx-gray-500">Configuration initiale</div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- MODULE: Account -->
+    <div class="module-section" data-section="account">
+      <div class="flex items-center gap-2 mb-4">
+        <div class="w-8 h-8 rounded-lg bg-blue-500 flex items-center justify-center"><i class="ri-user-add-line text-white"></i></div>
+        <h2 class="text-lg font-bold text-fx-gray-900">Création de compte</h2>
+        <span class="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-semibold">6 écrans</span>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mb-10">
+        <a href="screen-B-inscription.html" target="_blank" class="card-hover bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm group">
+          <div class="aspect-video bg-gradient-to-br from-blue-500/5 to-blue-600/10 flex items-center justify-center p-4">
+            <div class="w-full h-full bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-1 p-3">
+              <i class="ri-mail-line text-blue-500 text-lg"></i>
+              <span class="text-[10px] font-semibold text-fx-gray-700">Email</span>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-mono text-fx-gray-500 mb-0.5">B</div>
+            <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-blue-600 transition-colors">Inscription</div>
+            <div class="text-xs text-fx-gray-500">Étape 1: Email</div>
+          </div>
+        </a>
+        <a href="screen-B2-inscription-company.html" target="_blank" class="card-hover bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm group">
+          <div class="aspect-video bg-gradient-to-br from-blue-500/5 to-blue-600/10 flex items-center justify-center p-4">
+            <div class="w-full h-full bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-1 p-3">
+              <i class="ri-building-line text-blue-500 text-lg"></i>
+              <span class="text-[10px] font-semibold text-fx-gray-700">Société</span>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-mono text-fx-gray-500 mb-0.5">B2</div>
+            <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-blue-600 transition-colors">Société</div>
+            <div class="text-xs text-fx-gray-500">Étape 2: Raison sociale</div>
+          </div>
+        </a>
+        <a href="screen-B3-inscription-nif.html" target="_blank" class="card-hover bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm group">
+          <div class="aspect-video bg-gradient-to-br from-blue-500/5 to-blue-600/10 flex items-center justify-center p-4">
+            <div class="w-full h-full bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-1 p-3">
+              <i class="ri-file-text-line text-blue-500 text-lg"></i>
+              <span class="text-[10px] font-semibold text-fx-gray-700">NIF</span>
+              <div class="w-6 h-1 bg-gray-100 rounded mt-0.5"></div>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-mono text-fx-gray-500 mb-0.5">B3</div>
+            <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-blue-600 transition-colors">NIF / RCCM</div>
+            <div class="text-xs text-fx-gray-500">Étape 3: NIF + RCCM</div>
+          </div>
+        </a>
+        <a href="screen-B4-inscription-verify.html" target="_blank" class="card-hover bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm group">
+          <div class="aspect-video bg-gradient-to-br from-blue-500/5 to-blue-600/10 flex items-center justify-center p-4">
+            <div class="w-full h-full bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-1 p-3">
+              <i class="ri-shield-check-line text-blue-500 text-lg"></i>
+              <span class="text-[10px] font-semibold text-fx-gray-700">Verify</span>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-mono text-fx-gray-500 mb-0.5">B4</div>
+            <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-blue-600 transition-colors">Vérification</div>
+            <div class="text-xs text-fx-gray-500">Vérification NIF API</div>
+          </div>
+        </a>
+        <a href="screen-B6-onboarding-post.html" target="_blank" class="card-hover bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm group">
+          <div class="aspect-video bg-gradient-to-br from-blue-500/5 to-blue-600/10 flex items-center justify-center p-4">
+            <div class="w-full h-full bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-1 p-3">
+              <i class="ri-user-settings-line text-blue-500 text-lg"></i>
+              <span class="text-[10px] font-semibold text-fx-gray-700">Post</span>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-mono text-fx-gray-500 mb-0.5">B6</div>
+            <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-blue-600 transition-colors">Post-inscription</div>
+            <div class="text-xs text-fx-gray-500">Onboarding wizard</div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- MODULE: Modals -->
+    <div class="module-section" data-section="modals">
+      <div class="flex items-center gap-2 mb-4">
+        <div class="w-8 h-8 rounded-lg bg-orange-500 flex items-center justify-center"><i class="ri-window-line text-white"></i></div>
+        <h2 class="text-lg font-bold text-fx-gray-900">Modales & États</h2>
+        <span class="text-xs bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full font-semibold">3 écrans</span>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mb-10">
+        <a href="screen-C-modales.html" target="_blank" class="card-hover bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm group">
+          <div class="aspect-video bg-gradient-to-br from-orange-500/5 to-orange-600/10 flex items-center justify-center p-4">
+            <div class="w-full h-full bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-1 p-3">
+              <i class="ri-layout-grid-line text-orange-500 text-lg"></i>
+              <span class="text-[10px] font-semibold text-fx-gray-700">Modales</span>
+              <div class="flex gap-1 mt-1">
+                <div class="w-3 h-3 bg-orange-200 rounded-sm"></div>
+                <div class="w-3 h-3 bg-orange-300 rounded-sm"></div>
+                <div class="w-3 h-3 bg-orange-400 rounded-sm"></div>
+              </div>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-mono text-fx-gray-500 mb-0.5">C</div>
+            <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-orange-600 transition-colors">Modales 14 états</div>
+            <div class="text-xs text-fx-gray-500">Confirmations, erreurs, toasts</div>
+          </div>
+        </a>
+        <a href="screen-C13-modal-edit-line.html" target="_blank" class="card-hover bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm group">
+          <div class="aspect-video bg-gradient-to-br from-orange-500/5 to-orange-600/10 flex items-center justify-center p-4">
+            <div class="w-full h-full bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-1 p-3">
+              <i class="ri-edit-line text-orange-500 text-lg"></i>
+              <span class="text-[10px] font-semibold text-fx-gray-700">Edit Line</span>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-mono text-fx-gray-500 mb-0.5">C13</div>
+            <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-orange-600 transition-colors">Édition ligne</div>
+            <div class="text-xs text-fx-gray-500">Modal édition ligne produit</div>
+          </div>
+        </a>
+        <a href="screen-C14-modal-rapport.html" target="_blank" class="card-hover bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm group">
+          <div class="aspect-video bg-gradient-to-br from-orange-500/5 to-orange-600/10 flex items-center justify-center p-4">
+            <div class="w-full h-full bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-1 p-3">
+              <i class="ri-file-chart-line text-orange-500 text-lg"></i>
+              <span class="text-[10px] font-semibold text-fx-gray-700">Rapport</span>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-mono text-fx-gray-500 mb-0.5">C14</div>
+            <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-orange-600 transition-colors">Génération rapport</div>
+            <div class="text-xs text-fx-gray-500">Modal génération rapport</div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- MODULE: Notifications -->
+    <div class="module-section" data-section="notifications">
+      <div class="flex items-center gap-2 mb-4">
+        <div class="w-8 h-8 rounded-lg bg-yellow-500 flex items-center justify-center"><i class="ri-notification-3-line text-white"></i></div>
+        <h2 class="text-lg font-bold text-fx-gray-900">Notifications</h2>
+        <span class="text-xs bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full font-semibold">2 écrans</span>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mb-10">
+        <a href="screen-D-notifications.html" target="_blank" class="card-hover bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm group">
+          <div class="aspect-video bg-gradient-to-br from-yellow-500/5 to-yellow-600/10 flex items-center justify-center p-4">
+            <div class="w-full h-full bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-1 p-3">
+              <i class="ri-notification-3-line text-yellow-500 text-lg"></i>
+              <span class="text-[10px] font-semibold text-fx-gray-700">Centre</span>
+              <div class="flex gap-0.5 mt-1">
+                <div class="w-2 h-2 bg-yellow-400 rounded-full"></div>
+              </div>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-mono text-fx-gray-500 mb-0.5">D</div>
+            <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-yellow-600 transition-colors">Notifications</div>
+            <div class="text-xs text-fx-gray-500">Centre notifications</div>
+          </div>
+        </a>
+        <a href="screen-D4-mobile-notifications.html" target="_blank" class="card-hover bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm group">
+          <div class="aspect-video bg-gradient-to-br from-yellow-500/5 to-yellow-600/10 flex items-center justify-center p-4">
+            <div class="w-full h-full bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-1 p-3">
+              <i class="ri-notification-badge-line text-yellow-500 text-lg"></i>
+              <span class="text-[10px] font-semibold text-fx-gray-700">Mobile</span>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-mono text-fx-gray-500 mb-0.5">D4</div>
+            <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-yellow-600 transition-colors">Push mobile</div>
+            <div class="text-xs text-fx-gray-500">Notification mobile</div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- MODULE: Roles -->
+    <div class="module-section" data-section="roles">
+      <div class="flex items-center gap-2 mb-4">
+        <div class="w-8 h-8 rounded-lg bg-cyan-600 flex items-center justify-center"><i class="ri-shield-user-line text-white"></i></div>
+        <h2 class="text-lg font-bold text-fx-gray-900">Rôles & Permissions</h2>
+        <span class="text-xs bg-cyan-100 text-cyan-700 px-2 py-0.5 rounded-full font-semibold">3 écrans</span>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mb-10">
+        <a href="screen-E-roles.html" target="_blank" class="card-hover bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm group">
+          <div class="aspect-video bg-gradient-to-br from-cyan-500/5 to-cyan-600/10 flex items-center justify-center p-4">
+            <div class="w-full h-full bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-1 p-3">
+              <i class="ri-shield-star-line text-cyan-600 text-lg"></i>
+              <span class="text-[10px] font-semibold text-fx-gray-700">Rôles</span>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-mono text-fx-gray-500 mb-0.5">E</div>
+            <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-cyan-600 transition-colors">Rôles</div>
+            <div class="text-xs text-fx-gray-500">Gestion rôles</div>
+          </div>
+        </a>
+        <a href="screen-E3-user-edit.html" target="_blank" class="card-hover bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm group">
+          <div class="aspect-video bg-gradient-to-br from-cyan-500/5 to-cyan-600/10 flex items-center justify-center p-4">
+            <div class="w-full h-full bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-1 p-3">
+              <i class="ri-user-settings-line text-cyan-600 text-lg"></i>
+              <span class="text-[10px] font-semibold text-fx-gray-700">Edit</span>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-mono text-fx-gray-500 mb-0.5">E3</div>
+            <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-cyan-600 transition-colors">Modifier user</div>
+            <div class="text-xs text-fx-gray-500">Détail / Modifier utilisateur</div>
+          </div>
+        </a>
+        <a href="screen-E6-user-invite.html" target="_blank" class="card-hover bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm group">
+          <div class="aspect-video bg-gradient-to-br from-cyan-500/5 to-cyan-600/10 flex items-center justify-center p-4">
+            <div class="w-full h-full bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-1 p-3">
+              <i class="ri-user-add-line text-cyan-600 text-lg"></i>
+              <span class="text-[10px] font-semibold text-fx-gray-700">Invite</span>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-mono text-fx-gray-500 mb-0.5">E6</div>
+            <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-cyan-600 transition-colors">Invitation</div>
+            <div class="text-xs text-fx-gray-500">Invitation utilisateur</div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- MODULE: Billing -->
+    <div class="module-section" data-section="billing">
+      <div class="flex items-center gap-2 mb-4">
+        <div class="w-8 h-8 rounded-lg bg-indigo-500 flex items-center justify-center"><i class="ri-bank-card-line text-white"></i></div>
+        <h2 class="text-lg font-bold text-fx-gray-900">Abonnement & Paiement</h2>
+        <span class="text-xs bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full font-semibold">2 écrans</span>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mb-10">
+        <a href="screen-F-abonnement.html" target="_blank" class="card-hover bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm group">
+          <div class="aspect-video bg-gradient-to-br from-indigo-500/5 to-indigo-600/10 flex items-center justify-center p-4">
+            <div class="w-full h-full bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-1 p-3">
+              <i class="ri-vip-diamond-line text-indigo-500 text-lg"></i>
+              <span class="text-[10px] font-semibold text-fx-gray-700">Tarifs</span>
+              <div class="flex gap-0.5 mt-1">
+                <div class="w-2 h-2 bg-indigo-200 rounded-sm"></div>
+                <div class="w-2 h-2 bg-indigo-400 rounded-sm"></div>
+                <div class="w-2 h-2 bg-indigo-600 rounded-sm"></div>
+              </div>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-mono text-fx-gray-500 mb-0.5">F</div>
+            <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-indigo-600 transition-colors">Abonnement</div>
+            <div class="text-xs text-fx-gray-500">Tarifs 3 plans</div>
+          </div>
+        </a>
+        <a href="screen-F4-payment-card.html" target="_blank" class="card-hover bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm group">
+          <div class="aspect-video bg-gradient-to-br from-indigo-500/5 to-indigo-600/10 flex items-center justify-center p-4">
+            <div class="w-full h-full bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-1 p-3">
+              <i class="ri-credit-card-line text-indigo-500 text-lg"></i>
+              <span class="text-[10px] font-semibold text-fx-gray-700">Carte</span>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-mono text-fx-gray-500 mb-0.5">F4</div>
+            <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-indigo-600 transition-colors">Paiement carte</div>
+            <div class="text-xs text-fx-gray-500">Paiement par carte</div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- MODULE: POS -->
+    <div class="module-section" data-section="pos">
+      <div class="flex items-center gap-2 mb-4">
+        <div class="w-8 h-8 rounded-lg bg-teal-500 flex items-center justify-center"><i class="ri-printer-line text-white"></i></div>
+        <h2 class="text-lg font-bold text-fx-gray-900">POS & Impression</h2>
+        <span class="text-xs bg-teal-100 text-teal-700 px-2 py-0.5 rounded-full font-semibold">7 écrans</span>
+        <span class="text-xs bg-teal-500/10 text-teal-700 px-2 py-0.5 rounded-full font-semibold ml-1">✨ NOUVEAU</span>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mb-10">
+        <a href="screen-G-pos.html" target="_blank" class="card-hover bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm group">
+          <div class="aspect-video bg-gradient-to-br from-teal-500/5 to-teal-600/10 flex items-center justify-center p-4">
+            <div class="w-full h-full bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-1 p-3">
+              <i class="ri-tbox-line text-teal-500 text-lg"></i>
+              <span class="text-[10px] font-semibold text-fx-gray-700">POS</span>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-mono text-fx-gray-500 mb-0.5">G</div>
+            <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-teal-600 transition-colors">POS Config</div>
+            <div class="text-xs text-fx-gray-500">Configuration imprimante</div>
+          </div>
+        </a>
+        <a href="screen-G1-pos-caisse.html" target="_blank" class="card-hover bg-white rounded-2xl border-2 border-teal-300 overflow-hidden shadow-sm group relative">
+          <div class="absolute top-2 right-2 bg-teal-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full z-10">✨ NEW</div>
+          <div class="aspect-video bg-gradient-to-br from-teal-500/5 to-teal-600/10 flex items-center justify-center p-4">
+            <div class="w-full h-full bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-1 p-3">
+              <i class="ri-shopping-cart-2-line text-teal-500 text-lg"></i>
+              <span class="text-[10px] font-semibold text-fx-gray-700">Caisse</span>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-mono text-fx-gray-500 mb-0.5">G1</div>
+            <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-teal-600 transition-colors">Interface caisse</div>
+            <div class="text-xs text-fx-gray-500">Grille produits + Panier</div>
+          </div>
+        </a>
+        <a href="screen-G2-pos-catalogue.html" target="_blank" class="card-hover bg-white rounded-2xl border-2 border-teal-300 overflow-hidden shadow-sm group relative">
+          <div class="absolute top-2 right-2 bg-teal-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full z-10">✨ NEW</div>
+          <div class="aspect-video bg-gradient-to-br from-teal-500/5 to-teal-600/10 flex items-center justify-center p-4">
+            <div class="w-full h-full bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-1 p-3">
+              <i class="ri-file-list-3-line text-teal-500 text-lg"></i>
+              <span class="text-[10px] font-semibold text-fx-gray-700">Catalogue</span>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-mono text-fx-gray-500 mb-0.5">G2</div>
+            <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-teal-600 transition-colors">Catalogue produits</div>
+            <div class="text-xs text-fx-gray-500">Recherche + Filtres + Ajout</div>
+          </div>
+        </a>
+        <a href="screen-G3-pos-checkout.html" target="_blank" class="card-hover bg-white rounded-2xl border-2 border-teal-300 overflow-hidden shadow-sm group relative">
+          <div class="absolute top-2 right-2 bg-teal-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full z-10">✨ NEW</div>
+          <div class="aspect-video bg-gradient-to-br from-teal-500/5 to-teal-600/10 flex items-center justify-center p-4">
+            <div class="w-full h-full bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-1 p-3">
+              <i class="ri-wallet-3-line text-teal-500 text-lg"></i>
+              <span class="text-[10px] font-semibold text-fx-gray-700">Checkout</span>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-mono text-fx-gray-500 mb-0.5">G3</div>
+            <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-teal-600 transition-colors">Checkout</div>
+            <div class="text-xs text-fx-gray-500">Paiement + Monnaie</div>
+          </div>
+        </a>
+        <a href="screen-G4-pos-settings.html" target="_blank" class="card-hover bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm group">
+          <div class="aspect-video bg-gradient-to-br from-teal-500/5 to-teal-600/10 flex items-center justify-center p-4">
+            <div class="w-full h-full bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-1 p-3">
+              <i class="ri-settings-3-line text-teal-500 text-lg"></i>
+              <span class="text-[10px] font-semibold text-fx-gray-700">Settings</span>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-mono text-fx-gray-500 mb-0.5">G4</div>
+            <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-teal-600 transition-colors">Paramètres POS</div>
+            <div class="text-xs text-fx-gray-500">Configuration POS</div>
+          </div>
+        </a>
+        <a href="screen-G5-pos-recu.html" target="_blank" class="card-hover bg-white rounded-2xl border-2 border-teal-300 overflow-hidden shadow-sm group relative">
+          <div class="absolute top-2 right-2 bg-teal-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full z-10">✨ NEW</div>
+          <div class="aspect-video bg-gradient-to-br from-teal-500/5 to-teal-600/10 flex items-center justify-center p-4">
+            <div class="w-full h-full bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-1 p-3">
+              <i class="ri-file-text-line text-teal-500 text-lg"></i>
+              <span class="text-[10px] font-semibold text-fx-gray-700">Reçu</span>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-mono text-fx-gray-500 mb-0.5">G5</div>
+            <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-teal-600 transition-colors">Ticket de caisse</div>
+            <div class="text-xs text-fx-gray-500">Thermal / Impression</div>
+          </div>
+        </a>
+        <a href="screen-G6-pos-historique.html" target="_blank" class="card-hover bg-white rounded-2xl border-2 border-teal-300 overflow-hidden shadow-sm group relative">
+          <div class="absolute top-2 right-2 bg-teal-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full z-10">✨ NEW</div>
+          <div class="aspect-video bg-gradient-to-br from-teal-500/5 to-teal-600/10 flex items-center justify-center p-4">
+            <div class="w-full h-full bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-1 p-3">
+              <i class="ri-history-line text-teal-500 text-lg"></i>
+              <span class="text-[10px] font-semibold text-fx-gray-700">Historique</span>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-mono text-fx-gray-500 mb-0.5">G6</div>
+            <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-teal-600 transition-colors">Historique ventes</div>
+            <div class="text-xs text-fx-gray-500">Transactions du jour</div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- MODULE: Finance & Comptabilité OHADA -->
+    <div class="module-section" data-section="finance">
+      <div class="flex items-center gap-2 mb-4">
+        <div class="w-8 h-8 rounded-lg bg-indigo-500 flex items-center justify-center"><i class="ri-coins-line text-white"></i></div>
+        <h2 class="text-lg font-bold text-fx-gray-900">Finance & Comptabilité OHADA</h2>
+        <span class="text-xs bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full font-semibold">9 écrans ✨</span>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mb-10">
+        <!-- K1 -->
+        <a href="screen-K1-plan-comptable.html" class="group block fade-in" style="animation-delay: 0.01s">
+          <div class="relative bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-1 overflow-hidden">
+            <div class="bg-gradient-to-br from-indigo-50 to-indigo-100 p-4 pb-3 flex flex-col items-center justify-center" style="height: 130px">
+              <div class="text-3xl mb-1">📊</div>
+              <div class="text-[10px] font-bold text-indigo-600 mt-1">Plan OHADA</div>
+            </div>
+            <div class="p-3">
+              <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-indigo-600 transition-colors">Plan comptable</div>
+              <div class="text-xs text-fx-gray-500">Classes 1-8, codes, libellés</div>
+            </div>
+            <div class="absolute top-2 right-2 text-[9px] bg-indigo-500 text-white px-1.5 py-0.5 rounded-full font-bold">K1</div>
+          </div>
+        </a>
+        <!-- K2 -->
+        <a href="screen-K2-journal.html" class="group block fade-in" style="animation-delay: 0.02s">
+          <div class="relative bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-1 overflow-hidden">
+            <div class="bg-gradient-to-br from-indigo-50 to-indigo-100 p-4 pb-3 flex flex-col items-center justify-center" style="height: 130px">
+              <div class="text-3xl mb-1">📒</div>
+              <div class="text-[10px] font-bold text-indigo-600 mt-1">Journal</div>
+            </div>
+            <div class="p-3">
+              <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-indigo-600 transition-colors">Journal écritures</div>
+              <div class="text-xs text-fx-gray-500">Chronologique, фильтры</div>
+            </div>
+            <div class="absolute top-2 right-2 text-[9px] bg-indigo-500 text-white px-1.5 py-0.5 rounded-full font-bold">K2</div>
+          </div>
+        </a>
+        <!-- K3 -->
+        <a href="screen-K3-grand-livre.html" class="group block fade-in" style="animation-delay: 0.03s">
+          <div class="relative bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-1 overflow-hidden">
+            <div class="bg-gradient-to-br from-indigo-50 to-indigo-100 p-4 pb-3 flex flex-col items-center justify-center" style="height: 130px">
+              <div class="text-3xl mb-1">📖</div>
+              <div class="text-[10px] font-bold text-indigo-600 mt-1">Grand livre</div>
+            </div>
+            <div class="p-3">
+              <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-indigo-600 transition-colors">Grand livre</div>
+              <div class="text-xs text-fx-gray-500">Mouvements par compte</div>
+            </div>
+            <div class="absolute top-2 right-2 text-[9px] bg-indigo-500 text-white px-1.5 py-0.5 rounded-full font-bold">K3</div>
+          </div>
+        </a>
+        <!-- K4 -->
+        <a href="screen-K4-balance.html" class="group block fade-in" style="animation-delay: 0.04s">
+          <div class="relative bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-1 overflow-hidden">
+            <div class="bg-gradient-to-br from-indigo-50 to-indigo-100 p-4 pb-3 flex flex-col items-center justify-center" style="height: 130px">
+              <div class="text-3xl mb-1">⚖️</div>
+              <div class="text-[10px] font-bold text-indigo-600 mt-1">Balance</div>
+            </div>
+            <div class="p-3">
+              <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-indigo-600 transition-colors">Balance</div>
+              <div class="text-xs text-fx-gray-500">Périodique, équilibre</div>
+            </div>
+            <div class="absolute top-2 right-2 text-[9px] bg-indigo-500 text-white px-1.5 py-0.5 rounded-full font-bold">K4</div>
+          </div>
+        </a>
+        <!-- K5 -->
+        <a href="screen-K5-compte-resultat.html" class="group block fade-in" style="animation-delay: 0.05s">
+          <div class="relative bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-1 overflow-hidden">
+            <div class="bg-gradient-to-br from-indigo-50 to-indigo-100 p-4 pb-3 flex flex-col items-center justify-center" style="height: 130px">
+              <div class="text-3xl mb-1">📈</div>
+              <div class="text-[10px] font-bold text-indigo-600 mt-1">CdR</div>
+            </div>
+            <div class="p-3">
+              <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-indigo-600 transition-colors">Compte de résultat</div>
+              <div class="text-xs text-fx-gray-500">Produits, charges, résultat</div>
+            </div>
+            <div class="absolute top-2 right-2 text-[9px] bg-indigo-500 text-white px-1.5 py-0.5 rounded-full font-bold">K5</div>
+          </div>
+        </a>
+        <!-- K6 -->
+        <a href="screen-K6-bilan.html" class="group block fade-in" style="animation-delay: 0.06s">
+          <div class="relative bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-1 overflow-hidden">
+            <div class="bg-gradient-to-br from-indigo-50 to-indigo-100 p-4 pb-3 flex flex-col items-center justify-center" style="height: 130px">
+              <div class="text-3xl mb-1">🏛️</div>
+              <div class="text-[10px] font-bold text-indigo-600 mt-1">Bilan</div>
+            </div>
+            <div class="p-3">
+              <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-indigo-600 transition-colors">Bilan</div>
+              <div class="text-xs text-fx-gray-500">Actif = Passif</div>
+            </div>
+            <div class="absolute top-2 right-2 text-[9px] bg-indigo-500 text-white px-1.5 py-0.5 rounded-full font-bold">K6</div>
+          </div>
+        </a>
+        <!-- K7 -->
+        <a href="screen-K7-tresorerie.html" class="group block fade-in" style="animation-delay: 0.07s">
+          <div class="relative bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-1 overflow-hidden">
+            <div class="bg-gradient-to-br from-indigo-50 to-indigo-100 p-4 pb-3 flex flex-col items-center justify-center" style="height: 130px">
+              <div class="text-3xl mb-1">💰</div>
+              <div class="text-[10px] font-bold text-indigo-600 mt-1">Caisse</div>
+            </div>
+            <div class="p-3">
+              <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-indigo-600 transition-colors">Trésorerie</div>
+              <div class="text-xs text-fx-gray-500">Flux, caisse, banque</div>
+            </div>
+            <div class="absolute top-2 right-2 text-[9px] bg-indigo-500 text-white px-1.5 py-0.5 rounded-full font-bold">K7</div>
+          </div>
+        </a>
+        <!-- K8 -->
+        <a href="screen-K8-releve-bancaire.html" class="group block fade-in" style="animation-delay: 0.08s">
+          <div class="relative bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-1 overflow-hidden">
+            <div class="bg-gradient-to-br from-indigo-50 to-indigo-100 p-4 pb-3 flex flex-col items-center justify-center" style="height: 130px">
+              <div class="text-3xl mb-1">🏦</div>
+              <div class="text-[10px] font-bold text-indigo-600 mt-1">Rappro.</div>
+            </div>
+            <div class="p-3">
+              <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-indigo-600 transition-colors">Rapprochement</div>
+              <div class="text-xs text-fx-gray-500">Relevé bancaire, lettrage</div>
+            </div>
+            <div class="absolute top-2 right-2 text-[9px] bg-indigo-500 text-white px-1.5 py-0.5 rounded-full font-bold">K8</div>
+          </div>
+        </a>
+        <!-- K9 -->
+        <a href="screen-K9-ohada-export.html" class="group block fade-in" style="animation-delay: 0.09s">
+          <div class="relative bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-1 overflow-hidden">
+            <div class="bg-gradient-to-br from-indigo-50 to-indigo-100 p-4 pb-3 flex flex-col items-center justify-center" style="height: 130px">
+              <div class="text-3xl mb-1">📦</div>
+              <div class="text-[10px] font-bold text-indigo-600 mt-1">IGF</div>
+            </div>
+            <div class="p-3">
+              <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-indigo-600 transition-colors">Exports SYSCOHADA</div>
+              <div class="text-xs text-fx-gray-500">Pack IGF, ZIP, PDF</div>
+            </div>
+            <div class="absolute top-2 right-2 text-[9px] bg-indigo-500 text-white px-1.5 py-0.5 rounded-full font-bold">K9</div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- MODULE: Caisse Physique -->
+    <div class="module-section" data-section="caisse">
+      <div class="flex items-center gap-2 mb-4">
+        <div class="w-8 h-8 rounded-lg bg-green-600 flex items-center justify-center"><i class="ri-money-dollar-circle-line text-white"></i></div>
+        <h2 class="text-lg font-bold text-fx-gray-900">Caisse Physique</h2>
+        <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-semibold">4 écrans ✨</span>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mb-10">
+        <!-- L1 -->
+        <a href="screen-L1-ouverture-caisse.html" class="group block fade-in" style="animation-delay: 0.01s">
+          <div class="relative bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-1 overflow-hidden">
+            <div class="bg-gradient-to-br from-green-50 to-green-100 p-4 pb-3 flex flex-col items-center justify-center" style="height: 130px">
+              <div class="text-3xl mb-1">🔓</div>
+              <div class="text-[10px] font-bold text-green-600 mt-1">Ouverture</div>
+            </div>
+            <div class="p-3">
+              <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-green-600 transition-colors">Ouverture de caisse</div>
+              <div class="text-xs text-fx-gray-500">Fonds initial, billetage</div>
+            </div>
+            <div class="absolute top-2 right-2 text-[9px] bg-green-600 text-white px-1.5 py-0.5 rounded-full font-bold">L1</div>
+          </div>
+        </a>
+        <!-- L2 -->
+        <a href="screen-L2-journal-caisse.html" class="group block fade-in" style="animation-delay: 0.02s">
+          <div class="relative bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-1 overflow-hidden">
+            <div class="bg-gradient-to-br from-green-50 to-green-100 p-4 pb-3 flex flex-col items-center justify-center" style="height: 130px">
+              <div class="text-3xl mb-1">📒</div>
+              <div class="text-[10px] font-bold text-green-600 mt-1">Journal</div>
+            </div>
+            <div class="p-3">
+              <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-green-600 transition-colors">Journal de caisse</div>
+              <div class="text-xs text-fx-gray-500">Opérations jour, soldes</div>
+            </div>
+            <div class="absolute top-2 right-2 text-[9px] bg-green-600 text-white px-1.5 py-0.5 rounded-full font-bold">L2</div>
+          </div>
+        </a>
+        <!-- L3 -->
+        <a href="screen-L3-fermeture-caisse.html" class="group block fade-in" style="animation-delay: 0.03s">
+          <div class="relative bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-1 overflow-hidden">
+            <div class="bg-gradient-to-br from-green-50 to-green-100 p-4 pb-3 flex flex-col items-center justify-center" style="height: 130px">
+              <div class="text-3xl mb-1">🔒</div>
+              <div class="text-[10px] font-bold text-green-600 mt-1">Fermeture</div>
+            </div>
+            <div class="p-3">
+              <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-green-600 transition-colors">Fermeture de caisse</div>
+              <div class="text-xs text-fx-gray-500">Comptage, écart, PIN</div>
+            </div>
+            <div class="absolute top-2 right-2 text-[9px] bg-green-600 text-white px-1.5 py-0.5 rounded-full font-bold">L3</div>
+          </div>
+        </a>
+        <!-- L4 -->
+        <a href="screen-L4-transfert-caisse-banque.html" class="group block fade-in" style="animation-delay: 0.04s">
+          <div class="relative bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-1 overflow-hidden">
+            <div class="bg-gradient-to-br from-green-50 to-green-100 p-4 pb-3 flex flex-col items-center justify-center" style="height: 130px">
+              <div class="text-3xl mb-1">🏦</div>
+              <div class="text-[10px] font-bold text-green-600 mt-1">Transfert</div>
+            </div>
+            <div class="p-3">
+              <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-green-600 transition-colors">Transfert Banque</div>
+              <div class="text-xs text-fx-gray-500">Dépôt, retrait, historique</div>
+            </div>
+            <div class="absolute top-2 right-2 text-[9px] bg-green-600 text-white px-1.5 py-0.5 rounded-full font-bold">L4</div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- MODULE: Mobile -->
+    <div class="module-section" data-section="mobile">
+      <div class="flex items-center gap-2 mb-4">
+        <div class="w-8 h-8 rounded-lg bg-pink-500 flex items-center justify-center"><i class="ri-smartphone-line text-white"></i></div>
+        <h2 class="text-lg font-bold text-fx-gray-900">Écrans Mobile</h2>
+        <span class="text-xs bg-pink-100 text-pink-700 px-2 py-0.5 rounded-full font-semibold">4 écrans</span>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mb-10">
+        <a href="screen-H-mobile.html" target="_blank" class="card-hover bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm group">
+          <div class="aspect-video bg-gradient-to-br from-pink-500/5 to-pink-600/10 flex items-center justify-center p-4">
+            <div class="w-14 h-24 bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-1 p-2 mx-auto">
+              <div class="w-10 h-6 bg-pink-100 rounded-sm"></div>
+              <i class="ri-dashboard-line text-pink-400 text-sm"></i>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-mono text-fx-gray-500 mb-0.5">H</div>
+            <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-pink-600 transition-colors">Dashboard</div>
+            <div class="text-xs text-fx-gray-500">Dashboard mobile</div>
+          </div>
+        </a>
+        <a href="screen-H4-invoice-list-mobile.html" target="_blank" class="card-hover bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm group">
+          <div class="aspect-video bg-gradient-to-br from-pink-500/5 to-pink-600/10 flex items-center justify-center p-4">
+            <div class="w-14 h-24 bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-1 p-2 mx-auto">
+              <i class="ri-file-list-2-line text-pink-400 text-sm"></i>
+              <div class="w-8 h-1 bg-pink-100 rounded"></div>
+              <div class="w-8 h-1 bg-pink-100 rounded"></div>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-mono text-fx-gray-500 mb-0.5">H4</div>
+            <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-pink-600 transition-colors">Liste factures</div>
+            <div class="text-xs text-fx-gray-500">Liste mobile</div>
+          </div>
+        </a>
+        <a href="screen-H6-invoice-detail-mobile.html" target="_blank" class="card-hover bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm group">
+          <div class="aspect-video bg-gradient-to-br from-pink-500/5 to-pink-600/10 flex items-center justify-center p-4">
+            <div class="w-14 h-24 bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-1 p-2 mx-auto">
+              <i class="ri-file-text-line text-pink-400 text-sm"></i>
+              <div class="w-6 h-1 bg-pink-100 rounded"></div>
+              <div class="w-4 h-4 border border-pink-200 rounded flex items-center justify-center">
+                <div class="w-1.5 h-1.5 bg-pink-400 rounded-sm"></div>
+              </div>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-mono text-fx-gray-500 mb-0.5">H6</div>
+            <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-pink-600 transition-colors">Détail facture</div>
+            <div class="text-xs text-fx-gray-500">Facture mobile</div>
+          </div>
+        </a>
+        <a href="screen-H7-notification-center-mobile.html" target="_blank" class="card-hover bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm group">
+          <div class="aspect-video bg-gradient-to-br from-pink-500/5 to-pink-600/10 flex items-center justify-center p-4">
+            <div class="w-14 h-24 bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-1 p-2 mx-auto">
+              <i class="ri-notification-3-line text-pink-400 text-sm"></i>
+              <div class="w-3 h-3 rounded-full bg-pink-400 flex items-center justify-center text-white text-[6px]">3</div>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-mono text-fx-gray-500 mb-0.5">H7</div>
+            <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-pink-600 transition-colors">Notifications</div>
+            <div class="text-xs text-fx-gray-500">Centre notifications mobile</div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- MODULE: Detail -->
+    <div class="module-section" data-section="detail">
+      <div class="flex items-center gap-2 mb-4">
+        <div class="w-8 h-8 rounded-lg bg-violet-500 flex items-center justify-center"><i class="ri-file-list-3-line text-white"></i></div>
+        <h2 class="text-lg font-bold text-fx-gray-900">Sous-écrans détaillés</h2>
+        <span class="text-xs bg-violet-100 text-violet-700 px-2 py-0.5 rounded-full font-semibold">7 écrans</span>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mb-10">
+        <a href="screen-J1-client-detail.html" target="_blank" class="card-hover bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm group">
+          <div class="aspect-video bg-gradient-to-br from-violet-500/5 to-violet-600/10 flex items-center justify-center p-4">
+            <div class="w-full h-full bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-1 p-3">
+              <i class="ri-user-3-line text-violet-500 text-lg"></i>
+              <span class="text-[10px] font-semibold text-fx-gray-700">Client</span>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-mono text-fx-gray-500 mb-0.5">J1</div>
+            <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-violet-600 transition-colors">Fiche client</div>
+            <div class="text-xs text-fx-gray-500">Détail client</div>
+          </div>
+        </a>
+        <a href="screen-J2-invoice-detail-full.html" target="_blank" class="card-hover bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm group">
+          <div class="aspect-video bg-gradient-to-br from-violet-500/5 to-violet-600/10 flex items-center justify-center p-4">
+            <div class="w-full h-full bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-1 p-3">
+              <i class="ri-file-text-line text-violet-500 text-lg"></i>
+              <span class="text-[10px] font-semibold text-fx-gray-700">Full</span>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-mono text-fx-gray-500 mb-0.5">J2</div>
+            <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-violet-600 transition-colors">Détail plein écran</div>
+            <div class="text-xs text-fx-gray-500">Facture plein écran</div>
+          </div>
+        </a>
+        <a href="screen-J3-invoice-history.html" target="_blank" class="card-hover bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm group">
+          <div class="aspect-video bg-gradient-to-br from-violet-500/5 to-violet-600/10 flex items-center justify-center p-4">
+            <div class="w-full h-full bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-1 p-3">
+              <i class="ri-history-line text-violet-500 text-lg"></i>
+              <span class="text-[10px] font-semibold text-fx-gray-700">Historique</span>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-mono text-fx-gray-500 mb-0.5">J3</div>
+            <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-violet-600 transition-colors">Historique</div>
+            <div class="text-xs text-fx-gray-500">Historique modifications</div>
+          </div>
+        </a>
+        <a href="screen-J4-settings-notifications.html" target="_blank" class="card-hover bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm group">
+          <div class="aspect-video bg-gradient-to-br from-violet-500/5 to-violet-600/10 flex items-center justify-center p-4">
+            <div class="w-full h-full bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-1 p-3">
+              <i class="ri-notification-3-line text-violet-500 text-lg"></i>
+              <span class="text-[10px] font-semibold text-fx-gray-700">Notif</span>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-mono text-fx-gray-500 mb-0.5">J4</div>
+            <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-violet-600 transition-colors">Paramètres notif</div>
+            <div class="text-xs text-fx-gray-500">Notifications détaillées</div>
+          </div>
+        </a>
+        <a href="screen-J5-settings-integrations.html" target="_blank" class="card-hover bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm group">
+          <div class="aspect-video bg-gradient-to-br from-violet-500/5 to-violet-600/10 flex items-center justify-center p-4">
+            <div class="w-full h-full bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-1 p-3">
+              <i class="ri-share-line text-violet-500 text-lg"></i>
+              <span class="text-[10px] font-semibold text-fx-gray-700">Intég</span>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-mono text-fx-gray-500 mb-0.5">J5</div>
+            <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-violet-600 transition-colors">Intégrations</div>
+            <div class="text-xs text-fx-gray-500">Settings intégrations</div>
+          </div>
+        </a>
+        <a href="screen-J6-settings-security.html" target="_blank" class="card-hover bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm group">
+          <div class="aspect-video bg-gradient-to-br from-violet-500/5 to-violet-600/10 flex items-center justify-center p-4">
+            <div class="w-full h-full bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-1 p-3">
+              <i class="ri-shield-check-line text-violet-500 text-lg"></i>
+              <span class="text-[10px] font-semibold text-fx-gray-700">Sécurité</span>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-mono text-fx-gray-500 mb-0.5">J6</div>
+            <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-violet-600 transition-colors">Sécurité</div>
+            <div class="text-xs text-fx-gray-500">Settings sécurité</div>
+          </div>
+        </a>
+        <a href="screen-J7-settings-export-advanced.html" target="_blank" class="card-hover bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm group">
+          <div class="aspect-video bg-gradient-to-br from-violet-500/5 to-violet-600/10 flex items-center justify-center p-4">
+            <div class="w-full h-full bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-1 p-3">
+              <i class="ri-download-cloud-line text-violet-500 text-lg"></i>
+              <span class="text-[10px] font-semibold text-fx-gray-700">Export</span>
+            </div>
+          </div>
+          <div class="p-3">
+            <div class="text-xs font-mono text-fx-gray-500 mb-0.5">J7</div>
+            <div class="text-sm font-semibold text-fx-gray-900 group-hover:text-violet-600 transition-colors">Export advanced</div>
+            <div class="text-xs text-fx-gray-500">Export avancé</div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function showModule(module) {
+      // Hide all sections
+      document.querySelectorAll('.module-section').forEach(s => s.classList.remove('active'));
+      // Show selected
+      if (module === 'all') {
+        document.querySelectorAll('.module-section').forEach(s => s.classList.add('active'));
+      } else {
+        document.querySelector(`.module-section[data-section="${module}"]`).classList.add('active');
+      }
+      // Update buttons
+      document.querySelectorAll('.module-btn').forEach(b => {
+        b.classList.remove('bg-primary-500', 'text-white', 'shadow-sm');
+        b.classList.add('bg-white', 'text-fx-gray-700', 'border', 'border-gray-200');
+      });
+      const activeBtn = document.querySelector(`.module-btn[data-module="${module}"]`);
+      if (activeBtn) {
+        activeBtn.classList.remove('bg-white', 'text-fx-gray-700', 'border', 'border-gray-200');
+        activeBtn.classList.add('bg-primary-500', 'text-white', 'shadow-sm');
+      }
+    }
+  </script>
+
+</body>
+</html>

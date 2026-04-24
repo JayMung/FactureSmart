@@ -206,7 +206,7 @@ npm version patch  # 1.0.2 → 1.0.3
 
 ---
 
-**FactureX TypeScript Resolution - Complete Success** ✨
+**FactureSmart TypeScript Resolution - Complete Success** ✨
 
 ---
 

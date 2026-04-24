@@ -296,4 +296,4 @@ Toujours afficher un message d'erreur explicite à l'utilisateur.
 ---
 
 **Auteur** : Cascade AI
-**Projet** : FactureX
+**Projet** : FactureSmart

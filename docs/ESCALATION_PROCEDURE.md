@@ -1,4 +1,4 @@
-# Procédure d'Escalade — FactureX
+# Procédure d'Escalade — FactureSmart
 
 **Date de mise en vigueur** : 2026-04-23  
 **Validée par** : Kimi - CEO

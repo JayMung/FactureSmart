@@ -1,4 +1,4 @@
-# ✅ Résumé du Déploiement de l'API FactureX
+# ✅ Résumé du Déploiement de l'API FactureSmart
 
 ## 📋 Ce qui a été créé
 
@@ -216,7 +216,7 @@ Via SQL (temporaire) :
 -- Voir le guide d'implémentation pour le script complet
 ```
 
-Ou créer une interface dans FactureX pour gérer les clés API.
+Ou créer une interface dans FactureSmart pour gérer les clés API.
 
 ### 4. Tester l'API
 
@@ -246,7 +246,7 @@ curl -X POST "https://ddnxtuhswmewoxrwswzg.supabase.co/functions/v1/api-webhooks
 ## 📁 Structure des Fichiers Créés
 
 ```
-FactureX/
+FactureSmart/
 ├── supabase/
 │   ├── functions/
 │   │   ├── _shared/

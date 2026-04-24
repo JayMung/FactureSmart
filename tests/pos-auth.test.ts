@@ -1,6 +1,6 @@
 /**
  * POS Auth & DGI Tests
- * Tests pour FactureX POS - Auth et Declarants DGI
+ * Tests pour FactureSmart POS - Auth et Declarants DGI
  */
 import { describe, it, expect, beforeAll } from 'vitest';
 

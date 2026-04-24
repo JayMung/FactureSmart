@@ -1,4 +1,4 @@
-# FactureX Security Fix Checklist
+# FactureSmart Security Fix Checklist
 
 This checklist provides actionable steps to fix all identified security vulnerabilities.
 
@@ -441,7 +441,7 @@ serve(async (req) => {
     const response = await fetch(imageUrl, {
       signal: controller.signal,
       headers: {
-        'User-Agent': 'FactureX-ImageProxy/1.0',
+        'User-Agent': 'FactureSmart-ImageProxy/1.0',
         'Accept': 'image/*',
       },
     });

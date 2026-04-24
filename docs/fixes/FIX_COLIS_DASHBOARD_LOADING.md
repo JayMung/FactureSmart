@@ -185,4 +185,4 @@ export const COLIS_STATUTS = {
 ---
 
 **Auteur** : Cascade AI
-**Projet** : FactureX
+**Projet** : FactureSmart

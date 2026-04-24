@@ -1,8 +1,8 @@
-# 🛡️ Guide du Dashboard de Sécurité - FactureX
+# 🛡️ Guide du Dashboard de Sécurité - FactureSmart
 
 ## 📋 Vue d'ensemble
 
-Le **Dashboard de Sécurité** est une interface complète de monitoring et d'analyse des événements de sécurité de l'application FactureX. Il regroupe 4 onglets spécialisés pour une surveillance à 360° de la sécurité.
+Le **Dashboard de Sécurité** est une interface complète de monitoring et d'analyse des événements de sécurité de l'application FactureSmart. Il regroupe 4 onglets spécialisés pour une surveillance à 360° de la sécurité.
 
 **URL**: `/security-dashboard`  
 **Accès**: Administrateurs uniquement
@@ -360,7 +360,7 @@ ALERT_EMAIL=admin@facturex.com
 
 **Template email:**
 ```html
-Subject: [FactureX] Alerte de sécurité critique
+Subject: [FactureSmart] Alerte de sécurité critique
 
 Bonjour,
 
@@ -375,7 +375,7 @@ Détails: {details}
 Accédez au dashboard: https://facturex.com/security-dashboard
 
 Cordialement,
-Système de sécurité FactureX
+Système de sécurité FactureSmart
 ```
 
 ### Alertes Slack (À implémenter)

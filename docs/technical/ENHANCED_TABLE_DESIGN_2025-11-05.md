@@ -374,7 +374,7 @@ test('EnhancedTable renders data correctly', () => {
 ---
 
 **Auteur** : Cascade AI  
-**Projet** : FactureX  
+**Projet** : FactureSmart  
 **Module** : EnhancedTable Design System  
 **Statut** : ✅ **UI MODERNE UNIFIÉ**
 
@@ -384,4 +384,4 @@ test('EnhancedTable renders data correctly', () => {
 
 **Toutes les pages principales (Clients, Factures, Transactions) utilisent maintenant le même design moderne avec bulk select !** 🎨
 
-#FactureX #DesignSystem #UI #BulkSelect
+#FactureSmart #DesignSystem #UI #BulkSelect

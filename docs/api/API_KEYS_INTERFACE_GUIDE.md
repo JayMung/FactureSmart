@@ -44,7 +44,7 @@
 ### Accéder à la Page
 
 **Option 1 : Via les Paramètres (Recommandé)**
-1. Connectez-vous à FactureX
+1. Connectez-vous à FactureSmart
 2. Cliquez sur **"Paramètres"** dans le menu de gauche
 3. Sélectionnez l'onglet **"Clés API"** 🔑
 4. Cliquez sur **"Gérer les Clés API"**
@@ -255,7 +255,7 @@ FROM profiles
 WHERE id = auth.uid();
 ```
 
-Ou consultez votre profil dans FactureX.
+Ou consultez votre profil dans FactureSmart.
 
 ---
 
@@ -290,7 +290,7 @@ Ou consultez votre profil dans FactureX.
 ✅ **Responsive design**  
 ✅ **Intégré dans le menu principal**  
 
-**Vous pouvez maintenant créer et gérer vos clés API directement depuis FactureX ! 🚀**
+**Vous pouvez maintenant créer et gérer vos clés API directement depuis FactureSmart ! 🚀**
 
 ---
 

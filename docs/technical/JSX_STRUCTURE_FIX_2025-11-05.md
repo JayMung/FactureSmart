@@ -103,7 +103,7 @@ Lors de l'ajout de l'Error Boundary, une balise `</div>` supplémentaire a été
 ---
 
 **Auteur** : Cascade AI  
-**Projet** : FactureX  
+**Projet** : FactureSmart  
 **Module** : Colis Aériens  
 **Statut** : ✅ **STRUCTURE JSX CORRIGÉE**
 
@@ -113,4 +113,4 @@ Lors de l'ajout de l'Error Boundary, une balise `</div>` supplémentaire a été
 
 **Toutes les erreurs de structure sont résolues, la compilation fonctionne parfaitement !** 🚀
 
-#FactureX #JSX #TypeScript #StructureFix
+#FactureSmart #JSX #TypeScript #StructureFix

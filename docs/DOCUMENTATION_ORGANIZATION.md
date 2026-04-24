@@ -15,7 +15,7 @@
 ### **2. Structure Actuelle**
 
 ```
-FactureX/
+FactureSmart/
 ├── README.md (nouveau - guide principal)
 ├── docs/
 │   ├── README.md (index de la documentation)
@@ -158,7 +158,7 @@ docs: organize documentation - move all .md files to docs folder
 **Accessibilité** : Améliorée  
 **Maintenabilité** : Facilitée  
 
-**La documentation de FactureX est maintenant bien organisée et facile à naviguer !** 📚✨
+**La documentation de FactureSmart est maintenant bien organisée et facile à naviguer !** 📚✨
 
 ---
 

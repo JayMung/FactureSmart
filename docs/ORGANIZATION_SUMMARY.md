@@ -1,6 +1,6 @@
 # 📁 Organisation de la Documentation - Résumé
 
-Ce document résume la nouvelle organisation de la documentation FactureX effectuée le 13 novembre 2025.
+Ce document résume la nouvelle organisation de la documentation FactureSmart effectuée le 13 novembre 2025.
 
 ---
 
@@ -252,7 +252,7 @@ Tous les dossiers existants ont été conservés sans modification :
 
 ## 🎉 Résultat
 
-**Documentation FactureX v2.0** :
+**Documentation FactureSmart v2.0** :
 - ✅ **Organisée** : Structure claire et logique
 - ✅ **Accessible** : Navigation facilitée
 - ✅ **Complète** : 120+ documents

@@ -1,4 +1,4 @@
--- Migration: Fix legacy COCCINELLE tables for FactureX compatibility
+-- Migration: Fix legacy COCCINELLE tables for FactureSmart compatibility
 -- Date: 2026-04-23
 -- Purpose: Create stub tables referenced by legacy hooks to prevent 406 errors
 
@@ -98,6 +98,6 @@ CREATE POLICY "transactions_select" ON public.transactions
 CREATE POLICY "transactions_insert" ON public.transactions
   FOR INSERT TO authenticated WITH CHECK (true);
 
-COMMENT ON TABLE public.mouvements_comptes IS 'Legacy COCCINELLE table - stubbed for FactureX compatibility';
-COMMENT ON TABLE public.comptes_financiers IS 'Legacy COCCINELLE table - stubbed for FactureX compatibility';
-COMMENT ON TABLE public.transactions IS 'Legacy COCCINELLE table - stubbed for FactureX compatibility';
+COMMENT ON TABLE public.mouvements_comptes IS 'Legacy COCCINELLE table - stubbed for FactureSmart compatibility';
+COMMENT ON TABLE public.comptes_financiers IS 'Legacy COCCINELLE table - stubbed for FactureSmart compatibility';
+COMMENT ON TABLE public.transactions IS 'Legacy COCCINELLE table - stubbed for FactureSmart compatibility';

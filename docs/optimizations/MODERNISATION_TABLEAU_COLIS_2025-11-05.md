@@ -336,5 +336,5 @@ import 'react-datepicker/dist/react-datepicker.css';
 ---
 
 **Auteur** : Cascade AI  
-**Projet** : FactureX  
+**Projet** : FactureSmart  
 **Version** : 1.0.0

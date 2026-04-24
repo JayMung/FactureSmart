@@ -1,4 +1,4 @@
-# ✅ Implémentation Complète des Webhooks - FactureX
+# ✅ Implémentation Complète des Webhooks - FactureSmart
 
 Documentation finale de l'implémentation des webhooks avec déclenchement automatique.
 
@@ -115,7 +115,7 @@ Nouvelle Transaction
 **Motif:** Test nouveau format Discord
 **Statut:** En attente
 
-FactureX • Aujourd'hui à 13:55
+FactureSmart • Aujourd'hui à 13:55
 ```
 
 #### Format JSON
@@ -193,7 +193,7 @@ SELECT cron.unschedule('process-webhooks-every-30s');
 
 ## 📝 Configuration des Webhooks
 
-### Via l'Interface FactureX
+### Via l'Interface FactureSmart
 
 1. **Paramètres > Webhooks**
 2. **Nouveau Webhook**

@@ -1,6 +1,6 @@
-# 📚 Documentation FactureX - Index Complet
+# 📚 Documentation FactureSmart - Index Complet
 
-Bienvenue dans la documentation complète de FactureX. Ce document vous guide vers toutes les ressources disponibles.
+Bienvenue dans la documentation complète de FactureSmart. Ce document vous guide vers toutes les ressources disponibles.
 
 ---
 

@@ -181,7 +181,7 @@ Ensure all environment variables are set:
 
 ## 🎉 **Release Celebration**
 
-**FactureX v1.0.3 is now live in production!**
+**FactureSmart v1.0.3 is now live in production!**
 
 This release represents a major milestone with:
 - Complete TypeScript resolution
@@ -202,7 +202,7 @@ For any issues or questions regarding this release:
 
 ---
 
-**FactureX v1.0.3 - Production Deployment Complete** ✨
+**FactureSmart v1.0.3 - Production Deployment Complete** ✨
 
 ---
 

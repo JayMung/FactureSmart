@@ -229,5 +229,5 @@ import SortableHeader from '../components/ui/sortable-header';
 ---
 
 **Auteur** : Cascade AI  
-**Projet** : FactureX  
+**Projet** : FactureSmart  
 **Version** : 1.0.0

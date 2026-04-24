@@ -44,7 +44,11 @@ export const useFactures = (page: number = 1, filters?: FactureFilters, options?
           type,
           statut,
           date_emission,
+          date_echeance,
           total_general,
+          montant_ht,
+          montant_tva,
+          montant_ttc,
           devise,
           mode_livraison,
           client_id,
@@ -279,7 +283,16 @@ export const useFactures = (page: number = 1, filters?: FactureFilters, options?
           notes: data.notes,
           informations_bancaires: data.informations_bancaires,
           created_by: user.id,
-          date_emission: data.date_emission
+          date_emission: data.date_emission,
+          // DGI fields
+          type_facture_dgi: data.type_facture_dgi || 'FV',
+          groupe_tva: data.groupe_tva || 'C',
+          montant_ht: data.montant_ht,
+          montant_tva: data.montant_tva,
+          montant_ttc: data.montant_ttc,
+          numero_dgi: data.numero_dgi,
+          code_auth: data.code_auth,
+          qr_code_data: data.qr_code_data
         }])
         .select()
         .single();
@@ -338,6 +351,16 @@ export const useFactures = (page: number = 1, filters?: FactureFilters, options?
       if (data.frais_transport_douane !== undefined) updateData.frais_transport_douane = data.frais_transport_douane;
       if (data.total_poids !== undefined) updateData.total_poids = data.total_poids;
       if (data.total_general !== undefined) updateData.total_general = data.total_general;
+
+      // DGI fields
+      if (data.type_facture_dgi !== undefined) updateData.type_facture_dgi = data.type_facture_dgi;
+      if (data.groupe_tva !== undefined) updateData.groupe_tva = data.groupe_tva;
+      if (data.montant_ht !== undefined) updateData.montant_ht = data.montant_ht;
+      if (data.montant_tva !== undefined) updateData.montant_tva = data.montant_tva;
+      if (data.montant_ttc !== undefined) updateData.montant_ttc = data.montant_ttc;
+      if (data.numero_dgi !== undefined) updateData.numero_dgi = data.numero_dgi;
+      if (data.code_auth !== undefined) updateData.code_auth = data.code_auth;
+      if (data.qr_code_data !== undefined) updateData.qr_code_data = data.qr_code_data;
 
       // ✅ CORRECTION: Ne mettre à jour les items que si explicitement fournis ET non vides
       // Si data.items est undefined, on ne touche pas aux items existants

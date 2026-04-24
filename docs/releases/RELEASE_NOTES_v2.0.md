@@ -1,4 +1,4 @@
-# 🚀 FactureX v2.0 - Release Notes
+# 🚀 FactureSmart v2.0 - Release Notes
 
 **Date de sortie** : 14 novembre 2025  
 **Version** : 2.0.0  
@@ -9,7 +9,7 @@
 
 ## 🎯 Vue d'Ensemble
 
-FactureX v2.0 est une mise à jour majeure qui introduit l'**API REST complète** et le **système de Webhooks** avec enrichissement des données. Cette version transforme FactureX en une plateforme intégrable et extensible.
+FactureSmart v2.0 est une mise à jour majeure qui introduit l'**API REST complète** et le **système de Webhooks** avec enrichissement des données. Cette version transforme FactureSmart en une plateforme intégrable et extensible.
 
 ---
 
@@ -170,7 +170,7 @@ FactureX v2.0 est une mise à jour majeure qui introduit l'**API REST complète*
 
 ### 🔑 Gestion des Clés API
 
-**Interface complète** dans FactureX :
+**Interface complète** dans FactureSmart :
 
 #### Fonctionnalités
 - ✅ Création de clés API
@@ -351,7 +351,7 @@ npm run build
 ### Utiliser l'API REST
 
 1. **Créer une clé API** :
-   - Aller dans FactureX → API Keys
+   - Aller dans FactureSmart → API Keys
    - Cliquer sur "Créer une clé API"
    - Sélectionner les permissions
    - Copier la clé (affichée une seule fois)
@@ -373,8 +373,8 @@ npm run build
    - Discord → Paramètres du canal → Intégrations → Créer un webhook
    - Copier l'URL
 
-2. **Configurer dans FactureX** :
-   - Aller dans FactureX → Webhooks
+2. **Configurer dans FactureSmart** :
+   - Aller dans FactureSmart → Webhooks
    - Cliquer sur "Créer un webhook"
    - Coller l'URL Discord
    - Sélectionner format "Discord"
@@ -463,7 +463,7 @@ const data = await response.json();
 ## 👥 Contributeurs
 
 - **Jeaney Mungedi** - Développement principal
-- **Équipe FactureX** - Tests et feedback
+- **Équipe FactureSmart** - Tests et feedback
 
 ---
 
@@ -477,7 +477,7 @@ const data = await response.json();
 
 ### Contact
 - Email : support@facturex.com
-- GitHub : https://github.com/JayMung/FactureX
+- GitHub : https://github.com/JayMung/FactureSmart
 - Discord : [Lien du serveur]
 
 ---
@@ -488,8 +488,8 @@ Merci à tous les utilisateurs qui ont testé et fourni des retours sur les vers
 
 ---
 
-**FactureX v2.0** - API REST & Webhooks 🚀
+**FactureSmart v2.0** - API REST & Webhooks 🚀
 
 **Date de release** : 14 novembre 2025  
 **Statut** : ✅ Production Ready  
-**Télécharger** : [GitHub Releases](https://github.com/JayMung/FactureX/releases/tag/v2.0.0)
+**Télécharger** : [GitHub Releases](https://github.com/JayMung/FactureSmart/releases/tag/v2.0.0)

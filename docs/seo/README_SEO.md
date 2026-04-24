@@ -1,4 +1,4 @@
-# 🎉 SEO Amélioré - FactureX
+# 🎉 SEO Amélioré - FactureSmart
 
 ## ✅ Problème résolu !
 
@@ -62,7 +62,7 @@ Quand vous partagez votre lien sur :
 │                                         │
 │  [Image gradient violet avec logo]     │
 │                                         │
-│  FactureX                              │
+│  FactureSmart                              │
 │  Gestion de facturation moderne        │
 │                                         │
 │  Créez, gérez et suivez vos factures  │
@@ -84,7 +84,7 @@ Quand vous partagez votre lien sur :
 
 ## 📝 Métadonnées implémentées
 
-**Titre :** FactureX - Gestion de facturation moderne et intuitive  
+**Titre :** FactureSmart - Gestion de facturation moderne et intuitive  
 **Description :** Créez, gérez et suivez vos factures professionnelles en toute simplicité. Tableaux de bord analytiques, suivi en temps réel et génération PDF automatique.  
 **Image :** https://facturex.coccinelledrc.com/og-image.svg  
 **URL :** https://facturex.coccinelledrc.com

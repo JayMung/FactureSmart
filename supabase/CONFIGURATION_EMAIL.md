@@ -8,7 +8,7 @@ Les emails de confirmation redirigent vers `localhost:3000` au lieu de `https://
 ### 1. Configurer l'URL du site dans Supabase Dashboard
 
 1. Allez sur [Supabase Dashboard](https://supabase.com/dashboard)
-2. Sélectionnez votre projet **FactureX**
+2. Sélectionnez votre projet **FactureSmart**
 3. Allez dans **Authentication** > **URL Configuration**
 4. Configurez les URLs suivantes :
 

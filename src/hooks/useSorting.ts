@@ -12,6 +12,7 @@ export const useSorting = <T,>(
   const [sortConfig, setSortConfig] = useState<SortConfig | null>(initialConfig || null);
 
   const sortedData = useMemo(() => {
+    if (!data) return [];
     if (!sortConfig) return data;
 
     return [...data].sort((a, b) => {

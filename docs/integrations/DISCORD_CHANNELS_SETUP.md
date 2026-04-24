@@ -1,4 +1,4 @@
-# 📢 Organisation Discord - Guide Complet FactureX
+# 📢 Organisation Discord - Guide Complet FactureSmart
 
 Guide pour configurer vos canaux Discord et webhooks pour une organisation optimale des notifications.
 
@@ -68,9 +68,9 @@ Nouveau Client
 **Configuration Webhook** :
 1. Créer le canal `#clients`
 2. Paramètres → Intégrations → Créer un webhook
-3. Nom : `FactureX - Clients`
+3. Nom : `FactureSmart - Clients`
 4. Copier l'URL
-5. Dans FactureX → Webhooks → Créer :
+5. Dans FactureSmart → Webhooks → Créer :
    - **Nom** : `Discord - Clients`
    - **URL** : [URL copiée]
    - **Format** : Discord
@@ -102,9 +102,9 @@ Facture Payée
 **Configuration Webhook** :
 1. Créer le canal `#factures`
 2. Paramètres → Intégrations → Créer un webhook
-3. Nom : `FactureX - Factures`
+3. Nom : `FactureSmart - Factures`
 4. Copier l'URL
-5. Dans FactureX → Webhooks → Créer :
+5. Dans FactureSmart → Webhooks → Créer :
    - **Nom** : `Discord - Factures`
    - **URL** : [URL copiée]
    - **Format** : Discord
@@ -140,9 +140,9 @@ Colis Livré
 **Configuration Webhook** :
 1. Créer le canal `#colis`
 2. Paramètres → Intégrations → Créer un webhook
-3. Nom : `FactureX - Colis`
+3. Nom : `FactureSmart - Colis`
 4. Copier l'URL
-5. Dans FactureX → Webhooks → Créer :
+5. Dans FactureSmart → Webhooks → Créer :
    - **Nom** : `Discord - Colis`
    - **URL** : [URL copiée]
    - **Format** : Discord
@@ -210,9 +210,9 @@ Nouvelle Transaction
 **Configuration Webhook** :
 1. Créer le canal `#transactions`
 2. Paramètres → Intégrations → Créer un webhook
-3. Nom : `FactureX - Transactions`
+3. Nom : `FactureSmart - Transactions`
 4. Copier l'URL
-5. Dans FactureX → Webhooks → Créer :
+5. Dans FactureSmart → Webhooks → Créer :
    - **Nom** : `Discord - Transactions`
    - **URL** : [URL copiée]
    - **Format** : Discord
@@ -249,9 +249,9 @@ Nouvelle Transaction
 1. Créer le canal `#suppressions`
 2. **Important** : Restreindre l'accès (seuls admins/managers)
 3. Paramètres → Intégrations → Créer un webhook
-4. Nom : `FactureX - Suppressions`
+4. Nom : `FactureSmart - Suppressions`
 5. Copier l'URL
-6. Dans FactureX → Webhooks → Créer :
+6. Dans FactureSmart → Webhooks → Créer :
    - **Nom** : `Discord - Suppressions`
    - **URL** : [URL copiée]
    - **Format** : Discord
@@ -278,9 +278,9 @@ Nouvelle Transaction
 **Configuration Webhook** :
 1. Créer le canal `#alertes-importantes`
 2. Paramètres → Intégrations → Créer un webhook
-3. Nom : `FactureX - Alertes`
+3. Nom : `FactureSmart - Alertes`
 4. Copier l'URL
-5. Dans FactureX → Webhooks → Créer :
+5. Dans FactureSmart → Webhooks → Créer :
    - **Nom** : `Discord - Alertes Importantes`
    - **URL** : [URL copiée]
    - **Format** : Discord
@@ -363,15 +363,15 @@ Pour chaque canal :
 1. Paramètres du canal (⚙️)
 2. Intégrations
 3. Créer un webhook
-4. Nom : `FactureX - [Type]`
-5. Avatar : Logo FactureX (optionnel)
+4. Nom : `FactureSmart - [Type]`
+5. Avatar : Logo FactureSmart (optionnel)
 6. Copier l'URL du webhook
 7. Sauvegarder
 
-### Étape 4 : Configurer dans FactureX
+### Étape 4 : Configurer dans FactureSmart
 
 Pour chaque webhook :
-1. FactureX → Webhooks
+1. FactureSmart → Webhooks
 2. Créer un webhook
 3. Remplir les informations :
    - **Nom** : `Discord - [Type]`
@@ -440,7 +440,7 @@ Comme décrit au début de ce document
 ### Vérifier les Webhooks
 
 Régulièrement :
-1. FactureX → Webhooks
+1. FactureSmart → Webhooks
 2. Vérifier les statuts (actif/inactif)
 3. Consulter les logs d'erreur
 4. Tester avec des données de test
@@ -448,7 +448,7 @@ Régulièrement :
 ### Nettoyer les Anciens Webhooks
 
 Si un webhook ne fonctionne plus :
-1. FactureX → Webhooks
+1. FactureSmart → Webhooks
 2. Désactiver ou supprimer
 3. Discord → Supprimer le webhook correspondant
 
@@ -501,7 +501,7 @@ Pour recevoir les notifications sur mobile :
 - [ ] 6 canaux créés
 - [ ] Permissions configurées
 - [ ] 6 webhooks Discord créés
-- [ ] 6 webhooks FactureX configurés
+- [ ] 6 webhooks FactureSmart configurés
 - [ ] Tests effectués sur chaque canal
 - [ ] Documentation partagée avec l'équipe
 - [ ] Notifications mobiles configurées
@@ -511,7 +511,7 @@ Pour recevoir les notifications sur mobile :
 ## 📚 Ressources
 
 - [Documentation Discord Webhooks](https://discord.com/developers/docs/resources/webhook)
-- [Guide FactureX Webhooks](./WEBHOOKS_GUIDE.md)
+- [Guide FactureSmart Webhooks](./WEBHOOKS_GUIDE.md)
 - [Enrichissement Webhooks](./WEBHOOKS_ENRICHMENT_SUMMARY.md)
 - [Événements de Suppression](./WEBHOOK_DELETE_EVENTS.md)
 
