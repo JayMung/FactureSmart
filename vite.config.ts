@@ -1,5 +1,4 @@
 import { defineConfig } from "vite";
-import dyadComponentTagger from "@dyad-sh/react-vite-component-tagger";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { VitePWA } from 'vite-plugin-pwa';
@@ -24,7 +23,6 @@ export default defineConfig(() => ({
     allowedHosts: ['facturex.coccinelledrc.com', '.easypanel.host']
   },
   plugins: [
-    /* dyadComponentTagger(), */
     react(),
     VitePWA({
       registerType: 'autoUpdate',
@@ -86,11 +84,31 @@ export default defineConfig(() => ({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
-          'vendor-ui': ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-tabs'],
-          'vendor-query': ['@tanstack/react-query'],
-          'vendor-utils': ['lucide-react', 'date-fns', 'clsx', 'tailwind-merge'],
+        manualChunks(id) {
+          // jspdf + html2canvas (pdfGenerator) — bundle lourd chargé à la demande
+          if (id.includes('node_modules/jspdf') || id.includes('node_modules/jspdf-autotable') || id.includes('node_modules/html2canvas')) {
+            return 'vendor-pdf';
+          }
+          // recharts — bundle lourd chargé via lazy
+          if (id.includes('node_modules/recharts') || id.includes('node_modules/d3-')) {
+            return 'vendor-charts';
+          }
+          // Chunks vendors principaux
+          if (id.includes('node_modules/react') && !id.includes('react-router')) {
+            return 'vendor-react';
+          }
+          if (id.includes('node_modules/react-router-dom') || id.includes('node_modules/react-router')) {
+            return 'vendor-router';
+          }
+          if (id.includes('node_modules/@radix-ui')) {
+            return 'vendor-ui';
+          }
+          if (id.includes('node_modules/@tanstack/react-query')) {
+            return 'vendor-query';
+          }
+          if (id.includes('dompurify') || id.includes('purify.es')) {
+            return 'vendor-sanitize';
+          }
         },
       },
     },

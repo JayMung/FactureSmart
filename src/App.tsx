@@ -6,29 +6,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/components/auth/AuthProvider";
 import { PageProvider } from "@/contexts/PageContext";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
-import { useComptabiliteAI } from '@/hooks/useComptabiliteAI';
 
-// Agent IA Comptabilite - runs silently inside providers
-// [COD-56] telegramBotToken supprimé du frontend — passe maintenant par Edge Function server-side
-const ComptabiliteAIAgent = () => {
-  useComptabiliteAI({
-    // [COD-56] telegramChatId reste dans .env (n'est pas une clé secrète)
-    // telegramBotToken est stocké server-side dans l'Edge Function api-telegram-send
-    telegramChatId: import.meta.env.VITE_TELEGRAM_CHAT_ID,
-    maxDaysWithoutReconciliation: 3,
-    maxUnrecordedExpenses: 3,
-  });
-  return null;
-};
-
-// Page Loader component for Suspense fallback
-const PageLoader = () => (
-  <div className="flex items-center justify-center min-h-screen">
-    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-  </div>
-);
-
-// Auth pages (small, loaded early)
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Onboarding from "./pages/Onboarding";
@@ -73,7 +51,6 @@ const CaisseJournal = lazy(() => import("./pages/Caisse-Journal"));
 const CaisseFermeture = lazy(() => import("./pages/Caisse-Fermeture"));
 const CaisseTransfert = lazy(() => import("./pages/Caisse-Transfert"));
 
-// Pages comptables SYSCOHADA [COD-65/66/67]
 const ComptaPlanComptable = lazy(() => import("./pages/Compta-PlanComptable"));
 const ComptaJournal = lazy(() => import("./pages/Compta-Journal"));
 const ComptaGrandLivre = lazy(() => import("./pages/Compta-GrandLivre"));
@@ -82,6 +59,9 @@ const ComptaEtatsFinanciers = lazy(() => import("./pages/Compta-EtatsFinanciers"
 const ComptaTresorerie = lazy(() => import("./pages/Compta-K7-Tresorerie"));
 const ComptaReleveBancaire = lazy(() => import("./pages/Compta-K8-ReleveBancaire"));
 const ComptaExportOHADA = lazy(() => import("./pages/Compta-K9-ExportOhada"));
+
+const ComptaAgent = lazy(() => import("./components/compta/ComptabiliteAIAgent"));
+
 const Documentation = lazy(() => import("./pages/Documentation"));
 const APIReference = lazy(() => import("./pages/APIReference"));
 const AdminSetup = lazy(() => import("./pages/AdminSetup"));
@@ -100,13 +80,27 @@ const queryClient = new QueryClient({
   },
 });
 
+/**
+ * Page Loader component for Suspense fallback
+ */
+const PageLoader = () => (
+  <div className="flex items-center justify-center min-h-screen">
+    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+  </div>
+);
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Sonner />
       <BrowserRouter>
         <AuthProvider>
-          <ComptabiliteAIAgent />
+          {/* Compta AI Agent — lazy-loaded (only when compta routes are accessed) */}
+          <Suspense fallback={null}>
+            <Routes>
+              <Route path="/compta/*" element={<ComptaAgent />} />
+            </Routes>
+          </Suspense>
           <PageProvider>
             <Suspense fallback={<PageLoader />}>
               <Routes>
@@ -146,6 +140,9 @@ const App = () => (
                     <CompanyDashboard />
                   </ProtectedRoute>
                 } />
+                {/* Routes POS — /pos remplacé par /caisse (route dédoublonnée) */}
+                {/* /pos-caisse redirigé vers /pos (dédoublonnage) */}
+                <Route path="/pos-caisse" element={<Navigate to="/pos" replace />} />
                 <Route path="/pos" element={
                   <ProtectedRoute>
                     <POSCaisse />
@@ -206,6 +203,8 @@ const App = () => (
                     <ClientDetail />
                   </ProtectedRoute>
                 } />
+                {/* /encaissements redirigé vers /transactions (dédoublonnage) */}
+                <Route path="/encaissements" element={<Navigate to="/transactions" replace />} />
                 <Route path="/transactions" element={
                   <ProtectedRoute allowedRoles={['admin', 'comptable']}>
                     <Transactions />
@@ -264,16 +263,6 @@ const App = () => (
                 <Route path="/rapports/tva" element={
                   <ProtectedRoute>
                     <TVADeclarations />
-                  </ProtectedRoute>
-                } />
-                <Route path="/pos-caisse" element={
-                  <ProtectedRoute>
-                    <POSCaisse />
-                  </ProtectedRoute>
-                } />
-                <Route path="/encaissements" element={
-                  <ProtectedRoute>
-                    <Transactions />
                   </ProtectedRoute>
                 } />
                 <Route path="/settings/facture" element={

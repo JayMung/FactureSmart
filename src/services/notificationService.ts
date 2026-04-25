@@ -50,6 +50,8 @@ class NotificationService {
 
     const { data, error } = await query;
     if (error) {
+      // Silent fail for missing tables (Phase 7 not deployed)
+      if (error.code === 'PGRST205' || error.code === 'PGRST202') return [];
       console.error('[NotificationService] getNotifications error:', error);
       return [];
     }
@@ -60,6 +62,8 @@ class NotificationService {
   async getUnreadCount(): Promise<number> {
     const { data, error } = await supabase.rpc('get_unread_notification_count');
     if (error) {
+      // Silent fail for missing RPC/tables (Phase 7 not deployed)
+      if (error.code === 'PGRST202' || error.code === 'PGRST205') return 0;
       console.error('[NotificationService] getUnreadCount error:', error);
       return 0;
     }

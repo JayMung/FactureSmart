@@ -45,6 +45,8 @@ export class AdminService {
         .single();
 
       if (error && error.code !== 'PGRST116') { // Not found error
+        // Silent fail for missing table (admin_roles not created)
+        if (error.code === 'PGRST205') return false;
         console.error('Error checking admin status:', error);
       }
 
@@ -211,7 +213,8 @@ export class AdminService {
         .eq('is_active', true)
         .single();
 
-      if (error && error.code !== 'PGRST116') { // Not found error
+      if (error && error.code !== 'PGRST116') {
+        if (error.code === 'PGRST205') return null;
         throw error;
       }
 

@@ -521,6 +521,104 @@ const GUIDE_SECTIONS: DocSection[] = [
       </div>
     ),
   },
+  {
+    id: 'auth-onboarding',
+    icon: <Shield className="w-5 h-5" />,
+    title: 'Authentification & Onboarding',
+    description: 'Connexion, inscription, setup wizard et gestion des accès',
+    content: (
+      <div className="space-y-6">
+        <div className="prose prose-sm max-w-none dark:prose-invert">
+          <p className="text-gray-600 dark:text-gray-300">
+            Système d'authentification complet avec onboarding multi-étapes, RBAC (Role-Based Access Control), 
+            et Setup Wizard pour les nouvelles entreprises.
+          </p>
+        </div>
+
+        <Accordion type="multiple" className="w-full">
+          <AccordionItem value="pages-auth">
+            <AccordionTrigger className="text-base font-semibold">Pages d'authentification</AccordionTrigger>
+            <AccordionContent>
+              <div className="space-y-4 pt-2">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {[
+                    { title: 'Login', desc: 'Interface redessinée avec design glassmorphism. Support email + mot de passe. Redirection post-connexion selon rôle.', file: 'Login.tsx' },
+                    { title: 'Register', desc: 'Inscription multi-étapes avec validation des champs via Zod. Création du compte Supabase Auth.', file: 'Register.tsx' },
+                    { title: 'Onboarding', desc: 'Processus guidé pour les nouveaux utilisateurs. Configuration du profil et paramétrage initial.', file: 'Onboarding.tsx' },
+                    { title: 'Setup Wizard', desc: 'Assistant de configuration entreprise en 5 étapes : infos entreprise, config fiscale, devise, notifications, invitation équipe.', file: 'SetupWizard.tsx' },
+                  ].map((page) => (
+                    <Card key={page.title} className="border border-gray-200 dark:border-gray-700">
+                      <CardHeader className="pb-2">
+                        <CardTitle className="text-sm">{page.title}</CardTitle>
+                        <CardDescription className="text-xs">{page.file}</CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-xs text-gray-600 dark:text-gray-300">{page.desc}</p>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="rbac">
+            <AccordionTrigger className="text-base font-semibold">RBAC — Rôles et Permissions</AccordionTrigger>
+            <AccordionContent>
+              <div className="space-y-4 pt-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {[
+                    { role: 'super_admin', label: 'Super Admin', access: '🟢 Total', desc: 'Configuration système, tout accès' },
+                    { role: 'admin', label: 'Admin', access: '🟢 Complet', desc: 'Gestion complète sauf config système' },
+                    { role: 'operateur', label: 'Opérateur', access: '🟡 Limité', desc: 'Pas de finances, DGI, compta' },
+                    { role: 'comptable', label: 'Comptable', access: '🔵 Lecture', desc: 'Finances en lecture seule' },
+                    { role: 'declarant', label: 'Déclarant', access: '🟠 DGI limité', desc: 'Module DGI lecture/écriture limitée' },
+                  ].map((r) => (
+                    <div key={r.role} className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3 border border-gray-200 dark:border-gray-700">
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-sm font-semibold text-gray-900 dark:text-white">{r.label}</span>
+                        <span className="text-xs">{r.access}</span>
+                      </div>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">{r.desc}</p>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 mt-4">
+                  <h5 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">Composants de protection</h5>
+                  <div className="space-y-2 text-xs font-mono">
+                    <div><code className="text-green-600">ProtectedRoute</code> — Vérifie l'authentification</div>
+                    <div><code className="text-green-600">ProtectedRouteEnhanced</code> — Vérifie auth + permissions</div>
+                    <div><code className="text-green-600">withProtection HOC</code> — Protection par wrapper</div>
+                  </div>
+                </div>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="flux-onboarding">
+            <AccordionTrigger className="text-base font-semibold">Flux Onboarding</AccordionTrigger>
+            <AccordionContent>
+              <div className="space-y-3 pt-2">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-gray-900 dark:text-white font-medium">Inscription</span>
+                  <ArrowRight className="w-4 h-4 text-gray-400" />
+                  <span className="text-gray-900 dark:text-white font-medium">Profil</span>
+                  <ArrowRight className="w-4 h-4 text-gray-400" />
+                  <span className="text-gray-900 dark:text-white font-medium">Setup Wizard</span>
+                  <ArrowRight className="w-4 h-4 text-gray-400" />
+                  <span className="text-gray-900 dark:text-white font-medium">Dashboard</span>
+                </div>
+                <p className="text-xs text-gray-500 dark:text-gray-400">
+                  Si échec à une étape, l'utilisateur est redirigé vers cette étape pour completion.
+                </p>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+      </div>
+    ),
+  },
 ];
 
 

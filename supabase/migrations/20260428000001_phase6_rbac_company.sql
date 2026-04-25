@@ -69,6 +69,8 @@ ALTER TABLE public.companies
   ADD COLUMN IF NOT EXISTS rc_number VARCHAR(100),
   ADD COLUMN IF NOT EXISTS idnat_number VARCHAR(100),
   ADD COLUMN IF NOT EXISTS devise_defaut VARCHAR(3) DEFAULT 'USD',
+  ADD COLUMN IF NOT EXISTS devise_fonctionnelle VARCHAR(3) DEFAULT 'CDF',
+  ADD COLUMN IF NOT EXISTS exercice_comptable_start DATE,
   ADD COLUMN IF NOT EXISTS timezone VARCHAR(50) DEFAULT 'Africa/Lubumbashi';
 
 ALTER TABLE public.companies DROP CONSTRAINT IF EXISTS companies_regime_imposition_check;
@@ -98,7 +100,8 @@ ALTER TABLE public.factures
   ADD COLUMN IF NOT EXISTS type_facture_dgi VARCHAR(10) DEFAULT 'FV'
     CHECK (type_facture_dgi IN ('FV', 'EV', 'FT', 'NC', 'ND', 'AV', 'NEC')),
   ADD COLUMN IF NOT EXISTS client_assujetti BOOLEAN DEFAULT true,
-  ADD COLUMN IF NOT EXISTS reference_devis VARCHAR(50);
+  ADD COLUMN IF NOT EXISTS reference_devis VARCHAR(50),
+  ADD COLUMN IF NOT EXISTS base_ht DECIMAL(15,2) DEFAULT 0;
 
 -- Add company_id to factures if not exists (referenced by calculer_declaration_tva)
 ALTER TABLE public.factures

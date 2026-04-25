@@ -1,530 +1,62 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
-// @ts-ignore - Temporary workaround for react-router-dom types
-import { useNavigate, useParams } from 'react-router-dom';
-import Layout from '../components/layout/Layout';
-import { usePageSetup } from '../hooks/use-page-setup';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import Layout from '@/components/layout/Layout';
+import { usePageSetup } from '@/hooks/use-page-setup';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ClientCombobox } from '@/components/ui/client-combobox';
-import { Badge } from '@/components/ui/badge';
-import {
-  Plus,
-  Trash2,
-  Save,
-  ArrowLeft,
-  Package,
-  Calculator,
-  FileText,
-  RotateCcw,
-  Clock,
-  ShieldCheck,
-  QrCode
-} from 'lucide-react';
-import { useAllClients } from '../hooks/useClients';
-import { useFactures } from '../hooks/useFactures';
-import { useFees, useExchangeRates } from '../hooks/useSettings';
-import { useAutoSave } from '../hooks/useAutoSave';
-import { showSuccess, showError } from '@/utils/toast';
-import ImagePreview from '@/components/ui/ImagePreview';
-import { supabase } from '@/integrations/supabase/client';
-import { sanitizeHtml, sanitizeUrl } from '@/lib/xss-protection';
-// DGI TVA rates (RDC)
-export const TVA_RATES: Record<string, number> = {
-  A: 0,
-  B: 0.08,
-  C: 0.16,
-};
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Save, FileText, ShieldCheck, Calculator, RotateCcw } from 'lucide-react';
+import { useFactureForm } from '@/hooks/factures/useFactureForm';
+import { FactureFormHeader } from '@/components/factures/FactureFormHeader';
+import { BasicInfoCard } from '@/components/factures/BasicInfoCard';
+import { ItemsCard } from '@/components/factures/ItemsCard';
+import { TotalsSidebar } from '@/components/factures/TotalsSidebar';
+// DGI constants re-exported from shared lib
+export { TVA_RATES, TVA_LABELS, DGI_INVOICE_TYPES } from '@/lib/dgi-constants';
 
-export const TVA_LABELS: Record<string, string> = {
-  A: 'Exonéré (0%)',
-  B: 'Réduit (8%)',
-  C: 'Standard (16%)',
-};
-
-// DGI invoice type codes (RDC)
-export const DGI_INVOICE_TYPES = [
-  { value: 'FV', label: 'FV - Facture de Vente' },
-  { value: 'EV', label: 'EV - Facture d\'Avoir (retour)' },
-  { value: 'FT', label: 'FT - Facture de Travail (service)' },
-  { value: 'ET', label: 'ET - Export Tax' },
-  { value: 'FA', label: 'FA - Facture d\'Acompte' },
-  { value: 'EA', label: 'EA - Encaissement Anticipé' },
-] as const;
-
-import type { CreateFactureData, FactureItem } from '@/types';
-
-const FacturesCreate: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
-  const isEditMode = Boolean(id);
-  
-  usePageSetup({
-    title: isEditMode ? 'Modifier Facture/Devis' : 'Nouvelle Facture/Devis',
-    subtitle: isEditMode ? 'Modifiez votre facture ou devis' : 'Créez une nouvelle facture ou un devis'
-  });
-
+export default function FacturesCreate() {
+  usePageSetup({ pageTitle: 'Nouvelle Facture', pageDescription: 'Créer une facture' });
   const navigate = useNavigate();
-  const { clients } = useAllClients();
-  const { fees } = useFees();
-  const { rates } = useExchangeRates();
-  const { createFacture, updateFacture, getFactureWithItems } = useFactures();
-  const [loading, setLoading] = useState(false);
-  const [loadingData, setLoadingData] = useState(isEditMode);
-  const [formData, setFormData] = useState<CreateFactureData>({
-    client_id: '',
-    type: 'devis',
-    mode_livraison: 'aerien',
-    devise: 'USD',
-    date_emission: new Date().toISOString().split('T')[0],
-    statut: 'brouillon',
-    conditions_vente: '',
-    notes: '',
-    informations_bancaires: '',
-    items: [],
-    // DGI fields
-    type_facture_dgi: 'FV',
-    groupe_tva: 'C',
-  });
 
-  const [items, setItems] = useState<FactureItem[]>([]);
-  const [customFraisPercentage, setCustomFraisPercentage] = useState<number | null>(null);
-  const [isEditingFrais, setIsEditingFrais] = useState(false);
-  const [customTransportFee, setCustomTransportFee] = useState<number | null>(null);
-  const [isEditingTransport, setIsEditingTransport] = useState(false);
-  const [tempTransportValue, setTempTransportValue] = useState<string>('');
-  const [defaultConditions, setDefaultConditions] = useState({
-    aerien: '',
-    maritime: ''
-  });
-
-  // Store display values for inputs to preserve decimals
-  const [itemDisplayValues, setItemDisplayValues] = useState<Record<string, { poids: string; prix_unitaire: string }>>({});
-
-  // Auto-save functionality
-  const storageKey = isEditMode ? `facture_edit_${id}` : 'facture_new_draft';
-  const autoSaveData = {
+  const {
     formData,
+    setFormData,
     items,
+    loading,
+    loadingData,
+    isEditMode,
+    isEditingFrais,
+    setIsEditingFrais,
+    isEditingTransport,
+    setIsEditingTransport,
+    tempTransportValue,
+    setTempTransportValue,
+    clients,
+    addItem,
+    updateItem,
+    removeItem,
+    updateDisplayValue,
+    getDisplayValue,
+    totals,
     customFraisPercentage,
-    customTransportFee
-  };
-  
-  const { loadSavedData, clearSavedData, hasSavedData } = useAutoSave({
-    data: autoSaveData,
-    storageKey,
-    debounceMs: 3000, // 3 seconds
-    enabled: !isEditMode // Only auto-save in create mode, not edit mode
-  });
-
-  // Load saved data on component mount (only for new invoices)
-  useEffect(() => {
-    if (!isEditMode && hasSavedData()) {
-      const savedData = loadSavedData();
-      if (savedData) {
-        setFormData(savedData.formData || formData);
-        setItems(savedData.items || []);
-        setCustomFraisPercentage(savedData.customFraisPercentage);
-        setCustomTransportFee(savedData.customTransportFee);
-        showSuccess('Brouillon restauré');
-      }
-    }
-  }, []); // Only run on mount
-
-  // Charger les conditions de vente par défaut depuis les paramètres
-  useEffect(() => {
-    const loadDefaultConditions = async () => {
-      try {
-        const { data } = await supabase
-          .from('settings')
-          .select('*')
-          .eq('categorie', 'facture')
-          .in('cle', ['conditions_vente_aerien', 'conditions_vente_maritime']);
-        
-        if (data) {
-          const conditions: any = {};
-          data.forEach(item => {
-            if (item.cle === 'conditions_vente_aerien') {
-              conditions.aerien = item.valeur || '';
-            } else if (item.cle === 'conditions_vente_maritime') {
-              conditions.maritime = item.valeur || '';
-            }
-          });
-          setDefaultConditions(conditions);
-          
-          // Initialiser avec les conditions par défaut si pas en mode édition
-          if (!isEditMode) {
-            setFormData(prev => ({
-              ...prev,
-              conditions_vente: formData.mode_livraison === 'aerien' 
-                ? conditions.aerien 
-                : conditions.maritime
-            }));
-          }
-        }
-      } catch (error) {
-        console.error('Error loading default conditions:', error);
-      }
-    };
-    
-    loadDefaultConditions();
-  }, []);
-
-  // Charger les données de la facture en mode édition ou duplication
-  useEffect(() => {
-    const loadFacture = async () => {
-      // Vérifier d'abord s'il y a une facture à dupliquer
-      const duplicateData = sessionStorage.getItem('duplicateFacture');
-      if (duplicateData && !isEditMode) {
-        try {
-          const facture = JSON.parse(duplicateData);
-          sessionStorage.removeItem('duplicateFacture'); // Nettoyer après utilisation
-          
-          setFormData({
-            client_id: facture.client_id,
-            type: facture.type as 'devis' | 'facture',
-            mode_livraison: facture.mode_livraison,
-            devise: facture.devise,
-            date_emission: facture.date_emission,
-            statut: 'brouillon',
-            conditions_vente: facture.conditions_vente || '',
-            notes: facture.notes || '',
-            informations_bancaires: facture.informations_bancaires || '',
-            items: []
-          });
-
-          const loadedItems = (facture.items || []).map((item: any, index: number) => ({
-            tempId: Date.now().toString() + index,
-            numero_ligne: item.numero_ligne,
-            quantite: item.quantite,
-            description: item.description || '',
-            prix_unitaire: item.prix_unitaire,
-            poids: item.poids,
-            montant_total: item.montant_total,
-            image_url: item.image_url,
-            product_url: item.product_url
-          }));
-          setItems(loadedItems);
-          showSuccess('Facture dupliquée! Modifiez et enregistrez.');
-        } catch (error) {
-          console.error('Error loading duplicate:', error);
-        }
-        return;
-      }
-
-      // Mode édition normal
-      if (!isEditMode || !id) return;
-      
-      setLoadingData(true);
-      try {
-        const facture = await getFactureWithItems(id);
-        if (!facture) {
-          showError('Facture introuvable');
-          navigate('/factures');
-          return;
-        }
-
-        setFormData({
-          client_id: facture.client_id,
-          type: facture.type as 'devis' | 'facture',
-          mode_livraison: facture.mode_livraison,
-          devise: facture.devise,
-          date_emission: facture.date_emission.split('T')[0],
-          statut: facture.statut as 'brouillon' | 'en_attente' | 'validee' | 'annulee',
-          conditions_vente: facture.conditions_vente || '',
-          notes: facture.notes || '',
-          informations_bancaires: facture.informations_bancaires || '',
-          items: []
-        });
-
-        const loadedItems = (facture.items || []).map((item: any) => ({
-          tempId: item.id || Date.now().toString() + Math.random(),
-          id: item.id,
-          numero_ligne: item.numero_ligne,
-          quantite: item.quantite,
-          description: item.description || '',
-          prix_unitaire: item.prix_unitaire,
-          poids: item.poids,
-          montant_total: item.montant_total,
-          image_url: item.image_url,
-          product_url: item.product_url
-        }));
-        setItems(loadedItems);
-
-        // Charger les valeurs personnalisées si elles existent
-        // Calculer le pourcentage de frais personnalisé
-        if (facture.frais && facture.subtotal) {
-          const calculatedPercentage = (facture.frais / facture.subtotal) * 100;
-          const defaultPercentage = fees?.commande || 15;
-          // Si le pourcentage est différent du défaut, c'est une valeur personnalisée
-          if (Math.abs(calculatedPercentage - defaultPercentage) > 0.01) {
-            setCustomFraisPercentage(calculatedPercentage);
-          }
-        }
-
-        // Charger les frais de transport personnalisés
-        // Calculer ce que serait la valeur automatique
-        const totalPoids = loadedItems.reduce((sum, item) => sum + item.poids, 0);
-        const fraisAerien = 16; // Valeur par défaut
-        const fraisMaritime = 450; // Valeur par défaut
-        const autoTransportFee = facture.mode_livraison === 'aerien' 
-          ? totalPoids * fraisAerien 
-          : totalPoids * fraisMaritime;
-        
-        // Convertir en USD si la facture est en CDF
-        const tauxUSDtoCDF = rates?.usdToCdf || 2100;
-        const conversionRate = facture.devise === 'CDF' ? tauxUSDtoCDF : 1;
-        const autoTransportFeeInCurrentCurrency = autoTransportFee * conversionRate;
-        
-        // Si les frais de transport sont différents de la valeur auto, c'est personnalisé
-        if (facture.frais_transport_douane && 
-            Math.abs(facture.frais_transport_douane - autoTransportFeeInCurrentCurrency) > 0.01) {
-          // Stocker en USD
-          setCustomTransportFee(facture.frais_transport_douane / conversionRate);
-        }
-      } catch (error) {
-        console.error('Error loading facture:', error);
-        navigate('/factures');
-      } finally {
-        setLoadingData(false);
-      }
-    };
-
-    loadFacture();
-  }, [id, isEditMode]);
-
-  // Mettre à jour automatiquement les conditions de vente quand le mode de livraison change
-  useEffect(() => {
-    // Ne pas écraser si l'utilisateur a modifié manuellement
-    const currentConditions = formData.conditions_vente;
-    const expectedAerienConditions = defaultConditions.aerien;
-    const expectedMaritimeConditions = defaultConditions.maritime;
-    
-    // Mettre à jour seulement si les conditions actuelles correspondent aux conditions par défaut
-    // ou si elles sont vides
-    if (!currentConditions || 
-        currentConditions === expectedAerienConditions || 
-        currentConditions === expectedMaritimeConditions) {
-      const newConditions = formData.mode_livraison === 'aerien' 
-        ? defaultConditions.aerien 
-        : defaultConditions.maritime;
-      
-      if (newConditions && currentConditions !== newConditions) {
-        setFormData(prev => ({ ...prev, conditions_vente: newConditions }));
-      }
-    }
-  }, [formData.mode_livraison, defaultConditions]);
-
-  const addItem = () => {
-    const newItem: FactureItem = {
-      tempId: Date.now().toString(),
-      numero_ligne: 1,
-      quantite: 1,
-      description: '',
-      prix_unitaire: 0,
-      poids: 0,
-      montant_total: 0
-    };
-    const newItems = [newItem, ...items];
-    const reindexed = newItems.map((it, idx) => ({ ...it, numero_ligne: idx + 1 }));
-    setItems(reindexed);
-  };
-
-  const updateItem = (tempId: string, field: keyof FactureItem, value: any) => {
-    setItems(items.map(item => {
-      if (item.tempId === tempId) {
-        let sanitizedValue = value;
-        
-        // Sanitize text fields to prevent XSS
-        // On évite la sanitisation en temps réel pour 'description' car cela bloque les espaces et sauts de ligne
-        if (field === 'image_url' || field === 'product_url') {
-          sanitizedValue = sanitizeUrl(value);
-        }
-        
-        const updatedItem = { ...item, [field]: sanitizedValue };
-        
-        // Recalculate montant_total if quantite or prix_unitaire changes
-        if (field === 'quantite' || field === 'prix_unitaire') {
-          updatedItem.montant_total = updatedItem.quantite * updatedItem.prix_unitaire;
-        }
-        
-        return updatedItem;
-      }
-      return item;
-    }));
-  };
-
-  // Update display value for input
-  const updateDisplayValue = (tempId: string, field: 'poids' | 'prix_unitaire', value: string) => {
-    setItemDisplayValues(prev => ({
-      ...prev,
-      [tempId]: {
-        ...prev[tempId],
-        [field]: value
-      }
-    }));
-  };
-
-  // Get display value for input
-  const getDisplayValue = (tempId: string, field: 'poids' | 'prix_unitaire', actualValue: number) => {
-    return itemDisplayValues[tempId]?.[field] || (actualValue === 0 ? '' : actualValue.toString());
-  };
-
-  const removeItem = (tempId: string) => {
-    const filtered = items.filter(item => item.tempId !== tempId);
-    const reindexed = filtered.map((it, idx) => ({ ...it, numero_ligne: idx + 1 }));
-    setItems(reindexed);
-  };
-
-  const calculateTotals = () => {
-    // Calculer en USD d'abord
-    const subtotalUSD = items.reduce((sum, item) => sum + item.montant_total, 0);
-    const totalPoids = items.reduce((sum, item) => sum + item.poids, 0);
-
-    // Frais (15% du sous-total) depuis les settings ou custom
-    const fraisPercentage = customFraisPercentage !== null ? customFraisPercentage : (fees?.commande || 15);
-    const fraisUSD = subtotalUSD * (fraisPercentage / 100);
-
-    // Get shipping rates from settings or custom value
-    const fraisAerien = 16; // Default value
-    const fraisMaritime = 450; // Default value
-
-    // Appliquer la conversion si la devise est CDF
-    const tauxUSDtoCDF = rates?.usdToCdf || 2100;
-    const conversionRate = formData.devise === 'CDF' ? tauxUSDtoCDF : 1;
-
-    // Use custom transport fee if set, otherwise calculate normally
-    // IMPORTANT: customTransportFee is always stored in USD
-    const fraisTransportDouaneUSD = customTransportFee !== null
-      ? customTransportFee  // Already in USD
-      : (formData.mode_livraison === 'aerien'
-        ? totalPoids * fraisAerien
-        : totalPoids * fraisMaritime);
-
-    const totalGeneralUSD = subtotalUSD + fraisUSD + fraisTransportDouaneUSD;
-
-    // DGI TVA calculation
-    const groupeTva = (formData.groupe_tva || 'C') as 'A' | 'B' | 'C';
-    const tauxTva = TVA_RATES[groupeTva] || 0.16;
-    const montantTvaUSD = subtotalUSD * tauxTva;
-    const montantTtcUSD = subtotalUSD + montantTvaUSD;
-
-    return {
-      subtotal: subtotalUSD * conversionRate,
-      totalPoids,
-      frais: fraisUSD * conversionRate,
-      fraisPercentage,
-      fraisTransportDouane: fraisTransportDouaneUSD * conversionRate,
-      customTransportFee,
-      totalGeneral: totalGeneralUSD * conversionRate,
-      tauxConversion: conversionRate,
-      // DGI fields
-      tauxTva,
-      groupeTva,
-      montantTva: montantTvaUSD * conversionRate,
-      montantHt: subtotalUSD * conversionRate,
-      montantTtc: montantTtcUSD * conversionRate,
-    };
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!formData.client_id) {
-      showError('Veuillez sélectionner un client');
-      return;
-    }
-
-    if (items.length === 0) {
-      showError('Veuillez ajouter au moins un article');
-      return;
-    }
-
-    // === DGI Validation ===
-    if (!formData.groupe_tva) {
-      showError('Groupe TVA DGI requis — sélectionnez A (exonéré), B (8%) ou C (16%)');
-      return;
-    }
-
-    // Calculer les totaux pour validation DGI
-    const dgiTotals = calculateTotals();
-    if (dgiTotals.subtotal <= 0) {
-      showError('La base HT DGI doit être supérieure à 0');
-      return;
-    }
-
-    setLoading(true);
-    
-    try {
-      // Calculer les totaux avec les valeurs personnalisées
-      const finalTotals = calculateTotals();
-      
-      if (isEditMode && id) {
-        // Mode édition
-        await updateFacture(id, {
-          ...formData,
-          subtotal: finalTotals.subtotal,
-          frais: finalTotals.frais,
-          frais_transport_douane: finalTotals.fraisTransportDouane,
-          total_poids: finalTotals.totalPoids,
-          total_general: finalTotals.totalGeneral,
-          // DGI fields
-          type_facture_dgi: formData.type_facture_dgi,
-          groupe_tva: formData.groupe_tva,
-          montant_ht: finalTotals.montantHt,
-          montant_tva: finalTotals.montantTva,
-          montant_ttc: finalTotals.montantTtc,
-          items: items.map(({ tempId, id: itemId, ...item }) => item)
-        });
-        // Toast déjà affiché par le hook
-        navigate(`/factures/preview/${id}`);
-      } else {
-        // Mode création
-        const factureData: CreateFactureData = {
-          ...formData,
-          subtotal: finalTotals.subtotal,
-          frais: finalTotals.frais,
-          frais_transport_douane: finalTotals.fraisTransportDouane,
-          total_poids: finalTotals.totalPoids,
-          total_general: finalTotals.totalGeneral,
-          // DGI fields
-          type_facture_dgi: formData.type_facture_dgi,
-          groupe_tva: formData.groupe_tva,
-          montant_ht: finalTotals.montantHt,
-          montant_tva: finalTotals.montantTva,
-          montant_ttc: finalTotals.montantTtc,
-          items: items.map(({ tempId, ...item }) => item)
-        };
-        const newFacture = await createFacture(factureData);
-        // Clear auto-save data after successful creation
-        if (!isEditMode) {
-          clearSavedData();
-        }
-        // Toast déjà affiché par le hook
-        navigate(`/factures/preview/${newFacture.id}`);
-      }
-    } catch (error: any) {
-      console.error('Error saving facture:', error);
-      showError(error.message || (isEditMode ? 'Erreur lors de la mise à jour' : 'Erreur lors de la création'));
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const totals = calculateTotals();
+    setCustomFraisPercentage,
+    customTransportFee,
+    hasSavedData,
+    clearSavedData,
+    handleSubmit,
+  } = useFactureForm();
 
   if (loadingData) {
     return (
       <Layout>
-        <div className="flex items-center justify-center h-64">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500 mx-auto mb-4"></div>
-            <p className="text-gray-600">Chargement...</p>
-          </div>
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-500" />
+          <span className="ml-3 text-gray-600">Chargement de la facture...</span>
         </div>
       </Layout>
     );
@@ -532,327 +64,43 @@ const FacturesCreate: React.FC = () => {
 
   return (
     <Layout>
-      <div className="space-y-6">
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <Button
-            variant={"outline" as any}
-            onClick={() => navigate('/factures')}
-          >
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Retour
-          </Button>
-          <div className="text-center flex-1">
-            <h1 className="text-2xl font-bold text-gray-900">
-              {isEditMode ? 'Modifier' : 'Nouveau'} {formData.type === 'devis' ? 'Devis' : 'Facture'}
-            </h1>
-            <p className="text-gray-500">
-              {isEditMode ? 'Modifiez votre document' : 'Créez un nouveau document pour vos clients'}
-            </p>
-            {!isEditMode && (
-              <div className="flex items-center justify-center mt-2 text-sm text-green-600">
-                <Clock className="mr-1 h-3 w-3" />
-                Sauvegarde automatique activée
-              </div>
-            )}
-          </div>
-          <div className="w-24 flex justify-end">
-            {!isEditMode && hasSavedData() && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => {
-                  clearSavedData();
-                  showSuccess('Brouillon supprimé');
-                }}
-                className="text-gray-500 hover:text-red-600"
-                title="Supprimer le brouillon"
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
-            )}
-          </div>
-        </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+        <FactureFormHeader
+          title={isEditMode ? 'Modifier la facture' : 'Nouvelle facture'}
+          subtitle={isEditMode ? 'Modifiez les informations ci-dessous' : 'Créez une facture conforme DGI'}
+          isEditMode={isEditMode}
+          hasSavedData={hasSavedData}
+          clearSavedData={clearSavedData}
+          onBack={() => navigate('/factures')}
+        />
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Main Form */}
+            {/* Main form area */}
             <div className="lg:col-span-2 space-y-6">
-              {/* Basic Info */}
+              <BasicInfoCard
+                formData={formData}
+                setFormData={setFormData}
+                clients={clients}
+              />
+
+              <ItemsCard
+                items={items}
+                devise={formData.devise}
+                addItem={addItem}
+                updateItem={updateItem}
+                removeItem={removeItem}
+                updateDisplayValue={updateDisplayValue}
+                getDisplayValue={getDisplayValue}
+              />
+
+              {/* Notes & Conditions */}
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center">
                     <FileText className="mr-2 h-5 w-5" />
-                    Informations générales
+                    Notes et conditions
                   </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="type">Type</Label>
-                      <Select
-                        value={formData.type}
-                        onValueChange={(value: 'devis' | 'facture') =>
-                          setFormData({ ...formData, type: value })
-                        }
-                      >
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="devis">Devis</SelectItem>
-                          <SelectItem value="facture">Facture</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    {/* DGI Invoice Type */}
-                    <div>
-                      <Label htmlFor="type_dgi" className="flex items-center gap-1">
-                        <ShieldCheck className="h-3 w-3 text-green-600" />
-                        Type DGI
-                      </Label>
-                      <Select
-                        value={formData.type_facture_dgi || 'FV'}
-                        onValueChange={(value: string) =>
-                          setFormData({ ...formData, type_facture_dgi: value })
-                        }
-                      >
-                        <SelectTrigger className="border-green-200 bg-green-50">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {DGI_INVOICE_TYPES.map(t => (
-                            <SelectItem key={t.value} value={t.value}>
-                              {t.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <p className="text-xs text-gray-400 mt-1">
-                        Code DGI RDC — {TVA_LABELS[formData.groupe_tva || 'C']}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="date_emission">Date d'émission</Label>
-                      <Input
-                        id="date_emission"
-                        type="date"
-                        value={formData.date_emission}
-                        onChange={(e) => setFormData({ ...formData, date_emission: e.target.value })}
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <Label htmlFor="client_id">Client</Label>
-                    <ClientCombobox
-                      clients={clients}
-                      value={formData.client_id}
-                      onValueChange={(value) => setFormData({ ...formData, client_id: value })}
-                      placeholder="Sélectionner un client"
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="mode_livraison">Mode de livraison</Label>
-                      <Select
-                        value={formData.mode_livraison}
-                        onValueChange={(value: 'aerien' | 'maritime') => 
-                          setFormData({ ...formData, mode_livraison: value })
-                        }
-                      >
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="aerien">Aérien</SelectItem>
-                          <SelectItem value="maritime">Maritime</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div>
-                      <Label htmlFor="devise">Devise</Label>
-                      <Select
-                        value={formData.devise}
-                        onValueChange={(value: 'USD' | 'CDF') => 
-                          setFormData({ ...formData, devise: value })
-                        }
-                      >
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="USD">USD</SelectItem>
-                          <SelectItem value="CDF">CDF</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Items */}
-              <Card>
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="flex items-center">
-                      <Package className="mr-2 h-5 w-5" />
-                      Articles
-                    </CardTitle>
-                    <Button type="button" onClick={addItem} variant={"outline" as any} size="sm">
-                      <Plus className="mr-2 h-4 w-4" />
-                      Ajouter un article
-                    </Button>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  {items.length === 0 ? (
-                    <div className="text-center py-8 text-gray-500">
-                      <Package className="h-12 w-12 mx-auto mb-4 text-gray-300" />
-                      <p>Aucun article ajouté</p>
-                      <p className="text-sm">Cliquez sur "Ajouter un article" pour commencer</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-4">
-                      {items.map((item) => (
-                        <div key={item.tempId} className="border rounded-lg p-4 space-y-4">
-                          <div className="flex items-center justify-between">
-                            <Badge variant="outline">Article {item.numero_ligne}</Badge>
-                            <Button
-                              type="button"
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => removeItem(item.tempId)}
-                              className="text-red-600 hover:text-red-700"
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </div>
-                          
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div>
-                              <Label>Quantité</Label>
-                              <Input
-                                type="number"
-                                value={item.quantite}
-                                onChange={(e) => updateItem(item.tempId, 'quantite', parseInt(e.target.value) || 0)}
-                                min="1"
-                              />
-                            </div>
-                            <div>
-                              <Label>Poids (kg)</Label>
-                              <Input
-                                type="text"
-                                inputMode="decimal"
-                                value={getDisplayValue(item.tempId, 'poids', item.poids)}
-                                onChange={(e) => {
-                                  const value = e.target.value.replace(',', '.');
-                                  // Allow only numbers and one decimal point
-                                  const cleanValue = value.replace(/[^0-9.]/g, '').replace(/\.(?=.*\.)/g, '');
-                                  updateDisplayValue(item.tempId, 'poids', cleanValue);
-                                  const numValue = cleanValue === '' ? 0 : parseFloat(cleanValue);
-                                  updateItem(item.tempId, 'poids', numValue);
-                                }}
-                                onBlur={(e) => {
-                                  const value = parseFloat(e.target.value) || 0;
-                                  updateItem(item.tempId, 'poids', value);
-                                  updateDisplayValue(item.tempId, 'poids', value.toString());
-                                }}
-                                placeholder="0.00"
-                                min="0"
-                              />
-                            </div>
-                          </div>
-
-                          <div>
-                            <Label>Description</Label>
-                            <Textarea
-                              value={item.description}
-                              onChange={(e) => updateItem(item.tempId, 'description', e.target.value)}
-                              placeholder="Description de l'article"
-                              rows={3}
-                            />
-                          </div>
-
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div>
-                              <Label>Prix unitaire</Label>
-                              <Input
-                                type="text"
-                                inputMode="decimal"
-                                value={getDisplayValue(item.tempId, 'prix_unitaire', item.prix_unitaire)}
-                                onChange={(e) => {
-                                  const value = e.target.value.replace(',', '.');
-                                  // Allow only numbers and one decimal point
-                                  const cleanValue = value.replace(/[^0-9.]/g, '').replace(/\.(?=.*\.)/g, '');
-                                  updateDisplayValue(item.tempId, 'prix_unitaire', cleanValue);
-                                  const numValue = cleanValue === '' ? 0 : parseFloat(cleanValue);
-                                  updateItem(item.tempId, 'prix_unitaire', numValue);
-                                }}
-                                onBlur={(e) => {
-                                  const value = parseFloat(e.target.value) || 0;
-                                  updateItem(item.tempId, 'prix_unitaire', value);
-                                  updateDisplayValue(item.tempId, 'prix_unitaire', value.toString());
-                                }}
-                                placeholder="0.00"
-                                min="0"
-                              />
-                            </div>
-                            <div>
-                              <Label>Montant total</Label>
-                              <Input
-                                value={`${formData.devise === 'USD' ? '$' : ''}${item.montant_total.toFixed(2)}${formData.devise === 'CDF' ? ' CDF' : ''}`}
-                                readOnly
-                                className="bg-gray-50 font-semibold text-green-600 border-green-200"
-                              />
-                            </div>
-                          </div>
-
-                          <div>
-                            <Label>URL de l'image (optionnel)</Label>
-                            <Input
-                              value={item.image_url || ''}
-                              onChange={(e) => updateItem(item.tempId, 'image_url', e.target.value.trim())}
-                              placeholder="https://... (URL image)"
-                              className="w-full text-xs"
-                            />
-                            {item.image_url && (
-                              <div className="mt-2">
-                                <ImagePreview 
-                                  url={item.image_url} 
-                                  alt={`Article ${item.numero_ligne}`}
-                                  size="md"
-                                  className="border rounded"
-                                />
-                              </div>
-                            )}
-                          </div>
-
-                          <div>
-                            <Label>Lien du produit (interne)</Label>
-                            <Input
-                              value={item.product_url || ''}
-                              onChange={(e) => updateItem(item.tempId, 'product_url', e.target.value.trim())}
-                              placeholder="https://... (URL produit - usage interne)"
-                              className="w-full text-xs"
-                            />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-
-              {/* Notes */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Notes et conditions</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
@@ -861,8 +109,8 @@ const FacturesCreate: React.FC = () => {
                       id="conditions_vente"
                       value={formData.conditions_vente}
                       onChange={(e) => setFormData({ ...formData, conditions_vente: e.target.value })}
-                      placeholder="Conditions de vente spécifiques..."
-                      rows={3}
+                      placeholder="Conditions de vente"
+                      rows={4}
                     />
                   </div>
                   <div>
@@ -871,7 +119,17 @@ const FacturesCreate: React.FC = () => {
                       id="notes"
                       value={formData.notes}
                       onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                      placeholder="Notes supplémentaires..."
+                      placeholder="Notes supplémentaires"
+                      rows={3}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="informations_bancaires">Informations bancaires (optionnel)</Label>
+                    <Textarea
+                      id="informations_bancaires"
+                      value={formData.informations_bancaires}
+                      onChange={(e) => setFormData({ ...formData, informations_bancaires: e.target.value })}
+                      placeholder="Afficher sur la facture (optionnel)"
                       rows={3}
                     />
                   </div>
@@ -879,246 +137,45 @@ const FacturesCreate: React.FC = () => {
               </Card>
             </div>
 
-            {/* Sidebar */}
-            <div className="space-y-6 lg:sticky lg:top-4 lg:self-start lg:max-h-screen lg:overflow-visible">
-              {/* Totals */}
-              <Card>
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="flex items-center">
-                      <Calculator className="mr-2 h-5 w-5" />
-                      Récapitulatif
-                    </CardTitle>
-                    {(customFraisPercentage !== null || customTransportFee !== null) && (
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => {
-                          setCustomFraisPercentage(null);
-                          setCustomTransportFee(null);
-                          setIsEditingFrais(false);
-                          setIsEditingTransport(false);
-                        }}
-                        className="h-8 w-8 p-0"
-                        title="Réinitialiser les calculs automatiques"
-                      >
-                        <RotateCcw className="h-4 w-4" />
-                      </Button>
-                    )}
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-2">
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Sous-total:</span>
-                      <span className="font-medium">
-                        {formData.devise === 'USD' ? '$' : ''}{totals.subtotal.toFixed(2)}
-                        {formData.devise === 'CDF' ? ' CDF' : ''}
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      {isEditingFrais ? (
-                        <div className="flex items-center gap-2">
-                          <span className="text-gray-600">Frais de services</span>
-                          <Input
-                            type="number"
-                            value={customFraisPercentage !== null ? customFraisPercentage : totals.fraisPercentage}
-                            onChange={(e) => setCustomFraisPercentage(parseFloat(e.target.value) || 0)}
-                            onBlur={() => setIsEditingFrais(false)}
-                            onKeyDown={(e) => {
-                              if (e.key === 'Enter') setIsEditingFrais(false);
-                            }}
-                            className="w-16 h-6 text-sm px-2"
-                            autoFocus
-                          />
-                          <span className="text-gray-600">%:</span>
-                        </div>
-                      ) : (
-                        <span 
-                          className="text-gray-600 cursor-pointer hover:text-green-600 transition-colors"
-                          onDoubleClick={() => setIsEditingFrais(true)}
-                          title="Double-cliquer pour modifier"
-                        >
-                          Frais de services ({totals.fraisPercentage}%):
-                        </span>
-                      )}
-                      <span className="font-medium">
-                        {formData.devise === 'USD' ? '$' : ''}{totals.frais.toFixed(2)}
-                        {formData.devise === 'CDF' ? ' CDF' : ''}
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      {isEditingTransport ? (
-                        <div className="flex items-center gap-2">
-                          <span className="text-gray-600">Frais transport & douane:</span>
-                          <Input
-                            type="number"
-                            value={tempTransportValue}
-                            onChange={(e) => setTempTransportValue(e.target.value)}
-                            onFocus={() => {
-                              // Initialize temp value when entering edit mode
-                              const displayValue = customTransportFee !== null 
-                                ? (customTransportFee * totals.tauxConversion).toFixed(2)
-                                : totals.fraisTransportDouane.toFixed(2);
-                              setTempTransportValue(displayValue);
-                            }}
-                            onBlur={() => {
-                              // Save the value when leaving edit mode
-                              const valueInCurrentCurrency = parseFloat(tempTransportValue) || 0;
-                              const valueInUSD = valueInCurrentCurrency / totals.tauxConversion;
-                              setCustomTransportFee(valueInUSD);
-                              setIsEditingTransport(false);
-                            }}
-                            onKeyDown={(e) => {
-                              if (e.key === 'Enter') {
-                                const valueInCurrentCurrency = parseFloat(tempTransportValue) || 0;
-                                const valueInUSD = valueInCurrentCurrency / totals.tauxConversion;
-                                setCustomTransportFee(valueInUSD);
-                                setIsEditingTransport(false);
-                              }
-                            }}
-                            className="w-24 h-6 text-sm px-2"
-                            autoFocus
-                          />
-                        </div>
-                      ) : (
-                        <span 
-                          className="text-gray-600 cursor-pointer hover:text-green-600 transition-colors"
-                          onDoubleClick={() => setIsEditingTransport(true)}
-                          title="Double-cliquer pour modifier (forfait)"
-                        >
-                          Frais transport & douane:
-                        </span>
-                      )}
-                      <span className="font-medium">
-                        {formData.devise === 'USD' ? '$' : ''}{totals.fraisTransportDouane.toFixed(2)}
-                        {formData.devise === 'CDF' ? ' CDF' : ''}
-                      </span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">Poids total:</span>
-                      <span className="font-medium text-green-600">
-                        {totals.totalPoids.toFixed(2)} {formData.mode_livraison === 'aerien' ? 'Kg' : 'CBM'}
-                      </span>
-                    </div>
-
-                    {/* DGI TVA Section */}
-                    <div className="border-t pt-2 space-y-1">
-                      <div className="flex items-center gap-1 mb-1">
-                        <ShieldCheck className="h-3 w-3 text-green-600" />
-                        <span className="text-xs font-semibold text-green-700">Conformité DGI RDC</span>
-                      </div>
-
-                      {/* Groupe TVA selector */}
-                      <div className="flex justify-between items-center text-sm">
-                        <span className="text-gray-600">Groupe TVA:</span>
-                        <select
-                          value={totals.groupeTva}
-                          onChange={(e) => setFormData({ ...formData, groupe_tva: e.target.value })}
-                          className="text-xs border rounded px-1 py-0.5 bg-green-50 border-green-200"
-                        >
-                          <option value="A">A - Exonoré (0%)</option>
-                          <option value="B">B - Réduit (8%)</option>
-                          <option value="C">C - Standard (16%)</option>
-                        </select>
-                      </div>
-
-                      {/* DGI amounts */}
-                      <div className="flex justify-between text-sm">
-                        <span className="text-gray-600">Montant HTVA:</span>
-                        <span className="font-medium">
-                          {formData.devise === 'USD' ? '$' : ''}{totals.montantHt.toFixed(2)}
-                          {formData.devise === 'CDF' ? ' CDF' : ''}
-                        </span>
-                      </div>
-                      <div className="flex justify-between text-sm">
-                        <span className="text-gray-600">TVA ({totals.tauxTva * 100}%):</span>
-                        <span className="font-medium">
-                          {formData.devise === 'USD' ? '$' : ''}{totals.montantTva.toFixed(2)}
-                          {formData.devise === 'CDF' ? ' CDF' : ''}
-                        </span>
-                      </div>
-                      <div className="flex justify-between text-sm font-bold text-green-700">
-                        <span className="flex items-center gap-1">
-                          <QrCode className="h-3 w-3" />
-                          Montant TTC:
-                        </span>
-                        <span>
-                          {formData.devise === 'USD' ? '$' : ''}{totals.montantTtc.toFixed(2)}
-                          {formData.devise === 'CDF' ? ' CDF' : ''}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="border-t pt-2">
-                      <div className="flex justify-between text-lg font-bold">
-                        <span>Total général:</span>
-                        <span className="text-green-500">
-                          {formData.devise === 'USD' ? '$' : ''}{totals.totalGeneral.toFixed(2)}
-                          {formData.devise === 'CDF' ? ' CDF' : ''}
-                        </span>
-                      </div>
-                    </div>
-
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Actions */}
-              <Card>
-                <CardContent className="pt-6">
-                  <div className="space-y-3">
-                    {!isEditMode && hasSavedData() && (
-                      <Button
-                        type="button"
-                        variant={"outline" as any}
-                        className="w-full text-gray-600 hover:text-red-600 hover:border-red-200"
-                        onClick={() => {
-                          clearSavedData();
-                          showSuccess('Brouillon supprimé');
-                        }}
-                      >
-                        <Trash2 className="mr-2 h-4 w-4" />
-                        Supprimer le brouillon
-                      </Button>
-                    )}
-                    
-                    <Button
-                      type="submit"
-                      className="w-full bg-green-500 hover:bg-green-600"
-                      disabled={loading}
-                    >
-                      {loading ? (
-                        <div className="flex items-center">
-                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                          {isEditMode ? 'Mise à jour...' : 'Création en cours...'}
-                        </div>
-                      ) : (
-                        <>
-                          <Save className="mr-2 h-4 w-4" />
-                          {isEditMode ? 'Mettre à jour' : 'Créer'} le {formData.type === 'devis' ? 'devis' : 'facture'}
-                        </>
-                      )}
-                    </Button>
-                    
-                    <Button
-                      type="button"
-                      variant={"outline" as any}
-                      className="w-full"
-                      onClick={() => navigate('/factures')}
-                    >
-                      Annuler
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
+            {/* Sidebar: Totals & DGI */}
+            <div className="lg:col-span-1">
+              <TotalsSidebar
+                totals={totals}
+                formData={formData}
+                setFormData={setFormData}
+                isEditingFrais={isEditingFrais}
+                setIsEditingFrais={setIsEditingFrais}
+                isEditingTransport={isEditingTransport}
+                setIsEditingTransport={setIsEditingTransport}
+                tempTransportValue={tempTransportValue}
+                setTempTransportValue={setTempTransportValue}
+                customFraisPercentage={customFraisPercentage}
+                setCustomFraisPercentage={setCustomFraisPercentage}
+                resetCustomFrais={() => {
+                  setCustomFraisPercentage(null);
+                }}
+              />
             </div>
+          </div>
+
+          {/* Submit button */}
+          <div className="flex justify-end pt-4 border-t">
+            <Button type="submit" disabled={loading} className="min-w-[200px]">
+              {loading ? (
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+                  Enregistrement...
+                </>
+              ) : (
+                <>
+                  <Save className="mr-2 h-4 w-4" />
+                  {isEditMode ? 'Mettre à jour' : 'Enregistrer la facture'}
+                </>
+              )}
+            </Button>
           </div>
         </form>
       </div>
     </Layout>
   );
-};
-
-export default FacturesCreate;
+}

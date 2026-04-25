@@ -262,7 +262,7 @@ const ClientsProtected: React.FC = () => {
                 <div>
                   <p className="text-xs text-gray-400 uppercase tracking-wide font-semibold">Nouveaux (30j)</p>
                   <p className="text-xl font-bold text-gray-900">
-                    {clients.filter((c: Client) => {
+                    {(clients || []).filter((c: Client) => {
                       if (!c.created_at) return false;
                       const created = new Date(c.created_at);
                       const thirtyDaysAgo = new Date();

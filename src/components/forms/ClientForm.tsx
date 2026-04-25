@@ -45,7 +45,7 @@ const ClientForm: React.FC<ClientFormProps> = ({
   
   const [errors, setErrors] = useState<Record<string, string>>({});
   
-  const { createClient, updateClient, isCreating, isUpdating } = useClients();
+  const { createItem, updateItem, isCreating, isUpdating } = useClients();
   const isEditing = !!client;
   const isLoading = isCreating || isUpdating;
 
@@ -152,9 +152,9 @@ const ClientForm: React.FC<ClientFormProps> = ({
       };
 
       if (isEditing && client) {
-        await updateClient({ id: client.id, data: dataToSave });
+        await updateItem({ id: client.id, data: dataToSave });
       } else {
-        await createClient(dataToSave);
+        await createItem(dataToSave);
       }
 
       onSuccess?.();
@@ -208,87 +208,112 @@ const ClientForm: React.FC<ClientFormProps> = ({
               </Alert>
             )}
 
-            <div className="space-y-2">
-              <Label htmlFor="nom">Nom complet *</Label>
-              <Input
-                id="nom"
-                name="nom"
-                value={formData.nom}
-                onChange={handleChange}
-                placeholder="Jean Mukendi"
-                className={errors.nom ? 'border-red-500' : ''}
-              />
-              {errors.nom && (
-                <p className="text-sm text-red-600">{errors.nom}</p>
-              )}
+            {/* Ligne 1: Nom + Téléphone */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="nom">Nom complet *</Label>
+                <Input
+                  id="nom"
+                  name="nom"
+                  value={formData.nom}
+                  onChange={handleChange}
+                  placeholder="Jean Mukendi"
+                  className={errors.nom ? 'border-red-500' : ''}
+                />
+                {errors.nom && (
+                  <p className="text-sm text-red-600">{errors.nom}</p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="telephone">Téléphone *</Label>
+                <Input
+                  id="telephone"
+                  name="telephone"
+                  value={formData.telephone}
+                  onChange={handleChange}
+                  placeholder="+243 123 456 789"
+                  className={errors.telephone ? 'border-red-500' : ''}
+                />
+                {errors.telephone && (
+                  <p className="text-sm text-red-600">{errors.telephone}</p>
+                )}
+              </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="telephone">Téléphone *</Label>
-              <Input
-                id="telephone"
-                name="telephone"
-                value={formData.telephone}
-                onChange={handleChange}
-                placeholder="+243 123 456 789"
-                className={errors.telephone ? 'border-red-500' : ''}
-              />
-              {errors.telephone && (
-                <p className="text-sm text-red-600">{errors.telephone}</p>
-              )}
+            {/* Ligne 2: Email + Type */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="email" className="flex items-center gap-2">
+                  <Mail className="h-4 w-4 opacity-50" />
+                  Email (optionnel)
+                </Label>
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="contact@exemple.cd"
+                  className={errors.email ? 'border-red-500' : ''}
+                />
+                {errors.email && (
+                  <p className="text-sm text-red-600">{errors.email}</p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="type">Type de client</Label>
+                <select
+                  id="type"
+                  name="type"
+                  value={formData.type}
+                  onChange={(e) => {
+                    const { name, value } = e.target;
+                    setFormData(prev => ({ ...prev, [name]: value }));
+                  }}
+                  className="w-full border rounded-md px-3 py-2 text-sm bg-background"
+                >
+                  <option value="particulier">Particulier</option>
+                  <option value="entreprise">Entreprise</option>
+                </select>
+              </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="email" className="flex items-center gap-2">
-                <Mail className="h-4 w-4 opacity-50" />
-                Email (optionnel)
-              </Label>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="contact@exemple.cd"
-                className={errors.email ? 'border-red-500' : ''}
-              />
-              {errors.email && (
-                <p className="text-sm text-red-600">{errors.email}</p>
-              )}
+            {/* Ligne 3: NIF + Ville */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="nif">NIF (optionnel)</Label>
+                <Input
+                  id="nif"
+                  name="nif"
+                  value={formData.nif}
+                  onChange={handleChange}
+                  placeholder="123456789012"
+                  className={errors.nif ? 'border-red-500' : ''}
+                />
+                {errors.nif && (
+                  <p className="text-sm text-red-600">{errors.nif}</p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="ville">Ville *</Label>
+                <Input
+                  id="ville"
+                  name="ville"
+                  value={formData.ville}
+                  onChange={handleChange}
+                  placeholder="Kinshasa"
+                  className={errors.ville ? 'border-red-500' : ''}
+                />
+                {errors.ville && (
+                  <p className="text-sm text-red-600">{errors.ville}</p>
+                )}
+              </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="type">Type de client</Label>
-              <select
-                id="type"
-                name="type"
-                value={formData.type}
-                onChange={(e) => {
-                  const { name, value } = e.target;
-                  setFormData(prev => ({ ...prev, [name]: value }));
-                }}
-                className="w-full border rounded-md px-3 py-2 text-sm bg-background"
-              >
-                <option value="particulier">Particulier</option>
-                <option value="entreprise">Entreprise</option>
-              </select>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="nif">NIF (optionnel)</Label>
-              <Input
-                id="nif"
-                name="nif"
-                value={formData.nif}
-                onChange={handleChange}
-                placeholder="123456789012"
-                className={errors.nif ? 'border-red-500' : ''}
-              />
-              {errors.nif && (
-                <p className="text-sm text-red-600">{errors.nif}</p>
-              )}
-            </div>
-
+            {/* Adresse */}
             <div className="space-y-2">
               <Label htmlFor="adresse">Adresse (optionnel)</Label>
               <Input
@@ -300,20 +325,7 @@ const ClientForm: React.FC<ClientFormProps> = ({
               />
             </div>
 
-            <div className="space-y-2">
-              <Input
-                id="ville"
-                name="ville"
-                value={formData.ville}
-                onChange={handleChange}
-                placeholder="Kinshasa"
-                className={errors.ville ? 'border-red-500' : ''}
-              />
-              {errors.ville && (
-                <p className="text-sm text-red-600">{errors.ville}</p>
-              )}
-            </div>
-
+            {/* Notes */}
             <div className="space-y-2">
               <Label htmlFor="notes" className="flex items-center gap-2">
                 <StickyNote className="h-4 w-4 opacity-50" />
@@ -330,7 +342,7 @@ const ClientForm: React.FC<ClientFormProps> = ({
               />
             </div>
 
-            <div className="flex space-x-3 pt-4">
+            <div className="flex space-x-3 pt-2">
               <Button
                 type="submit"
                 className="flex-1 bg-green-500 hover:bg-green-600"
