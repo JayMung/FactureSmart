@@ -1,111 +1,125 @@
 ---
 trigger: always_on
-description: Règles Cascade pour FactureSmart — Multica, équipe agents IA, et workflow refacto DGI/RDC
+description: Règles Cascade pour FactureSmart — Multica, équipe agents IA, vision DGI/RDC, PRD V2
 ---
 
 # Règles Cascade — FactureSmart
 
-## 1. Multica est la source de vérité stratégique
+## 1. Sources de vérité (ordre de priorité)
 
-FactureSmart est développé par une équipe humain+IA qui s'orchestre via **Multica** (plateforme open-source self-hosted). Le code seul (GitHub `JayMung/FactureSmart`) ne donne PAS le contexte complet.
+| Source | Contenu | Localisation |
+|---|---|---|
+| **Multica** | Directives, décisions, état des tâches | CLI `multica.exe` + VPS `100.77.106.28:8080` |
+| **Plan Directeur V1** | Architecture, audit modules, décisions techniques | `mockups-v2/📋 PRD — FactureSmart v2.0/FactureX-DGI — Plan Directeur.md` |
+| **PRD V2** | État du produit, modules livrés/en cours, sprint | `mockups-v2/📋 PRD — FactureSmart v2.0/PRD - V2.md` |
+| **GitHub `main`** | Code stable mergé | `JayMung/FactureSmart` |
+| **Branches non-mergées** | Code des agents en attente de review | `sprint-2-core-facturation`, `fix/security-cod56`, etc. |
 
-**Avant tout travail substantiel sur ce projet, je DOIS :**
+⚠️ **`main` n'est PAS représentatif du produit réel** — beaucoup de features des agents IA sont sur des branches non-mergées. Toujours cross-vérifier avec Multica + PRD V2.
 
-1. Lire les issues Multica récentes pour comprendre ce qui a été fait/discuté
-2. Vérifier les directives en cours (titres `[DIRECTIVE]`, `[MISSION]`, `📢`)
-3. Cross-référencer les commits/PRs avec les `COD-XX` numbers Multica
+**Avant tout travail substantiel :**
+1. `git pull origin main` + `git fetch --all`
+2. Lire issues Multica récentes (`[DIRECTIVE]`, `[MISSION]`, `📢`)
+3. Consulter PRD V2 pour l'état des modules
+4. Vérifier que la tâche n'a pas déjà été faite par un autre agent
 
-**Configuration Multica installée** :
-- CLI : `C:\Users\PC\.multica\bin\multica.exe` (v0.2.16)
-- Server : `http://100.77.106.28:8080`
-- Workspace par défaut : Codev (`f656e2c9-b63d-492c-bc17-c39c92a2a8d1`)
-- User : Jeancy Mungedi (mungedijeancy@gmail.com)
-- Token déjà dans `~/.multica/config.json`
+## 2. Configuration Multica
 
-**Commandes Multica depuis PowerShell** (toujours wrapper `cmd /c` car PowerShell traite stderr comme erreur) :
+- **CLI** : `C:\Users\PC\.multica\bin\multica.exe` (v0.2.16)
+- **Server** : `http://100.77.106.28:8080` (VPS via Tailscale)
+- **Workspace Codev** : `f656e2c9-b63d-492c-bc17-c39c92a2a8d1`
+- **Workspace KALAKUTA DIGITAL** : `6386d5e3-b6eb-4733-bca4-ab404f00182c`
+- **User** : Jeancy Mungedi — token dans `~/.multica/config.json`
+
+⚠️ **Toujours wrapper avec `cmd /c`** — PowerShell traite stderr de Multica comme erreur :
 
 ```powershell
-# Liste issues
 cmd /c "C:\Users\PC\.multica\bin\multica.exe issue list --workspace-id f656e2c9-b63d-492c-bc17-c39c92a2a8d1"
-
-# Détail issue
 cmd /c "C:\Users\PC\.multica\bin\multica.exe issue get COD-XX --workspace-id f656e2c9-b63d-492c-bc17-c39c92a2a8d1"
-
-# Commentaires (JSON pour parsing avancé)
 cmd /c "C:\Users\PC\.multica\bin\multica.exe issue comment list COD-XX --workspace-id f656e2c9-b63d-492c-bc17-c39c92a2a8d1 --output json"
-
-# Recherche
 cmd /c "C:\Users\PC\.multica\bin\multica.exe issue search 'query' --workspace-id f656e2c9-b63d-492c-bc17-c39c92a2a8d1"
-
-# Lister agents
 cmd /c "C:\Users\PC\.multica\bin\multica.exe agent list --workspace-id f656e2c9-b63d-492c-bc17-c39c92a2a8d1"
 ```
 
-## 2. Vision FactureSmart (Plan Directeur — Kimi CEO)
+## 3. Équipe agents IA (workspace Codev, VPS `vmi3075440`)
 
-**Plan Directeur** : https://drive.google.com/file/d/1bya523-0Hx-I9iqUeNBMReH57nCqBDuk/view (issue Multica COD-17)
+| Agent | Rôle | ID Multica |
+|---|---|---|
+| **Kimi - CEO** | Stratégie, Plan Directeur, décisions | `4bcef129-053a-491a-a814-b0d7afd210b2` |
+| **MiniClaw - CTO** | Backend, API, Supabase, Edge Functions | `b5769ada-e5d5-41db-b80c-ecdc2871a1c2` |
+| **Hermes - CMO** | Audit UX, monitoring des agents | `55c4ffde-4a37-428d-86f8-fbad6b136ec1` |
+| **Ares - Designer** | Maquettes UI/UX, design system | `52cc0db1-fb20-4d21-bcc0-e20f52452e7a` |
+| **Dev Backend Senior** | APIs, sécurité, fake services | `20b48ef7-297a-4211-9cd0-c9102cdf5b05` |
+| **Expert-Comptable OHADA** | Comptabilité SYSCOHADA | `dbf98c31-a959-4570-869e-0ae86339e2fc` |
+| **Cascade** (moi) | Refacto, review, fix, PRs — sur Windsurf laptop | N/A |
 
-FactureSmart est un **SaaS de facturation électronique conforme DGI/RDC** (multi-tenant), PAS un clone FactureX (fret maritime).
+**Les agents Multica n'ont souvent pas d'auth GitHub sur le VPS** → Cascade peut créer leurs PRs via `gh pr create`.
 
-### Modules du produit final (8 items max en navigation plate)
+## 4. Vision produit FactureSmart (Plan Directeur V1 + PRD V2)
 
+**SaaS multi-tenant de facturation électronique conforme DGI/RDC** pour PME/PMI congolaises.
+Stack : React 18 + TS 5+ + Vite 6 + **Tailwind 4** + shadcn/ui + Supabase (Auth, DB PostgreSQL, Edge Functions Deno, Realtime, Storage).
+
+### Navigation plate — 8 items max
 `Caisse · Factures · Clients · Articles · Déclarants · Rapports · Finances · Paramètres`
 
-### Spécificités DGI à respecter
+### Spécificités DGI (NON NÉGOCIABLES)
+- **6 types factures** : `FV` (Vente), `EV` (Vente Export), `FT` (Prestation), `ET` (Prestation Export), `FA` (Avoir), `EA` (Avoir Export)
+- **Groupes TVA** : `A`=0% exonéré, `B`=16% standard, `C`=0% non taxable
+- **Format numéro** : `FN-YYYY-NNNNN`
+- **Rapports POS** : X (session), Z (journalier — verrouillé après clôture), A (mensuel DGI)
+- **Clients** : NIF + RCCM obligatoires pour assujettis
+- **Articles** : codes-barres + groupe TVA DGI
+- **DEF** (Dispositif Électronique Fiscal) : intégration future, clearance en temps réel
 
-- **6 types de factures** : FV (Vente), EV (Encaissement Vente), FT (TTC), ET (Encaissement TTC), FA (Avoir), EA (Encaissement Avoir)
-- **Groupes TVA A/B/C** (plusieurs taux selon catégorie article, pas juste 18%)
-- **Articles avec codes-barres** + groupe TVA DGI
-- **Rapports POS** : X (session), Z (journalier), A (mensuel)
-- **NIF + RCCM** sur clients/entreprises
-- **Déclarants DGI** pour déclarations mensuelles
+### 5 rôles RBAC (V2 — pas 3 comme en V1)
+`super_admin` · `admin` · `operateur` · `comptable` · `declarant`
 
-### Modules à NE JAMAIS réintroduire
+### Design system
+- **Font** : **Plus Jakarta Sans** (pas Inter !)
+- **Couleur** : Vert émeraude `#10B981`, glassmorphism
+- **Icons** : Remix Icon (CDN)
+- **Mockups** : `mockups-v2/` (50+ fichiers HTML)
 
-❌ Colis, transitaires, containers, multi-devises CNY, security enterprise/granulaire, workflow approbation, activity logs, API keys, webhooks, rapports financiers complexes (watermark/checksum)
+### Modules à NE JAMAIS réintroduire ❌
+Colis, transitaires, containers, fret maritime/aérien, multi-devises CNY, security enterprise custom (CSRF/XSS/rate-limiting — Supabase Auth+RLS suffit), permissions granulaires 14 modules, workflow approbation multi-niveaux, rapports financiers complexes (watermark/checksum), API keys, webhooks tiers, `scrape_leads.*`, `testsprite_tests/`, `docs/` (117 fichiers supprimés)
 
-## 3. Équipe agents IA Multica (workspace Codev)
+### Modules OHADA SYSCOHADA (V2 — pas dans V1)
+Plan comptable (K1) ✅, Journal (K2) ❌, Grand Livre (K3) ❌, Balance (K4) ❌, Compte résultat (K5) ❌, Bilan (K6) ❌, Trésorerie (K7) ❌, Relevé bancaire (K8) ❌, Export XML/PDF (K9) ❌
 
-| Agent | Rôle | ID |
-|---|---|---|
-| Kimi - CEO | Stratégie, Plan Directeur | `4bcef129-053a-491a-a814-b0d7afd210b2` |
-| MiniClaw - CTO | Backend, API, edge functions | `b5769ada-e5d5-41db-b80c-ecdc2871a1c2` |
-| Hermes - CMO | Audit UX, monitoring | `55c4ffde-4a37-428d-86f8-fbad6b136ec1` |
-| Ares - Designer | Maquettes UI/UX | `52cc0db1-fb20-4d21-bcc0-e20f52452e7a` |
-| Dev Backend Senior | APIs, sécurité, fake services | `20b48ef7-297a-4211-9cd0-c9102cdf5b05` |
-| Expert-Comptable OHADA | Comptabilité | `dbf98c31-a959-4570-869e-0ae86339e2fc` |
+## 5. État avancement PRD V2 (25 avril 2026)
 
-Ces agents tournent sur le VPS (`vmi3075440`). Cascade tourne en local sur le laptop Windows de Jeancy.
+- **27/62 tâches done** (44%), 35 restantes
+- Sprint 2 (Core Facturation) en cours : `sprint-2-core-facturation`
+  - ✅ Devis.tsx, DgiStatus.tsx (commit `74c27a8` — cherry-pick à faire)
+  - ❌ COD-26 DGI API credentials, COD-28 schema `invoice_history`, J2 InvoiceDetailFull, J3 InvoiceHistory
+- Sprint 3 à venir : POS complet G1-G6 + Caisse quotidienne L1-L4
+- Sprint 4 à venir : OHADA K2-K9
 
-## 4. Workflow Git
+### Branches non-mergées à cherry-picker (par ordre de priorité)
+1. `74c27a8` (sprint-2) → `feat/devis-dgi-status` — Devis + DgiStatus
+2. `e8c5d73` (fix/security-cod56) → `feat/admin-backoffice` — Backoffice admin (FACTURESMART-04)
+3. `36e0555` (fix/security-cod56) → `feat/notification-hub` — PWA + Service Worker + Push
+4. `d791211` (fix/security-cod56) → `feat/dgi-phase3` — DGI Phase 3
+5. PR #11 déjà ouverte : `fix/security-cod56-clean` (sécurité COD-56)
 
-- **Toujours `git pull origin main`** avant de commencer (plusieurs agents poussent en parallèle)
-- **1 PR = 1 feature** (jamais de branche fourre-tout)
+### Dette technique critique (PRD V2)
+- 🔴 47 hooks dupliqués → hook générique `useSupabaseQuery` (déjà créé dans sprint-1 mais revert)
+- 🔴 0 tests automatisés → Vitest + GitHub Actions
+- ⚠️ Validation éparpillée dans 7 fichiers → centraliser Zod
+
+## 6. Workflow Git
+
+- **Toujours `git pull origin main` + `git fetch --all`** avant de commencer
+- **1 PR = 1 feature** (jamais de branche fourre-tout — leçon `fix/security-cod56` qui avait 6 features)
+- **Cherry-pick ciblé** pour récupérer les features des branches divergées (pas merger toute la branche)
 - **Commits référencent les COD-XX** quand pertinent
-- **Conventional commits** avec scope : `feat(dgi):`, `fix(types):`, `chore(cleanup):`
+- **Conventional commits** : `feat(dgi):`, `fix(types):`, `chore(cleanup):`
 - Branches : `feat/...`, `fix/...`, `chore/...`
-- **Si un agent Multica n'a pas d'auth GitHub sur le VPS**, Cascade peut créer la PR via son `gh` authentifié (`gh pr create`)
 
-## 5. Mockups & Design
+## 7. Pièges PowerShell Windows
 
-- Source : `mockups-v2/` (47 fichiers HTML)
-- Design system : Inter + JetBrains Mono, primary emerald `#10B981`, Remix Icon, sidebar 256px, rounded-xl/2xl, watermark RDC discret 3-4% opacity
-- Mockups encore brandés "FactureX" → à rebrander "FactureSmart" en Phase 0
-
-## 6. Pièges connus PowerShell sur Windows
-
-- `curl` est aliasé à `Invoke-WebRequest` → utiliser `curl.exe` ou `cmd /c "curl ..."`
-- Multica écrit ses messages d'info sur stderr → wrapper avec `cmd /c "... 2>&1"`
-- `irm | iex` est l'équivalent PowerShell de `curl | sh`
-
-## 7. Workflow type pour une nouvelle tâche FactureSmart
-
-```
-1. git pull origin main
-2. Lire issues Multica (issue list + issue get COD-XX si référencée)
-3. Vérifier que la tâche n'a pas déjà été faite par un autre agent
-4. Si refacto significatif : consulter le Plan Directeur (Google Drive)
-5. Coder, commit avec référence COD-XX si applicable
-6. PR via gh pr create avec body bien structuré
-7. (Optionnel) Commenter l'issue Multica pour informer l'équipe
-```
+- `curl` → `Invoke-WebRequest` (alias) → utiliser `curl.exe` ou `cmd /c "curl ..."`
+- Multica stderr → `NativeCommandError` (faux positif) → wrapper `cmd /c "... 2>&1"`
+- `irm URL | iex` = équivalent PowerShell de `curl URL | sh`
+- `cd` dans `run_command` → interdit, utiliser le paramètre `Cwd`
