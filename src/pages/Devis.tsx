@@ -366,13 +366,13 @@ const DevisPage: React.FC = () => {
 
               <div className="flex justify-between items-center pt-2 border-t">
                 <div className="flex gap-2">
-                  {selectedDevis.statut === 'brouillon' && (
+                  {(selectedDevis.statut as DevisStatus) === 'brouillon' && (
                     <Button variant="outline" size="sm" onClick={() => handleUpdateStatus(selectedDevis, 'soumis')}>
                       <Send className="h-4 w-4 mr-2" />
                       Marquer soumis
                     </Button>
                   )}
-                  {selectedDevis.statut === 'soumis' && (
+                  {(selectedDevis.statut as DevisStatus) === 'soumis' && (
                     <>
                       <Button variant="outline" size="sm" className="text-green-700" onClick={() => handleUpdateStatus(selectedDevis, 'accepte')}>
                         <CheckCircle className="h-4 w-4 mr-2" />

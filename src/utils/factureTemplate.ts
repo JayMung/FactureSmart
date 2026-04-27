@@ -36,14 +36,12 @@ interface TemplateData {
   };
 }
 
-const formatCurrency = (amount: number, devise: 'USD' | 'CDF' | 'CNY'): string => {
+const formatCurrency = (amount: number, devise: 'USD' | 'CDF'): string => {
   const formatted = amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  if (devise === 'USD') return `$${formatted}`;
-  if (devise === 'CNY') return `¥${formatted}`;
-  return `${formatted} FC`;
+  return devise === 'USD' ? `$${formatted}` : `${formatted} FC`;
 };
 
-const renderItemRow = (item: FactureItem, index: number, devise: 'USD' | 'CDF' | 'CNY', modeLivraison: 'aerien' | 'maritime'): string => {
+const renderItemRow = (item: FactureItem, index: number, devise: 'USD' | 'CDF', modeLivraison: 'aerien' | 'maritime'): string => {
   const bgClass = index % 2 === 0 ? 'bg-white' : 'bg-emerald-50/30';
   const imageHtml = item.image_url 
     ? `<img src="${item.image_url}" alt="Produit" class="w-16 h-16 object-cover rounded border" crossorigin="anonymous" referrerpolicy="no-referrer" />`
@@ -69,8 +67,9 @@ const renderItemRow = (item: FactureItem, index: number, devise: 'USD' | 'CDF' |
 export const generateFactureHTML = (data: TemplateData): string => {
   const { facture, client, items, totals } = data;
   
+  const devise = (facture.devise === 'CNY' ? 'USD' : facture.devise) as 'USD' | 'CDF';
   const itemsHTML = items.map((item, index) => 
-    renderItemRow(item, index, facture.devise, facture.mode_livraison)
+    renderItemRow(item, index, devise, facture.mode_livraison)
   ).join('');
 
   const dateEmission = format(new Date(facture.date_emission), 'dd/MM/yyyy', { locale: fr });
@@ -202,22 +201,22 @@ export const generateFactureHTML = (data: TemplateData): string => {
             <div class="w-2/5">
                 <div class="flex justify-between items-center py-2 border-b border-gray-200">
                     <span class="text-sm font-medium text-gray-600">SOUS-TOTAL</span>
-                    <span class="text-sm font-semibold text-gray-800">${formatCurrency(totals.subtotal, facture.devise)}</span>
+                    <span class="text-sm font-semibold text-gray-800">${formatCurrency(totals.subtotal, devise)}</span>
                 </div>
                 
                 <div class="flex justify-between items-center py-2 border-b border-gray-200">
                     <span class="text-sm font-medium text-gray-600">Frais (${((totals.frais / totals.subtotal) * 100).toFixed(0)}% de services & transfert)</span>
-                    <span class="text-sm font-semibold text-gray-800">${formatCurrency(totals.frais, facture.devise)}</span>
+                    <span class="text-sm font-semibold text-gray-800">${formatCurrency(totals.frais, devise)}</span>
                 </div>
                 
                 <div class="flex justify-between items-center py-2 border-b border-gray-200">
                     <span class="text-sm font-medium text-gray-600">TRANSPORT & DOUANE</span>
-                    <span class="text-sm font-semibold text-gray-800">${formatCurrency(totals.fraisTransportDouane, facture.devise)}</span>
+                    <span class="text-sm font-semibold text-gray-800">${formatCurrency(totals.fraisTransportDouane, devise)}</span>
                 </div>
                 
                 <div class="flex justify-between items-center py-3 bg-emerald-100 rounded-b-lg mt-2">
                     <span class="text-lg font-bold text-gray-800 px-2">TOTAL GÉNÉRALE</span>
-                    <span class="text-xl font-extrabold text-emerald-700 px-2">${formatCurrency(totals.totalGeneral, facture.devise)}</span>
+                    <span class="text-xl font-extrabold text-emerald-700 px-2">${formatCurrency(totals.totalGeneral, devise)}</span>
                 </div>
             </div>
         </section>

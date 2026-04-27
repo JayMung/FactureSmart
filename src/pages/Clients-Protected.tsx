@@ -84,7 +84,7 @@ const ClientsProtected: React.FC = () => {
   const { isAdmin } = usePermissions();
 
   const {
-    items,
+    items: clients,
     pagination,
     isLoading,
     error,
@@ -97,10 +97,6 @@ const ClientsProtected: React.FC = () => {
     search: searchTerm || undefined,
     ville: cityFilter === 'all' ? undefined : cityFilter
   });
-
-  // The generic CRUD hook returns items as unknown[]; cast to Client[] here
-  // since useClients is parameterized with Client.
-  const clients = items as Client[];
 
   const { sortedData, sortConfig, handleSort } = useSorting(clients);
   const {
@@ -430,7 +426,7 @@ const ClientsProtected: React.FC = () => {
             <CardContent>
               <UnifiedDataTable<Client>
                 data={sortedData}
-                loading={isLoading && clients.length === 0}
+                loading={isLoading && (clients as Client[]).length === 0}
                 emptyMessage="Aucun client"
                 emptySubMessage="Commencez par ajouter votre premier client"
                 emptyIcon={<Users className="h-8 w-8 text-gray-400" />}

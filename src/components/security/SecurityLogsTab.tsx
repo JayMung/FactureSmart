@@ -47,7 +47,7 @@ const SecurityLogsTab: React.FC = () => {
   const [severityFilter, setSeverityFilter] = useState<string>('all');
   const [eventTypeFilter, setEventTypeFilter] = useState<string>('all');
   const [currentPage, setCurrentPage] = useState(1);
-  const [dashboardStats, setDashboardStats] = useState<any[]>([]);
+  const [dashboardStats, setDashboardStats] = useState<any>(null);
   
   const pageSize = 50;
 
@@ -83,7 +83,7 @@ const SecurityLogsTab: React.FC = () => {
   const fetchDashboardStats = async () => {
     try {
       const stats = await getSecurityDashboard();
-      setDashboardStats(stats);
+      setDashboardStats(Array.isArray(stats) ? stats : []);
     } catch (error) {
       console.error('Error fetching dashboard stats:', error);
     }

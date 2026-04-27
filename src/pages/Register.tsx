@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
-import { dgiService } from '@/services/dgi';
+import { verifyNIF } from '@/services/dgi';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -212,11 +212,8 @@ const Step2Nif = ({ data, onChange, onNext }: {
     setError('');
     setLoading(true);
     try {
-      const result = await dgiService.verifyNIF({
-        nif: data.nif,
-        companyName: data.companyName || '',
-      });
-      if (result.success && result.status === 'verified') {
+      const result = await verifyNIF(data.nif, data.companyName || '');
+      if (result.status === 'verified') {
         setNifStatus('valid');
       } else {
         setNifStatus('invalid');
@@ -371,7 +368,7 @@ const Step3Creds = ({ data, onChange, onSubmit }: {
     <form onSubmit={handleSubmit} className="space-y-5">
       <div className="text-center mb-6">
         <h2 className="text-xl font-bold text-slate-900">Vos identifiants</h2>
-        <p className="text-slate-500 text-sm mt-1">Créez votre compte FactureSmart</p>
+        <p className="text-slate-500 text-sm mt-1">Créez votre compte FactureX</p>
       </div>
 
       {error && (
@@ -561,7 +558,7 @@ const Register = () => {
             <div className="w-11 h-11 bg-white/20 backdrop-blur rounded-xl flex items-center justify-center shadow-lg">
               <i className="ri-file-paper-2-line text-white text-xl" />
             </div>
-            <span className="text-white text-xl font-bold">FactureSmart</span>
+            <span className="text-white text-xl font-bold">FactureX</span>
           </div>
 
           <div className="space-y-8">
@@ -571,7 +568,7 @@ const Register = () => {
                 <span className="text-emerald-200">compte en 2 minutes</span>
               </h1>
               <p className="text-emerald-100 text-lg max-w-md leading-relaxed">
-                Rejoignez des milliers d'entreprises congolaises qui font confiance à FactureSmart pour leur conformité DGI.
+                Rejoignez des milliers d'entreprises congolaises qui font confiance à FactureX pour leur conformité DGI.
               </p>
             </div>
 
@@ -592,7 +589,7 @@ const Register = () => {
           </div>
 
           <div className="text-emerald-200 text-xs">
-            © 2026 FactureSmart — Solution officielle DGI
+            © 2026 FactureX — Solution officielle DGI
           </div>
         </div>
       </div>
@@ -605,7 +602,7 @@ const Register = () => {
             <div className="w-10 h-10 bg-emerald-600 rounded-xl flex items-center justify-center">
               <i className="ri-file-paper-2-line text-white text-lg" />
             </div>
-            <span className="text-slate-900 text-xl font-bold">FactureSmart</span>
+            <span className="text-slate-900 text-xl font-bold">FactureX</span>
           </div>
 
           <div className="glass-card rounded-2xl shadow-xl shadow-green-900/10 p-8 sm:p-10 card-enter">
