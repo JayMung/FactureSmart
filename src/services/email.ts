@@ -3,7 +3,7 @@
 // Appels via Edge Function /api-email-send (server-side)
 // La vraie clé Resend est stockée dans les environment variables Supabase
 
-import { SUPABASE_URL, SUPABASE_ANON_KEY } from './constants';
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from '@/lib/constants';
 
 export interface EmailOptions {
   to: string;

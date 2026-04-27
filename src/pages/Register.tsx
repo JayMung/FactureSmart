@@ -191,6 +191,7 @@ const Step1Company = ({ data, onChange, onNext }: {
 type NifForm = {
   nif: string;
   rccm: string;
+  companyName?: string;
 };
 
 const Step2Nif = ({ data, onChange, onNext }: {
@@ -212,11 +213,11 @@ const Step2Nif = ({ data, onChange, onNext }: {
     setLoading(true);
     try {
       const result = await verifyNIF(data.nif, data.companyName || '');
-      if (result.valid) {
+      if (result.status === 'verified') {
         setNifStatus('valid');
       } else {
         setNifStatus('invalid');
-        setError(result.message || 'NIF invalide. Veuillez vérifier et réessayer.');
+        setError(result.error || 'NIF invalide. Veuillez vérifier et réessayer.');
       }
     } catch {
       // Mock: accept any NIF starting with 0 for demo

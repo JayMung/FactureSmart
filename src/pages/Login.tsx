@@ -163,7 +163,7 @@ const LoginForm = ({ onSwitch }: { onSwitch: () => void }) => {
         setError('');
         const user = await initiateOAuthMock(provider);
         // In mock mode, sign in with the mock email
-        const { error } = await supabase.auth.signInWithPassword({
+        const { data: signInData, error } = await supabase.auth.signInWithPassword({
           email: user.email,
           password: '__mock_oauth__',
         });
@@ -183,8 +183,8 @@ const LoginForm = ({ onSwitch }: { onSwitch: () => void }) => {
             await logLoginSuccess(user.email);
             navigate('/');
           }
-        } else if (data.session) {
-          await sessionManager.createSession(data.session, data.user);
+        } else if (signInData?.session) {
+          await sessionManager.createSession(signInData.session, signInData.user);
           await sessionManager.regenerateSession();
           await logLoginSuccess(user.email);
           navigate('/');

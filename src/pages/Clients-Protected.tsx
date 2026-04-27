@@ -84,14 +84,14 @@ const ClientsProtected: React.FC = () => {
   const { isAdmin } = usePermissions();
 
   const {
-    clients,
+    items: clients,
     pagination,
     isLoading,
     error,
     globalTotals,
-    createClient,
-    updateClient,
-    deleteClient,
+    createItem: createClient,
+    updateItem: updateClient,
+    deleteItem: deleteClient,
     refetch
   } = useClients(currentPage, {
     search: searchTerm || undefined,
@@ -426,7 +426,7 @@ const ClientsProtected: React.FC = () => {
             <CardContent>
               <UnifiedDataTable<Client>
                 data={sortedData}
-                loading={isLoading && clients.length === 0}
+                loading={isLoading && (clients as Client[]).length === 0}
                 emptyMessage="Aucun client"
                 emptySubMessage="Commencez par ajouter votre premier client"
                 emptyIcon={<Users className="h-8 w-8 text-gray-400" />}
