@@ -51,6 +51,7 @@ const DgiStatus = lazy(() => import("./pages/DgiStatus"));
 const Devis = lazy(() => import("./pages/Devis"));
 
 const Settings = lazy(() => import("./pages/Settings"));
+const NotificationSettings = lazy(() => import("./pages/NotificationSettings"));
 
 const POSCaisse = lazy(() => import("./pages/POS-Caisse"));
 const Declarants = lazy(() => import("./pages/Declarants"));
@@ -168,6 +169,11 @@ const App = () => (
                 <Route path="/settings" element={
                   <ProtectedRoute allowedRoles={['admin']}>
                     <Settings />
+                  </ProtectedRoute>
+                } />
+                <Route path="/settings/notifications" element={
+                  <ProtectedRoute>
+                    <NotificationSettings />
                   </ProtectedRoute>
                 } />
                 <Route path="*" element={<NotFound />} />
