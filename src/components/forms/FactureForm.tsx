@@ -110,7 +110,7 @@ const FactureForm: React.FC<FactureFormProps> = ({ isOpen, onClose, onSuccess, f
         client_id: facture.client_id,
         type: facture.type,
         mode_livraison: facture.mode_livraison,
-        devise: facture.devise,
+        devise: (facture.devise === 'CNY' ? 'USD' : facture.devise) as 'USD' | 'CDF',
         conditions_vente: facture.conditions_vente || '',
         notes: facture.notes || '',
         date_emission: facture.date_emission
