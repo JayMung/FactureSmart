@@ -38,7 +38,6 @@ import UserEdit from "./pages/UserEdit";
 import UserInvite from "./pages/UserInvite";
 import ResetPassword from "./pages/ResetPassword";
 import NotFound from "./pages/NotFound";
-import Landing from "./pages/Landing";
 
 // Lazy-loaded pages
 const Index = lazy(() => import("./pages/Index-Protected"));
@@ -106,7 +105,6 @@ const App = () => (
                 } />
                 <Route path="/reset-password" element={<ResetPassword />} />
                 <Route path="/admin-invitation" element={<AdminInvitation />} />
-                <Route path="/landing" element={<Landing />} />
                 <Route path="/" element={
                   <ProtectedRoute>
                     <Index />
