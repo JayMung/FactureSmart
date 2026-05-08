@@ -38,14 +38,12 @@ export interface Transaction {
   category_id?: string; // Foreign key to finance_categories
   compte_source_id?: string;
   compte_destination_id?: string;
-  colis_id?: string;
   notes?: string;
   organization_id: string;
 
   // Related objects
   compte_source?: CompteFinancier;
   compte_destination?: CompteFinancier;
-  colis?: any; // Will be typed when colis interface is created
 }
 
 export interface CompteFinancier {
@@ -217,7 +215,6 @@ export interface CreateTransactionData {
   category_id?: string;
   compte_source_id?: string;
   compte_destination_id?: string;
-  colis_id?: string;
   notes?: string;
   frais?: number;
   taux_usd_cny?: number;
@@ -239,7 +236,6 @@ export interface UpdateTransactionData {
   category_id?: string;
   compte_source_id?: string;
   compte_destination_id?: string;
-  colis_id?: string;
   notes?: string;
   valide_par?: string;
   date_validation?: string;
@@ -366,82 +362,6 @@ export {
   PREDEFINED_ROLES,
   MODULES_INFO
 } from './permissions';
-
-// Types pour les Colis
-export interface Colis {
-  id: string;
-  client_id: string;
-  type_livraison: 'aerien' | 'maritime';
-  fournisseur: string;
-  tracking_chine?: string;
-  numero_commande?: string;
-  quantite: number; // Nombre de colis
-  poids: number;
-  contenu_description?: string;
-  tarif_kg: number;
-  montant_a_payer: number; // Calculé automatiquement
-  transitaire_id?: string;
-  date_expedition?: string;
-  date_arrivee_agence?: string;
-  statut: 'en_preparation' | 'expedie_chine' | 'en_transit' | 'arrive_congo' | 'recupere_client' | 'livre';
-  statut_paiement: 'non_paye' | 'partiellement_paye' | 'paye';
-  notes?: string;
-  created_by: string;
-  created_at: string;
-  updated_at: string;
-  // Relations
-  client?: Client;
-  transitaire?: Transitaire;
-}
-
-export interface Transitaire {
-  id: string;
-  nom: string;
-  nom_contact?: string;
-  telephone?: string;
-  ville?: string;
-  services_offerts?: string[];
-  specialisation_chine: boolean;
-  specialisation_congo: boolean;
-  delai_moyen_livraison?: number;
-  tarif_base?: number;
-  actif: boolean;
-  note_interne?: string;
-  created_at: string;
-  updated_at: string;
-}
-
-export interface TarifColis {
-  id: string;
-  type_livraison: 'aerien' | 'maritime';
-  categorie: string;
-  poids_min: number;
-  poids_max: number;
-  tarif_par_kg: number;
-  devise: 'USD' | 'CDF' | 'CNY';
-  description?: string;
-  conditions?: string;
-  actif: boolean;
-  date_debut?: string;
-  date_fin?: string;
-  created_at: string;
-}
-
-export interface PaiementColis {
-  id: string;
-  colis_id: string;
-  client_id: string;
-  montant_paye: number;
-  devise: 'USD' | 'CDF' | 'CNY';
-  mode_paiement: string;
-  reference_paiement?: string;
-  date_paiement: string;
-  statut: 'en_attente' | 'confirme' | 'annule';
-  recu_url?: string;
-  notes?: string;
-  created_by: string;
-  created_at: string;
-}
 
 // Types pour les rapports financiers
 export interface FinancialReport {

@@ -67,8 +67,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { SettingsColis } from '@/components/settings/SettingsColis';
-import { SettingsTransitaires } from '@/components/settings/SettingsTransitaires';
 import { CompanySettings } from '@/components/settings/CompanySettings';
 import type { PaymentMethod } from '@/types';
 
@@ -662,20 +660,6 @@ const Settings = () => {
       adminOnly: true
     },
     {
-      id: 'colis',
-      label: 'Colis',
-      icon: <Package className="h-5 w-5" />,
-      description: 'Fournisseurs et tarifs pour colis',
-      adminOnly: true
-    },
-    {
-      id: 'transitaires',
-      label: 'Transitaires',
-      icon: <Truck className="h-5 w-5" />,
-      description: 'Gestion des transitaires partenaires',
-      adminOnly: true
-    },
-    {
       id: 'exchange-rates',
       label: 'Taux de change',
       icon: <DollarSign className="h-5 w-5" />,
@@ -1199,12 +1183,6 @@ const Settings = () => {
 
               {/* Entreprise Settings Tab */}
               {activeTab === 'entreprise' && <CompanySettings />}
-
-              {/* Colis Settings Tab */}
-              {activeTab === 'colis' && <SettingsColis />}
-
-              {/* Transitaires Settings Tab */}
-              {activeTab === 'transitaires' && <SettingsTransitaires />}
 
               {/* API Keys Tab */}
               {activeTab === 'api-keys' && (

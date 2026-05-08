@@ -21,7 +21,6 @@ import {
 import { formatCurrency } from '@/utils/formatCurrency';
 import { useDashboardAnalytics } from '@/hooks/useDashboardAnalytics';
 import { useTransactions } from '@/hooks/useTransactions';
-import { useColis } from '@/hooks/useColis';
 import { cn } from '@/lib/utils';
 import {
   LineChart,
@@ -53,18 +52,8 @@ const AdvancedDashboard: React.FC<AdvancedDashboardProps> = ({ className }) => {
     refetch 
   } = useDashboardAnalytics(period);
 
-  // Charger les données des modules Colis et Finance
+  // Charger les données du module Finance
   const { globalTotals: financeStats, loading: financeLoading } = useTransactions(1, {});
-  const { stats: colisStats, loading: colisLoading, error: colisError } = useColis(1, {});
-
-  // Debug logs
-  useEffect(() => {
-    console.log('📊 Finance Stats:', financeStats);
-    console.log('📦 Colis Stats:', colisStats);
-    if (colisError) {
-      console.error('❌ Colis Error:', colisError);
-    }
-  }, [financeStats, colisStats, colisError]);
 
   const handleExport = () => {
     // Export des données analytics en CSV
@@ -404,53 +393,6 @@ const AdvancedDashboard: React.FC<AdvancedDashboardProps> = ({ className }) => {
           </CardContent>
         </Card>
       </div>
-
-      {/* Section Module Colis */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
-            <Package className="h-5 w-5 text-blue-600" />
-            <span>Module Colis</span>
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          {colisLoading ? (
-            <div className="flex items-center justify-center py-8">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-            </div>
-          ) : colisError ? (
-            <div className="flex flex-col items-center justify-center py-8 text-center">
-              <p className="text-red-600 font-medium mb-2">Erreur de chargement</p>
-              <p className="text-sm text-gray-500">{colisError}</p>
-              <p className="text-xs text-gray-400 mt-2">Vérifiez que la table 'colis' existe et que vous avez les permissions</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="space-y-2">
-                <p className="text-sm font-medium text-gray-600">Total Colis</p>
-                <p className="text-3xl font-bold text-gray-900">
-                  {colisStats?.totalCount || 0}
-                </p>
-                <p className="text-xs text-gray-500">Tous statuts confondus</p>
-              </div>
-              <div className="space-y-2">
-                <p className="text-sm font-medium text-gray-600">En Transit</p>
-                <p className="text-3xl font-bold text-blue-600">
-                  {colisStats?.enTransit || 0}
-                </p>
-                <p className="text-xs text-gray-500">Colis en cours de livraison</p>
-              </div>
-              <div className="space-y-2">
-                <p className="text-sm font-medium text-gray-600">Livrés</p>
-                <p className="text-3xl font-bold text-green-600">
-                  {colisStats?.livres || 0}
-                </p>
-                <p className="text-xs text-gray-500">Colis livrés avec succès</p>
-              </div>
-            </div>
-          )}
-        </CardContent>
-      </Card>
 
       {/* Section Module Finance */}
       <Card>
