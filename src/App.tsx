@@ -42,6 +42,7 @@ import NotFound from "./pages/NotFound";
 // Lazy-loaded pages
 const Index = lazy(() => import("./pages/Index-Protected"));
 const Clients = lazy(() => import("./pages/Clients-Protected"));
+const ClientDetail = lazy(() => import("./pages/Client-Detail"));
 const Transactions = lazy(() => import("./pages/Transactions-Protected"));
 const Factures = lazy(() => import("./pages/Factures-Protected"));
 const FacturesCreate = lazy(() => import("./pages/Factures-Create"));
@@ -123,6 +124,11 @@ const App = () => (
                 <Route path="/clients" element={
                   <ProtectedRoute>
                     <Clients />
+                  </ProtectedRoute>
+                } />
+                <Route path="/clients/:id" element={
+                  <ProtectedRoute>
+                    <ClientDetail />
                   </ProtectedRoute>
                 } />
                 <Route path="/transactions" element={

@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState, useEffect, useMemo } from 'react';
+// @ts-ignore - react-router-dom types workaround
+import { useNavigate } from 'react-router-dom';
 import Layout from '../components/layout/Layout';
 import { usePageSetup } from '../hooks/use-page-setup';
 import { Button } from '@/components/ui/button';
@@ -52,6 +54,7 @@ import {
 } from '@/lib/security/content-sanitization';
 
 const ClientsProtected: React.FC = () => {
+  const navigate = useNavigate();
   usePageSetup({
     title: 'Gestion des Clients',
     subtitle: 'Gérez les informations de vos clients'
@@ -535,7 +538,7 @@ const ClientsProtected: React.FC = () => {
                     sortable: true,
                     render: (value: any, client: Client) => (
                       <button
-                        onClick={() => handleViewClientHistory(client)}
+                        onClick={() => navigate(`/clients/${client.id}`)}
                         className="text-left hover:text-green-500 hover:underline transition-colors cursor-pointer font-medium"
                         title={sanitizeClientName(client.nom || '')}
                       >
