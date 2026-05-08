@@ -51,6 +51,14 @@ const DgiStatus = lazy(() => import("./pages/DgiStatus"));
 const Devis = lazy(() => import("./pages/Devis"));
 
 const Settings = lazy(() => import("./pages/Settings"));
+const NotificationSettings = lazy(() => import("./pages/NotificationSettings"));
+const SettingsIntegrations = lazy(() => import("./pages/Settings-Integrations"));
+const SettingsSecurity = lazy(() => import("./pages/Settings-Security"));
+const SettingsExport = lazy(() => import("./pages/Settings-Export"));
+
+const InvoiceDetailFull = lazy(() => import("./pages/InvoiceDetailFull"));
+const InvoiceHistory = lazy(() => import("./pages/InvoiceHistory"));
+const Rapports = lazy(() => import("./pages/Rapports"));
 
 const POSCaisse = lazy(() => import("./pages/POS-Caisse"));
 const Declarants = lazy(() => import("./pages/Declarants"));
@@ -168,6 +176,41 @@ const App = () => (
                 <Route path="/settings" element={
                   <ProtectedRoute allowedRoles={['admin']}>
                     <Settings />
+                  </ProtectedRoute>
+                } />
+                <Route path="/settings/notifications" element={
+                  <ProtectedRoute>
+                    <NotificationSettings />
+                  </ProtectedRoute>
+                } />
+                <Route path="/settings/integrations" element={
+                  <ProtectedRoute allowedRoles={['admin']}>
+                    <SettingsIntegrations />
+                  </ProtectedRoute>
+                } />
+                <Route path="/settings/security" element={
+                  <ProtectedRoute>
+                    <SettingsSecurity />
+                  </ProtectedRoute>
+                } />
+                <Route path="/settings/export" element={
+                  <ProtectedRoute allowedRoles={['admin']}>
+                    <SettingsExport />
+                  </ProtectedRoute>
+                } />
+                <Route path="/factures/:id/detail" element={
+                  <ProtectedRoute>
+                    <InvoiceDetailFull />
+                  </ProtectedRoute>
+                } />
+                <Route path="/factures/:id/history" element={
+                  <ProtectedRoute>
+                    <InvoiceHistory />
+                  </ProtectedRoute>
+                } />
+                <Route path="/rapports" element={
+                  <ProtectedRoute>
+                    <Rapports />
                   </ProtectedRoute>
                 } />
                 <Route path="*" element={<NotFound />} />
