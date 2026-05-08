@@ -72,7 +72,7 @@ const Sidebar: React.FC<SidebarProps> = ({
       {
         icon: LayoutDashboard,
         label: 'Tableau de bord',
-        path: '/',
+        path: '/dashboard',
         module: null // Toujours accessible
       },
       {

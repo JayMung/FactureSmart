@@ -1,4 +1,5 @@
 import { lazy, Suspense } from 'react';
+import Landing from "./pages/Landing";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -105,7 +106,8 @@ const App = () => (
                 } />
                 <Route path="/reset-password" element={<ResetPassword />} />
                 <Route path="/admin-invitation" element={<AdminInvitation />} />
-                <Route path="/" element={
+                <Route path="/" element={<Landing />} />
+                <Route path="/dashboard" element={
                   <ProtectedRoute>
                     <Index />
                   </ProtectedRoute>
