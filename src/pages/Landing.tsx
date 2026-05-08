@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/components/auth/AuthProvider';
 import {
   FileText,
   Users,
@@ -97,14 +97,13 @@ const STATS = [
 
 const Landing: React.FC = () => {
   const navigate = useNavigate();
+  const { user, loading } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate('/dashboard');
-    });
-  }, [navigate]);
+    if (!loading && user) navigate('/dashboard');
+  }, [user, loading, navigate]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
