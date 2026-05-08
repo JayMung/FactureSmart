@@ -53,7 +53,6 @@ const Devis = lazy(() => import("./pages/Devis"));
 const Settings = lazy(() => import("./pages/Settings"));
 
 const POSCaisse = lazy(() => import("./pages/POS-Caisse"));
-const Declarants = lazy(() => import("./pages/Declarants"));
 const AdminSetup = lazy(() => import("./pages/AdminSetup"));
 const AdminInvitation = lazy(() => import("./pages/AdminInvitation"));
 
@@ -113,11 +112,6 @@ const App = () => (
                 <Route path="/pos" element={
                   <ProtectedRoute>
                     <POSCaisse />
-                  </ProtectedRoute>
-                } />
-                <Route path="/declarants" element={
-                  <ProtectedRoute allowedRoles={['admin', 'comptable']}>
-                    <Declarants />
                   </ProtectedRoute>
                 } />
                 <Route path="/clients" element={

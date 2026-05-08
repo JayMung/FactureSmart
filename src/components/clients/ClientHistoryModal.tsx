@@ -30,8 +30,7 @@ import {
 } from 'lucide-react';
 import { useClientHistory } from '@/hooks/useClientHistory';
 import { useFactures } from '@/hooks/useFactures';
-import { useColisList } from '@/hooks/useColisList';
-import type { Client, Transaction, Colis } from '@/types';
+import type { Client, Transaction } from '@/types';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { cn } from '@/lib/utils';
 
@@ -76,17 +75,6 @@ const ClientHistoryModal: React.FC<ClientHistoryModalProps> = ({
     type: undefined, // Tous les types (devis et factures)
     statut: undefined // Tous les statuts
   });
-
-  // Colis hook
-  const {
-    data: colisData,
-    isLoading: colisLoading,
-    refetch: refetchColis
-  } = useColisList({
-    clientId: client?.id
-  });
-  
-  const colis = (colisData as any[]) || [];
 
   const formatCurrencyValue = (amount: number, currency: string) => {
     if (currency === 'USD') {
@@ -252,11 +240,6 @@ const ClientHistoryModal: React.FC<ClientHistoryModalProps> = ({
               <span className="hidden sm:inline">Factures</span>
               <span className="sm:hidden">Fact.</span>
               <span className="text-xs">({facturePagination?.count || 0})</span>
-            </TabsTrigger>
-            <TabsTrigger value="colis" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 py-2 sm:py-1.5 text-xs sm:text-sm">
-              <Package className="h-4 w-4" />
-              <span>Colis</span>
-              <span className="text-xs">({colis?.length || 0})</span>
             </TabsTrigger>
           </TabsList>
 
@@ -558,138 +541,6 @@ const ClientHistoryModal: React.FC<ClientHistoryModalProps> = ({
             </Card>
           </TabsContent>
 
-          {/* Colis Tab */}
-          <TabsContent value="colis" className="space-y-4 sm:space-y-6">
-            {/* Colis Stats - Mobile Optimized */}
-            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
-              <Card>
-                <CardContent className="p-3 sm:p-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-xs sm:text-sm text-gray-600">Total Colis</p>
-                      <p className="text-xl sm:text-2xl font-bold text-gray-900">
-                        {colis?.length || 0}
-                      </p>
-                    </div>
-                    <Package className="h-6 w-6 sm:h-8 sm:w-8 text-blue-500" />
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardContent className="p-3 sm:p-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-xs sm:text-sm text-gray-600">Aériens</p>
-                      <p className="text-xl sm:text-2xl font-bold text-green-600">
-                        {colis?.filter((c: any) => c.type_livraison === 'aerien').length || 0}
-                      </p>
-                    </div>
-                    <Package className="h-6 w-6 sm:h-8 sm:w-8 text-green-500" />
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardContent className="p-3 sm:p-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-xs sm:text-sm text-gray-600">Maritimes</p>
-                      <p className="text-xl sm:text-2xl font-bold text-blue-600">
-                        {colis?.filter((c: any) => c.type_livraison === 'maritime').length || 0}
-                      </p>
-                    </div>
-                    <Package className="h-6 w-6 sm:h-8 sm:w-8 text-blue-500" />
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardContent className="p-3 sm:p-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-xs sm:text-sm text-gray-600">Poids Total</p>
-                      <p className="text-xl sm:text-2xl font-bold text-purple-600">
-                        {colis?.reduce((sum: number, c: any) => sum + (c.poids || 0), 0).toFixed(1) || 0} kg
-                      </p>
-                    </div>
-                    <TrendingUp className="h-6 w-6 sm:h-8 sm:w-8 text-purple-500" />
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Colis List */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center justify-between text-base sm:text-lg">
-                  <span>Liste des Colis</span>
-                  <Badge variant="outline">
-                    {colis?.length || 0} colis
-                  </Badge>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                {colisLoading ? (
-                  <div className="space-y-4">
-                    {Array.from({ length: 5 }).map((_, index) => (
-                      <div key={index} className="flex items-center space-x-4 p-4 border rounded">
-                        <Skeleton className="h-4 w-4" />
-                        <div className="flex-1 space-y-2">
-                          <Skeleton className="h-4 w-32" />
-                          <Skeleton className="h-3 w-24" />
-                        </div>
-                        <Skeleton className="h-4 w-20" />
-                      </div>
-                    ))}
-                  </div>
-                ) : !colis || colis.length === 0 ? (
-                  <div className="text-center py-8">
-                    <Package className="h-12 w-12 mx-auto mb-4 text-gray-300" />
-                    <p className="text-gray-500">Aucun colis trouvé</p>
-                  </div>
-                ) : (
-                  <div className="space-y-2">
-                    {colis.map((colisItem: any) => (
-                      <div key={colisItem.id} className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 sm:p-4 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 gap-3 sm:gap-0">
-                        <div className="flex items-center space-x-3 sm:space-x-4">
-                          <div className={`p-2 rounded-full ${colisItem.type_livraison === 'aerien' ? 'bg-green-100' : 'bg-blue-100'}`}>
-                            <Package className={`h-4 w-4 ${colisItem.type_livraison === 'aerien' ? 'text-green-600' : 'text-blue-600'}`} />
-                          </div>
-                          <div>
-                            <p className="text-sm sm:text-base font-medium">
-                              {colisItem.type_livraison === 'aerien' ? '✈️ Aérien' : '🚢 Maritime'}
-                            </p>
-                            <p className="text-xs sm:text-sm text-gray-500">
-                              {colisItem.quantite} colis • {colisItem.poids} kg
-                            </p>
-                            {colisItem.tracking_chine && (
-                              <p className="text-xs text-gray-400">
-                                Tracking: {colisItem.tracking_chine}
-                              </p>
-                            )}
-                          </div>
-                        </div>
-                        <div className="text-left sm:text-right">
-                          <Badge variant={colisItem.statut === 'livre' ? 'default' : 'secondary'} className="mb-1">
-                            {colisItem.statut}
-                          </Badge>
-                          <p className="text-sm sm:text-base font-medium text-green-600">
-                            {formatCurrencyValue(colisItem.montant_a_payer, 'USD')}
-                          </p>
-                          {colisItem.transitaire && (
-                            <p className="text-xs text-gray-500 mt-1">
-                              {colisItem.transitaire.nom}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </TabsContent>
         </Tabs>
       </DialogContent>
     </Dialog>

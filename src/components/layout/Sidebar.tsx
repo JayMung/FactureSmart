@@ -99,12 +99,6 @@ const Sidebar: React.FC<SidebarProps> = ({
         path: '/pos',
         module: null
       },
-      {
-        icon: Building2,
-        label: 'Déclarants DGI',
-        path: '/declarants',
-        module: null
-      },
     ];
 
   // Sous-menus pour Finances

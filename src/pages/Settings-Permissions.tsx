@@ -64,8 +64,6 @@ import ConfirmDialog from '@/components/ui/confirm-dialog';
 import PermissionsManager from '../components/permissions/PermissionsManager';
 import { SettingsFacture } from './Settings-Facture';
 import { CompanySettings } from '../components/settings/CompanySettings';
-import { SettingsColis } from '../components/settings/SettingsColis';
-import { SettingsTransitaires } from '../components/settings/SettingsTransitaires';
 import {
   Dialog,
   DialogContent,
@@ -784,20 +782,6 @@ const SettingsWithPermissions = () => {
       adminOnly: false
     },
     {
-      id: 'colis',
-      label: 'Colis',
-      icon: <Package className="h-5 w-5" />,
-      description: 'Fournisseurs et tarifs pour colis aériens/maritimes',
-      adminOnly: false
-    },
-    {
-      id: 'transitaires',
-      label: 'Transitaires',
-      icon: <Truck className="h-5 w-5" />,
-      description: 'Gestion des transitaires et partenaires logistiques',
-      adminOnly: false
-    },
-    {
       id: 'exchange-rates',
       label: 'Taux de change',
       icon: <DollarSign className="h-5 w-5" />,
@@ -844,8 +828,6 @@ const SettingsWithPermissions = () => {
     'transaction-fees': 'transaction_fees',
     'activity-logs': 'activity_logs',
     'factures': 'factures',
-    'colis': 'colis',
-    'transitaires': 'colis',
     'finances': 'finances'
   };
 
@@ -1542,12 +1524,6 @@ const SettingsWithPermissions = () => {
             {/* Factures Settings Tab */}
             {activeTab === 'factures' && <SettingsFacture />}
 
-            {/* Colis Settings Tab */}
-            {activeTab === 'colis' && <SettingsColis />}
-
-            {/* Transitaires Settings Tab */}
-            {activeTab === 'transitaires' && <SettingsTransitaires />}
-
             {/* API Keys Tab */}
             {activeTab === 'api-keys' && (
               <div className="space-y-6">
@@ -1583,7 +1559,6 @@ const SettingsWithPermissions = () => {
                         <li><code className="bg-gray-100 px-2 py-1 rounded">GET /api-transactions</code> - Récupérer les transactions</li>
                         <li><code className="bg-gray-100 px-2 py-1 rounded">GET /api-clients</code> - Récupérer les clients</li>
                         <li><code className="bg-gray-100 px-2 py-1 rounded">GET /api-factures</code> - Récupérer les factures</li>
-                        <li><code className="bg-gray-100 px-2 py-1 rounded">GET /api-colis</code> - Récupérer les colis</li>
                         <li><code className="bg-gray-100 px-2 py-1 rounded">GET /api-stats</code> - Récupérer les statistiques</li>
                         <li><code className="bg-gray-100 px-2 py-1 rounded">POST /api-webhooks</code> - Gérer les webhooks</li>
                       </ul>
@@ -1666,14 +1641,6 @@ const SettingsWithPermissions = () => {
                       </div>
                     </div>
 
-                    <div>
-                      <h3 className="font-semibold mb-2">Colis</h3>
-                      <div className="flex flex-wrap gap-2">
-                        <Badge variant="outline">colis.created</Badge>
-                        <Badge variant="outline">colis.delivered</Badge>
-                        <Badge variant="outline">colis.status_changed</Badge>
-                      </div>
-                    </div>
                   </CardContent>
                 </Card>
 

@@ -29,11 +29,10 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
-import { usePaiements, useCreatePaiement, useUpdatePaiement, useDeletePaiement, usePaiementStats, CreatePaiementData, generateColisId } from '@/hooks/usePaiements';
+import { usePaiements, useCreatePaiement, useUpdatePaiement, useDeletePaiement, usePaiementStats, CreatePaiementData } from '@/hooks/usePaiements';
 import { useAllClients } from '@/hooks/useClients';
 import { useFactures } from '@/hooks/useFactures';
 import { useComptesFinanciers } from '@/hooks/useComptesFinanciers';
-import { useColisList } from '@/hooks/useColisList';
 import { ClientCombobox } from '@/components/ui/client-combobox';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
@@ -42,7 +41,7 @@ import { toast } from 'sonner';
 export default function Encaissements() {
   const [page, setPage] = useState(1);
   const [filters, setFilters] = useState<{
-    type_paiement?: 'facture' | 'colis';
+    type_paiement?: 'facture';
     client_id?: string;
     compte_id?: string;
     date_debut?: string;
@@ -76,7 +75,6 @@ export default function Encaissements() {
   // Charger toutes les factures sans filtre de statut_paiement (filtre non supporté)
   const { factures: facturesData } = useFactures(1);
   const { comptes: comptesData } = useComptesFinanciers();
-  const { data: colisData } = useColisList({ clientId: formData.client_id });
 
   const createPaiement = useCreatePaiement();
   const updatePaiement = useUpdatePaiement();
@@ -85,14 +83,9 @@ export default function Encaissements() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validation: vérifier que facture_id ou colis_id est fourni selon le type
+    // Validation: vérifier que facture_id est fourni
     if (formData.type_paiement === 'facture' && !formData.facture_id) {
       toast.error('Veuillez sélectionner une facture');
-      return;
-    }
-    
-    if (formData.type_paiement === 'colis' && !formData.colis_id) {
-      toast.error('Veuillez sélectionner un colis');
       return;
     }
     
@@ -123,7 +116,6 @@ export default function Encaissements() {
       type_paiement: paiement.type_paiement,
       client_id: paiement.client_id,
       facture_id: paiement.facture_id,
-      colis_id: paiement.colis_id,
       montant_paye: paiement.montant_paye,
       compte_id: paiement.compte_id,
       mode_paiement: paiement.mode_paiement || '',
@@ -143,16 +135,12 @@ export default function Encaissements() {
   const exportToCSV = () => {
     if (!data?.paiements) return;
 
-    const headers = ['Date', 'Type', 'Client', 'Facture/Colis', 'Montant', 'Compte', 'Mode', 'Notes'];
+    const headers = ['Date', 'Type', 'Client', 'Facture', 'Montant', 'Compte', 'Mode', 'Notes'];
     const rows = data.paiements.map(p => [
       format(new Date(p.date_paiement), 'dd/MM/yyyy', { locale: fr }),
-      p.type_paiement === 'facture' ? 'Facture' : 'Colis',
+      'Facture',
       p.client?.nom || '',
-      p.type_paiement === 'facture' 
-        ? p.facture?.facture_number || 'N/A'
-        : p.colis && p.colis.id && p.colis.created_at
-          ? generateColisId(p.colis.id, p.colis.created_at)
-          : 'N/A',
+      p.facture?.facture_number || 'N/A',
       `${p.montant_paye} USD`,
       p.compte?.nom || '',
       p.mode_paiement || '',
@@ -205,24 +193,7 @@ export default function Encaissements() {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid gap-4 grid-cols-1 sm:grid-cols-2">
                 <div className="space-y-2">
-                  <Label>Type *</Label>
-                  <Select
-                    value={formData.type_paiement}
-                    onValueChange={(value: 'facture' | 'colis') =>
-                      setFormData({ ...formData, type_paiement: value })
-                    }
-                  >
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="facture">Facture</SelectItem>
-                      <SelectItem value="colis">Colis</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
+                  <Label>Client *</Label>
                   <Label>Client *</Label>
                   <ClientCombobox
                     clients={clients || []}
@@ -268,38 +239,6 @@ export default function Encaissements() {
                   </div>
                 )}
 
-                {formData.type_paiement === 'colis' && (
-                  <div className="space-y-2">
-                    <Label>Colis *</Label>
-                    <Select
-                      value={formData.colis_id}
-                      onValueChange={(value) =>
-                        setFormData({ ...formData, colis_id: value })
-                      }
-                      disabled={!formData.client_id}
-                      required
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Sélectionner" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {colisData && colisData.length > 0 ? (
-                          colisData
-                            .filter((colis) => typeof colis?.id === 'string' && colis.id.trim().length > 0)
-                            .map((colis) => (
-                            <SelectItem key={String(colis.id)} value={String(colis.id)}>
-                              {generateColisId(colis.id, colis.created_at)} - {colis.tracking_chine || 'N/A'}
-                            </SelectItem>
-                          ))
-                        ) : (
-                          <SelectItem value="__no_colis__" disabled>
-                            {formData.client_id ? 'Aucun colis disponible' : 'Sélectionnez un client d\'abord'}
-                          </SelectItem>
-                        )}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                )}
 
                 <div className="space-y-2">
                   <Label>Montant payé (USD) *</Label>
@@ -444,16 +383,6 @@ export default function Encaissements() {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Colis</CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-xl sm:text-2xl font-bold">${stats?.totalColis.toFixed(2) || '0.00'}</div>
-            <p className="text-xs text-muted-foreground">Paiements colis</p>
-          </CardContent>
-        </Card>
       </div>
 
       {/* Filters */}
@@ -471,7 +400,7 @@ export default function Encaissements() {
               <Select
                 value={filters.type_paiement || 'all'}
                 onValueChange={(value) =>
-                  setFilters({ ...filters, type_paiement: value === 'all' ? undefined : value as 'facture' | 'colis' })
+                  setFilters({ ...filters, type_paiement: value === 'all' ? undefined : value as 'facture' })
                 }
               >
                 <SelectTrigger>
@@ -480,7 +409,6 @@ export default function Encaissements() {
                 <SelectContent>
                   <SelectItem value="all">Tous</SelectItem>
                   <SelectItem value="facture">Facture</SelectItem>
-                  <SelectItem value="colis">Colis</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -598,12 +526,8 @@ export default function Encaissements() {
                   <Card key={paiement.id} className="p-4">
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
-                        <span className={`px-2 py-1 rounded text-xs font-medium ${
-                          paiement.type_paiement === 'facture'
-                            ? 'bg-blue-100 text-blue-800'
-                            : 'bg-purple-100 text-purple-800'
-                        }`}>
-                          {paiement.type_paiement === 'facture' ? 'Facture' : 'Colis'}
+                        <span className="px-2 py-1 rounded text-xs font-medium bg-blue-100 text-blue-800">
+                          Facture
                         </span>
                         <span className="text-sm text-muted-foreground">
                           {format(new Date(paiement.date_paiement), 'dd/MM/yyyy', { locale: fr })}
@@ -613,12 +537,7 @@ export default function Encaissements() {
                         <div>
                           <p className="font-semibold">{paiement.client?.nom}</p>
                           <p className="text-sm text-muted-foreground">
-                            {paiement.type_paiement === 'facture' 
-                              ? paiement.facture?.facture_number || 'N/A'
-                              : paiement.colis && paiement.colis.id && paiement.colis.created_at
-                                ? generateColisId(paiement.colis.id, paiement.colis.created_at)
-                                : 'N/A'
-                            }
+                            {paiement.facture?.facture_number || 'N/A'}
                           </p>
                         </div>
                         <div className="text-right">
@@ -665,7 +584,7 @@ export default function Encaissements() {
                       <th className="text-left p-2">Date</th>
                       <th className="text-left p-2">Type</th>
                       <th className="text-left p-2">Client</th>
-                      <th className="text-left p-2">Facture/Colis</th>
+                      <th className="text-left p-2">Facture</th>
                       <th className="text-right p-2">Montant</th>
                       <th className="text-left p-2">Compte</th>
                       <th className="text-left p-2">Mode</th>
@@ -690,12 +609,7 @@ export default function Encaissements() {
                         </td>
                         <td className="p-2">{paiement.client?.nom}</td>
                         <td className="p-2">
-                          {paiement.type_paiement === 'facture' 
-                            ? paiement.facture?.facture_number || 'N/A'
-                            : paiement.colis && paiement.colis.id && paiement.colis.created_at
-                              ? generateColisId(paiement.colis.id, paiement.colis.created_at)
-                              : 'N/A'
-                          }
+                          {paiement.facture?.facture_number || 'N/A'}
                         </td>
                         <td className="p-2 text-right font-semibold">${paiement.montant_paye}</td>
                         <td className="p-2">{paiement.compte?.nom}</td>
