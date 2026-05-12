@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Layout from '../components/layout/Layout';
 import { usePageSetup } from '../hooks/use-page-setup';
 import { Button } from '@/components/ui/button';
@@ -25,7 +26,6 @@ import { Skeleton } from '@/components/ui/skeleton';
 import SortableHeader from '../components/ui/sortable-header';
 import BulkActions from '../components/ui/bulk-actions';
 import ClientForm from '../components/forms/ClientForm';
-import ClientHistoryModal from '../components/clients/ClientHistoryModal';
 import MergeClientsDialog from '../components/clients/MergeClientsDialog';
 import ConfirmDialog from '@/components/ui/confirm-dialog';
 import PermissionGuard from '../components/auth/PermissionGuard';
@@ -52,6 +52,7 @@ import {
 } from '@/lib/security/content-sanitization';
 
 const ClientsProtected: React.FC = () => {
+  const navigate = useNavigate();
   usePageSetup({
     title: 'Gestion des Clients',
     subtitle: 'Gérez les informations de vos clients'
@@ -74,8 +75,6 @@ const ClientsProtected: React.FC = () => {
   ]);
 
   // États pour les modales
-  const [historyModalOpen, setHistoryModalOpen] = useState(false);
-  const [clientForHistory, setClientForHistory] = useState<Client | null>(null);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [bulkDeleteDialogOpen, setBulkDeleteDialogOpen] = useState(false);
   const [clientToDelete, setClientToDelete] = useState<Client | null>(null);
@@ -176,12 +175,6 @@ const ClientsProtected: React.FC = () => {
   const handleAddClient = () => {
     setSelectedClient(undefined);
     setIsFormOpen(true);
-  };
-
-  const handleViewClientHistory = (client: Client) => {
-    console.log('👁️ Opening history for:', client.nom);
-    setClientForHistory(client);
-    setHistoryModalOpen(true);
   };
 
   const formatCurrency = (amount: number) => {
@@ -436,9 +429,19 @@ const ClientsProtected: React.FC = () => {
                 viewMode="auto"
                 onViewModeChange={setViewMode}
                 showViewToggle={true}
+                onRowClick={(client) => navigate(`/clients/${client.id}`)}
                 cardConfig={{
                   titleKey: 'nom',
-                  titleRender: (client) => sanitizeClientName(client.nom || ''),
+                  titleRender: (client) => (
+                    <button
+                      onClick={(e) => { e.stopPropagation(); navigate(`/clients/${client.id}`); }}
+                      className="text-left hover:text-green-500 hover:underline transition-colors cursor-pointer font-semibold"
+                    >
+                      {sanitizeClientName(client.nom || '').split(' ').map(word =>
+                        word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+                      ).join(' ')}
+                    </button>
+                  ),
                   subtitleKey: 'telephone',
                   subtitleRender: (client) => (
                     <div className="flex items-center gap-1 text-gray-500">
@@ -487,8 +490,8 @@ const ClientsProtected: React.FC = () => {
                       <Button
                         variant="ghost"
                         size="icon"
-                        onClick={() => handleViewClientHistory(client)}
-                        title="Voir l'historique"
+                        onClick={() => navigate(`/clients/${client.id}`)}
+                        title="Détail client"
                       >
                         <Eye className="h-4 w-4" />
                       </Button>
@@ -534,15 +537,11 @@ const ClientsProtected: React.FC = () => {
                     title: 'Nom',
                     sortable: true,
                     render: (value: any, client: Client) => (
-                      <button
-                        onClick={() => handleViewClientHistory(client)}
-                        className="text-left hover:text-green-500 hover:underline transition-colors cursor-pointer font-medium"
-                        title={sanitizeClientName(client.nom || '')}
-                      >
+                      <span className="font-medium">
                         {sanitizeClientName(client.nom || '').split(' ').map(word =>
                           word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
                         ).join(' ')}
-                      </button>
+                      </span>
                     )
                   },
                   {
@@ -635,12 +634,6 @@ const ClientsProtected: React.FC = () => {
             isOpen={isFormOpen}
             onClose={() => setIsFormOpen(false)}
             onSuccess={handleFormSuccess}
-          />
-
-          <ClientHistoryModal
-            client={clientForHistory}
-            open={historyModalOpen}
-            onOpenChange={setHistoryModalOpen}
           />
 
           <MergeClientsDialog

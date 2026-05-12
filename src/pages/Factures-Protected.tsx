@@ -670,7 +670,16 @@ const FacturesProtected: React.FC = () => {
                     key: 'clients',
                     title: 'Client',
                     sortable: true,
-                    render: (value: any) => (value?.nom || 'N/A')
+                    render: (value: any) => value?.id ? (
+                      <button
+                        onClick={(e) => { e.stopPropagation(); navigate(`/clients/${value.id}`); }}
+                        className="text-left hover:text-green-500 hover:underline transition-colors cursor-pointer"
+                      >
+                        {value?.nom || 'N/A'}
+                      </button>
+                    ) : (
+                      <span className="text-gray-600">{value?.nom || 'N/A'}</span>
+                    )
                   },
                   {
                     key: 'date_emission',
@@ -823,7 +832,16 @@ const FacturesProtected: React.FC = () => {
                     </span>
                   ),
                   subtitleKey: 'clients',
-                  subtitleRender: (item) => <span className="text-gray-600">{item.clients?.nom || 'N/A'}</span>,
+                  subtitleRender: (item) => item.clients?.id ? (
+                    <button
+                      onClick={(e) => { e.stopPropagation(); navigate(`/clients/${item.clients.id}`); }}
+                      className="text-left hover:text-green-500 hover:underline transition-colors cursor-pointer"
+                    >
+                      {item.clients?.nom || 'N/A'}
+                    </button>
+                  ) : (
+                    <span className="text-gray-600">{item.clients?.nom || 'N/A'}</span>
+                  ),
                   badgeKey: 'statut',
                   badgeRender: (item) => getStatutBadge(item.statut),
                   infoFields: [

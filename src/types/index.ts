@@ -263,6 +263,234 @@ export interface Fees {
 }
 
 // Facture types
+// =========================================================================
+// DGI-COMPLIANT INVOICE TYPES — Module FactureSmart DGI
+// Cycle de vie: brouillon → validee → envoyee_dgi → acceptee_dgi / rejetee_dgi → archivee
+// =========================================================================
+
+/** Statuts du cycle de vie DGI */
+export type InvoiceStatus =
+  | 'brouillon'
+  | 'validee'
+  | 'envoyee_dgi'
+  | 'acceptee_dgi'
+  | 'rejetee_dgi'
+  | 'archivee'
+  | 'annulee';
+
+/** Types de facture */
+export type InvoiceType =
+  | 'facture'
+  | 'devis'
+  | 'avoir'
+  | 'acompte'
+  | 'proforma';
+
+/** Séries de numérotation DGI */
+export type InvoiceSeriesCode = 'F' | 'A' | 'AV' | 'R' | 'E';
+
+/** Société déclarante (multi-entités) */
+export interface Company {
+  id: string;
+  name: string;
+  legal_name?: string;
+  alias?: string;
+  nif?: string;
+  rccm?: string;
+  idnat?: string;
+  address?: string;
+  city: string;
+  country: string;
+  phone?: string;
+  email?: string;
+  logo_url?: string;
+  bank_name?: string;
+  bank_account?: string;
+  tva_regime: 'normal' | 'simplifie' | 'exonere';
+  tva_rate: number;
+  dgi_declarant_number?: string;
+  dgi_centre_impot?: string;
+  dgi_arrondissement?: string;
+  is_active: boolean;
+  created_by?: string;
+  created_at: string;
+  updated_at?: string;
+}
+
+/** Série de numérotation */
+export interface FactureSeries {
+  id: string;
+  company_id: string;
+  code: InvoiceSeriesCode;
+  label: string;
+  year: number;
+  current_number: number;
+  prefix: string;
+  is_active: boolean;
+}
+
+/** Facture DGI-compliant */
+export interface Invoice {
+  id: string;
+  company_id: string;
+  invoice_number: string;
+  series_code: InvoiceSeriesCode;
+  series_number: number;
+  type: InvoiceType;
+  // Client
+  client_id?: string;
+  client_nom?: string;
+  client_nif?: string;
+  client_rccm?: string;
+  client_adresse?: string;
+  client_ville?: string;
+  // Dates
+  issue_date: string;
+  due_date?: string;
+  validated_at?: string;
+  validated_by?: string;
+  archived_at?: string;
+  // Cycle de vie DGI
+  status: InvoiceStatus;
+  dgi_status?: string;
+  dgi_reference?: string;
+  dgi_submitted_at?: string;
+  dgi_response?: any;
+  // Devise
+  currency: 'USD' | 'CDF' | 'EUR';
+  // Montants
+  subtotal_ht: number;
+  discount_percent: number;
+  discount_amount: number;
+  // TVA détaillée
+  tva_base_16: number;
+  tva_amount_16: number;
+  tva_base_0: number;
+  tva_amount_0: number;
+  tva_total: number;
+  // Totaux
+  total_ttc: number;
+  acompte: number;
+  tva_exigible: number;
+  net_a_payer: number;
+  // Métadonnées
+  notes?: string;
+  conditions?: string;
+  reference?: string;
+  parent_invoice_id?: string;
+  converted_from_devis?: string;
+  // Relations
+  company?: Company;
+  client?: Client;
+  items?: InvoiceItem[];
+  history?: InvoiceHistoryEntry[];
+  dgi_transmissions?: DgiTransmission[];
+  // Metadata
+  created_by?: string;
+  created_at: string;
+  updated_at?: string;
+}
+
+/** Ligne de facture DGI */
+export interface InvoiceItem {
+  id?: string;
+  invoice_id?: string;
+  line_number: number;
+  article_id?: string;
+  description: string;
+  quantity: number;
+  unit: string;
+  unit_price: number;
+  tva_rate: number;
+  tva_exempt: boolean;
+  total_ht: number;
+  tva_amount: number;
+  total_ttc: number;
+  sort_order: number;
+  created_at?: string;
+  tempId?: string;
+}
+
+/** Transmission DGI */
+export interface DgiTransmission {
+  id: string;
+  invoice_id: string;
+  company_id: string;
+  dgi_reference?: string;
+  status: 'pending' | 'submitted' | 'accepted' | 'rejected' | 'error';
+  submitted_at?: string;
+  acknowledged_at?: string;
+  rejected_at?: string;
+  payload_sent?: any;
+  response_received?: any;
+  error_message?: string;
+  retry_count: number;
+  last_retry_at?: string;
+  submitted_by?: string;
+  created_at: string;
+}
+
+/** Entrée d'historique / audit trail */
+export interface InvoiceHistoryEntry {
+  id: string;
+  invoice_id: string;
+  action: string;
+  from_status?: string;
+  to_status?: string;
+  changes?: any;
+  metadata?: any;
+  performed_by?: string;
+  performed_by_name?: string;
+  created_at: string;
+}
+
+/** Données de création de facture */
+export interface CreateInvoiceData {
+  company_id: string;
+  client_id?: string;
+  client_nom?: string;
+  client_nif?: string;
+  client_rccm?: string;
+  client_adresse?: string;
+  client_ville?: string;
+  type?: InvoiceType;
+  series_code?: InvoiceSeriesCode;
+  issue_date?: string;
+  due_date?: string;
+  currency?: 'USD' | 'CDF' | 'EUR';
+  discount_percent?: number;
+  acompte?: number;
+  notes?: string;
+  conditions?: string;
+  reference?: string;
+  items: CreateInvoiceItemData[];
+}
+
+export interface CreateInvoiceItemData {
+  description: string;
+  quantity: number;
+  unit?: string;
+  unit_price: number;
+  tva_rate?: number;
+  tva_exempt?: boolean;
+  article_id?: string;
+  sort_order?: number;
+}
+
+/** Filtres de recherche factures */
+export interface InvoiceFilters {
+  search?: string;
+  type?: InvoiceType;
+  status?: InvoiceStatus;
+  series_code?: InvoiceSeriesCode;
+  company_id?: string;
+  client_id?: string;
+  date_from?: string;
+  date_to?: string;
+  dgi_status?: string;
+}
+
+// Legacy types preserved for backward compatibility
 export interface Facture {
   id: string;
   facture_number: string;
@@ -303,7 +531,7 @@ export interface FactureItem {
   poids: number;
   montant_total: number;
   created_at?: string;
-  tempId?: string; // For temporary items before saving
+  tempId?: string;
 }
 
 export interface CreateFactureData {
