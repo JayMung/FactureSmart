@@ -1,4 +1,93 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
-  <rect width="512" height="512" rx="64" fill="#22c55e"/>
-  <text x="256" y="320" font-family="Arial, sans-serif" font-size="192" font-weight="bold" fill="white" text-anchor="middle">FX</text>
+  <defs>
+    <!-- Drapeau RDC : diagonale bleu ciel + bandeau rouge en haut, étoile jaune -->
+    <clipPath id="iconClip">
+      <rect width="512" height="512" rx="96" ry="96"/>
+    </clipPath>
+    <linearGradient id="rdcBlue" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#6BA8D6"/>
+      <stop offset="100%" stop-color="#3D7AB3"/>
+    </linearGradient>
+    <linearGradient id="rdcRed" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#E63946"/>
+      <stop offset="100%" stop-color="#B82838"/>
+    </linearGradient>
+    <linearGradient id="rdcYellow" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FFD93D"/>
+      <stop offset="100%" stop-color="#F4B400"/>
+    </linearGradient>
+    <linearGradient id="bookLeft" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#f1f5f9"/>
+    </linearGradient>
+    <linearGradient id="bookRight" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#f1f5f9"/>
+      <stop offset="100%" stop-color="#ffffff"/>
+    </linearGradient>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="6"/>
+      <feOffset dx="0" dy="4" result="off"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.35"/></feComponentTransfer>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <g clip-path="url(#iconClip)">
+    <!-- Fond bleu ciel (moitié supérieure-gauche) -->
+    <rect width="512" height="512" fill="url(#rdcBlue)"/>
+    <!-- Bandeau rouge en haut (1/4 hauteur) -->
+    <rect x="0" y="0" width="512" height="128" fill="url(#rdcRed)"/>
+    <!-- Diagonale jaune (étoile centrale) en bande -->
+    <polygon points="0,128 512,128 512,192 0,320" fill="url(#rdcYellow)"/>
+    <!-- Triangle bas-droit bleu -->
+    <polygon points="512,192 512,512 192,512" fill="url(#rdcBlue)" opacity="0.95"/>
+
+    <!-- Étoile jaune RDC centrée en haut -->
+    <g transform="translate(256 76)">
+      <polygon fill="#FFD93D" stroke="#F4B400" stroke-width="2"
+        points="0,-46 13,-14 47,-14 19,7 30,40 0,20 -30,40 -19,7 -47,-14 -13,-14"/>
+    </g>
+
+    <!-- Livre ouvert au centre -->
+    <g transform="translate(256 296)" filter="url(#softShadow)">
+      <!-- Page gauche -->
+      <path d="M -150 -70 Q -90 -86 -10 -70 L -10 60 Q -90 44 -150 60 Z"
+            fill="url(#bookLeft)" stroke="#94a3b8" stroke-width="2"/>
+      <!-- Page droite -->
+      <path d="M 150 -70 Q 90 -86 10 -70 L 10 60 Q 90 44 150 60 Z"
+            fill="url(#bookRight)" stroke="#94a3b8" stroke-width="2"/>
+      <!-- Lignes de texte page gauche -->
+      <rect x="-130" y="-50" width="100" height="6" rx="3" fill="#22c55e" opacity="0.85"/>
+      <rect x="-130" y="-32" width="86"  height="5" rx="2.5" fill="#64748b" opacity="0.7"/>
+      <rect x="-130" y="-18" width="92"  height="5" rx="2.5" fill="#64748b" opacity="0.6"/>
+      <rect x="-130" y="-4"  width="74"  height="5" rx="2.5" fill="#64748b" opacity="0.6"/>
+      <rect x="-130" y="10"  width="88"  height="5" rx="2.5" fill="#64748b" opacity="0.6"/>
+      <rect x="-130" y="24"  width="60"  height="5" rx="2.5" fill="#64748b" opacity="0.5"/>
+      <!-- Lignes de texte page droite (montants) -->
+      <rect x="30"  y="-50" width="100" height="6" rx="3" fill="#22c55e" opacity="0.85"/>
+      <rect x="30"  y="-32" width="86"  height="5" rx="2.5" fill="#64748b" opacity="0.7"/>
+      <rect x="30"  y="-18" width="92"  height="5" rx="2.5" fill="#64748b" opacity="0.6"/>
+      <rect x="30"  y="-4"  width="74"  height="5" rx="2.5" fill="#64748b" opacity="0.6"/>
+      <rect x="30"  y="10"  width="88"  height="5" rx="2.5" fill="#64748b" opacity="0.6"/>
+      <rect x="30"  y="24"  width="60"  height="5" rx="2.5" fill="#64748b" opacity="0.5"/>
+      <!-- Signe $ (monnaie/facture) au centre -->
+      <g transform="translate(0 -68)">
+        <circle r="22" fill="#22c55e"/>
+        <text y="8" text-anchor="middle" font-family="Inter, Manrope, system-ui, sans-serif"
+              font-size="26" font-weight="800" fill="white">$</text>
+      </g>
+      <!-- Reliure centrale -->
+      <line x1="0" y1="-70" x2="0" y2="60" stroke="#94a3b8" stroke-width="2"/>
+    </g>
+
+    <!-- Texte FS petit en bas (subtil, brand) -->
+    <text x="256" y="476" text-anchor="middle"
+          font-family="Inter, Manrope, system-ui, sans-serif"
+          font-size="34" font-weight="800" fill="white"
+          letter-spacing="6" opacity="0.95">FS</text>
+  </g>
+
+  <!-- Bordure fine pour masque PWA -->
+  <rect x="2" y="2" width="508" height="508" rx="94" ry="94"
+        fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
 </svg>

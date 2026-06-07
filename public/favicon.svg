@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <defs>
+    <clipPath id="favClip"><rect width="32" height="32" rx="6"/></clipPath>
+  </defs>
+  <g clip-path="url(#favClip)">
+    <rect width="32" height="32" fill="#3D7AB3"/>
+    <rect width="32" height="32" height="8" fill="#E63946"/>
+    <polygon points="0,8 32,8 32,12 0,20" fill="#F4B400"/>
+    <polygon points="32,12 32,32 12,32" fill="#3D7AB3"/>
+    <polygon points="16,4 17.8,6.8 21,7.3 18.5,9.5 19.2,12.7 16,11 12.8,12.7 13.5,9.5 11,7.3 14.2,6.8" fill="#FFD93D"/>
+    <text x="16" y="28" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" font-weight="800" fill="white" letter-spacing="0.5">$</text>
+  </g>
+</svg>
